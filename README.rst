@@ -60,11 +60,16 @@ need to set your ``request_timeout`` to ``60.0``.
                            request_timeout=15.0)
 
         print(client.user_info.whoami())
+
         # Configuration
         print(client.certificate.get_certificate_chain())
         print(client.configuration_properties.get_properties(category='ALL'))
         print(client.configuration_properties.get_properties_metadata())
         print(client.licensing.get_license())
+
+        # User Management
+        print(client.secret_key.get_user_secret_keys(uid='user1'))
+        print(client.secret_key.get_user_secret_keys(uid='user1', namespace='mynamespace'))
 
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))

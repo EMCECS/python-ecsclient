@@ -13,6 +13,10 @@ from ecsminion.api.configuration.configuration_properties \
     import ConfigurationProperties
 from ecsminion.api.configuration.licensing import Licensing
 
+from ecsminion.api.user_management.secret_key import SecretKey
+
+from ecsminion.api.undocumented.user_info import UserInfo
+
 from ecsminion.util.exceptions import ECSMinionException
 from ecsminion.util.token_request import TokenRequest
 
@@ -71,6 +75,12 @@ class ECSMinion(object):
         self.certificate = Certificate(self)
         self.configuration_properties = ConfigurationProperties(self)
         self.licensing = Licensing(self)
+
+        # API -> User Management
+        self.secret_key = SecretKey(self)
+
+        # API -> Undocumented
+        self.user_info = UserInfo(self)
 
     def get_token(self):
         """
