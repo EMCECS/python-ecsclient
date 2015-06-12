@@ -86,6 +86,16 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.user_object.lock_object_user('user1', False, 'namespace1'))
         print(client.user_object.get_object_user_lock('user1', 'namespace1'))
 
+        # Monitoring
+        # print(client.capacity.get_cluster_capacity())
+        print(client.events.get_audit_events(
+            '2015-06-08T01:00', '2015-06-09T00:00', 'namespace1'))
+        # With a marker and a limit param (marker has been shortened)
+        print(client.events.get_audit_events(
+            '2015-06-08T01:00', '2015-06-09T00:00', 'namespace1', limit=3,
+            marker='CIbS7YbdKRI4dXJuOnN0bTRkYzYtOWUxNy03MGFkYzAzMWUxNDQ='))
+
+
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))
         print('Status Code Returned: {0}\n'.format(ecsminion_ex.http_status_code))
