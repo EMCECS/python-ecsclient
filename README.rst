@@ -69,7 +69,15 @@ need to set your ``request_timeout`` to ``60.0``.
 
         # User Management
         print(client.secret_key.get_user_secret_keys(uid='user1'))
-        print(client.secret_key.get_user_secret_keys(uid='user1', namespace='mynamespace'))
+        print(client.secret_key.get_user_secret_keys(
+            uid='user1', namespace='namespace1'))
+        print(client.user_object.get_object_users('namespace1'))
+        print(client.user_object.get_object_user_info('user1'))
+        print(client.user_object.get_object_user_info('user1', 'namespace1'))
+        print(client.user_object.add_object_user(
+            uid='user2', namespace='namespace1', tags=['mytag1', 'mytag1']))
+        print(client.user_object.deactivate_object_user(
+            uid='user2', namespace='namespace1'))
 
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))

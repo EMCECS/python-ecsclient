@@ -50,3 +50,75 @@ class SecretKey:
                 url='object/user-secret-keys/{0}/{1}'.format(uid, namespace))
         else:
             return self.conn.get(url='object/user-secret-keys/{0}'.format(uid))
+
+    def create_new_secret_key(self, uid, namespace=None,
+                              key_expiration=2592000, secret_key=None):
+        """
+        Creates a secret key for the specified user. If the user belongs to a
+        namespace, the namespace must be supplied. When creating a new secret
+        key, you may pass in an expiration time in minutes for the old key.
+        During the expiration interval, both keys will be accepted for
+        requests. This gives you a grace period where you can update
+        applications to use the new key.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        {
+            "link": {
+                "rel": "self",
+                "href":"/object/user-secret-keys/joedeleteme"
+            },
+            "secret_key": "p3PZyb//Ch6tM0fUsnesYYnGb+6JHV8WHzS5YHjg",
+            "key_timestamp": "2014-12-24 02:08:40.181"
+        }
+
+        :param uid: Valid user identifier to create a key for
+        :param namespace: The namespace
+        :param key_expiration: Defaults to 30 days (2592000 seconds)
+        :param secret_key: Manually specify the new secret key
+        """
+        payload = {
+            "existing_key_expiry_time_mins": key_expiration,
+            "namespace": namespace
+        }
+
+        if secret_key:
+            payload['secretkey'] = secret_key
+
+        return self.conn.post(url='object/user-secret-keys/{0}'.format(uid),
+                              json_payload=payload)
+
+    def deactivate_user_secret_key(self, uid, namespace=None,
+                                   secret_key=None):
+        """
+        Deletes all secret keys for the specific user. If the user belongs
+        namespace, the namespace must be supplied.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param uid: Valid user identifier to get delete the keys from
+        :param namespace: The namespace
+        :param secret_key: The secret key to deactivate
+        """
+        payload = {
+            "secret_key": secret_key,
+            "namespace": namespace
+        }
+
+        return self.conn.post(
+            url='object/user-secret-keys/{0}/deactivate'.format(uid),
+            json_payload=payload)

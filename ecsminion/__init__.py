@@ -14,6 +14,7 @@ from ecsminion.api.configuration.configuration_properties \
 from ecsminion.api.configuration.licensing import Licensing
 
 from ecsminion.api.user_management.secret_key import SecretKey
+from ecsminion.api.user_management.user_object import ObjectUser
 
 from ecsminion.api.undocumented.user_info import UserInfo
 
@@ -78,6 +79,7 @@ class ECSMinion(object):
 
         # API -> User Management
         self.secret_key = SecretKey(self)
+        self.user_object = ObjectUser(self)
 
         # API -> Undocumented
         self.user_info = UserInfo(self)
