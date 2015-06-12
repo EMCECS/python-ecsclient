@@ -80,6 +80,11 @@ need to set your ``request_timeout`` to ``60.0``.
             uid='user2', namespace='namespace1', tags=['mytag1', 'mytag1']))
         print(client.user_object.deactivate_object_user(
             uid='user2', namespace='namespace1'))
+        print(client.user_object.get_object_user_info('user1'))
+        print(client.user_object.lock_object_user('user1', True, 'namespace1'))
+        print(client.user_object.get_object_user_lock('user1', 'namespace1'))
+        print(client.user_object.lock_object_user('user1', False, 'namespace1'))
+        print(client.user_object.get_object_user_lock('user1', 'namespace1'))
 
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))

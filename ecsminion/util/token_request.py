@@ -8,6 +8,12 @@ import requests
 from ecsminion.util.exceptions import ECSMinionException
 
 
+# Suppress the insecure request warning
+# https://urllib3.readthedocs.org/en/
+# latest/security.html#insecurerequestwarning
+requests.packages.urllib3.disable_warnings()
+
+
 class TokenRequest(object):
     """
     This is a helper class to fetch a new token from the ECS controller

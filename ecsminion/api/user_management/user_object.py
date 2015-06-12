@@ -124,10 +124,8 @@ class ObjectUser:
         Example JSON result from the API:
 
         {
-            u'link': {
-                u'href': u'/object/user-secret-keys/testuser1',
-                u'rel': u'self'
-            }
+            u'isLocked': True,
+            u'user_name': u'janedoe'
         }
 
         :param uid: Valid user identifier
@@ -144,3 +142,62 @@ class ObjectUser:
 
         return self.conn.post(url='object/users',
                               json_payload=payload)
+
+    def lock_object_user(self, uid, is_locked=True, namespace=None):
+        """
+        Locks or unlocks the specified user. If the user belongs to a
+        namespace, the namespace must be supplied.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        NAMESPACE_ADMIN
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param uid: Valid user identifier
+        :param is_locked: Example: True/False (optional)
+        :param namespace: Example: namespace1 (optional)
+        """
+        if namespace:
+            payload = {
+                "user": uid,
+                "namespace": namespace,
+                "isLocked": is_locked
+            }
+        else:
+            payload = {
+                "user": uid,
+                "isLocked": is_locked
+            }
+
+        return self.conn.put(url='object/users/lock',
+                             json_payload=payload)
+
+    def get_object_user_lock(self, uid, namespace=None):
+        """
+        Gets the user lock state for the specified user belonging to the
+        specified namespace (if provided).
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        TODO: JSON data
+
+        :param uid: Valid user identifier
+        :param namespace: Example: namespace1
+        """
+
+        if namespace:
+            return self.conn.get(
+                url='object/users/lock/{0}/{1}'.format(uid, namespace))
+        else:
+            return self.conn.get(
+                url='object/users/lock/{0}'.format(uid))

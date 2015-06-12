@@ -22,6 +22,12 @@ from ecsminion.util.exceptions import ECSMinionException
 from ecsminion.util.token_request import TokenRequest
 
 
+# Suppress the insecure request warning
+# https://urllib3.readthedocs.org/en/
+# latest/security.html#insecurerequestwarning
+requests.packages.urllib3.disable_warnings()
+
+
 class ECSMinion(object):
 
     def __init__(self, username=None, password=None, token=None,
