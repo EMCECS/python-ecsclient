@@ -7,6 +7,8 @@ ECS Minion is a library for interacting with the ECS 2.x Management API
 **Note:** `ECS <https://www.emc.com>`__ is an EMC product,
 trademarked, copyrighted, etc.
 
+This library follows the ECS API documentation `located here. <https://www.emc.com/techpubs/api/ecs/v2-0-0-0/index.htm>`__
+
 Using this library is pretty straight forward. ECSMinion can be installed
 from `PyPi <http://pypi.python.org/>`__:
 
