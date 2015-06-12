@@ -19,9 +19,6 @@ from `PyPi <http://pypi.python.org/>`__:
 
     $ pip install ecsminion
 
-**Note:** This library is VERY new and hasn't been uploaded to PyPi yet. The
-above command will not currently work. Coming soon!
-
 Creating an instance of the ECSMinion class requires the following
 arguments:
 
