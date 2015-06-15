@@ -14,7 +14,10 @@ from ecsminion.api.configuration.configuration_properties \
 from ecsminion.api.configuration.licensing import Licensing
 
 from ecsminion.api.monitoring.capacity import Capacity
+from ecsminion.api.monitoring.dashboard import Dashboard
 from ecsminion.api.monitoring.events import Events
+
+from ecsminion.api.provisioning.node import Node
 
 from ecsminion.api.user_management.secret_key import SecretKey
 from ecsminion.api.user_management.user_object import ObjectUser
@@ -86,9 +89,13 @@ class ECSMinion(object):
         self.configuration_properties = ConfigurationProperties(self)
         self.licensing = Licensing(self)
 
-        # Monitoring
+        # API -> Monitoring
         self.capacity = Capacity(self)
+        self.dashboard = Dashboard(self)
         self.events = Events(self)
+
+        # API -> Provisioning
+        self.node = Node(self)
 
         # API -> User Management
         self.secret_key = SecretKey(self)

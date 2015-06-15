@@ -70,6 +70,7 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.licensing.get_license())
 
         # User Management
+        print(client.secret_key.create_new_secret_key('user1'))
         print(client.secret_key.get_user_secret_keys(uid='user1'))
         print(client.secret_key.get_user_secret_keys(
             uid='user1', namespace='namespace1'))
@@ -87,14 +88,24 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.user_object.get_object_user_lock('user1', 'namespace1'))
 
         # Monitoring
-        # print(client.capacity.get_cluster_capacity())
+        print(client.capacity.get_cluster_capacity())
         print(client.events.get_audit_events(
             '2015-06-08T01:00', '2015-06-09T00:00', 'namespace1'))
         # With a marker and a limit param (marker has been shortened)
         print(client.events.get_audit_events(
             '2015-06-08T01:00', '2015-06-09T00:00', 'namespace1', limit=3,
             marker='CIbS7YbdKRI4dXJuOnN0bTRkYzYtOWUxNy03MGFkYzAzMWUxNDQ='))
+        # Only a few of the dashboard APIs are shown, there are more
+        print(client.dashboard.get_local_zone())
+        print(client.dashboard.get_local_zone_replication_groups())
+        print(client.dashboard.get_local_zone_rglinks_failed())
+        print(client.dashboard.get_local_zone_storage_pools())
+        print(client.dashboard.get_local_zone_nodes())
+        print(client.dashboard.get_node_processes('172.29.3.148'))
+        print(client.dashboard.get_local_zone_replication_group_bootstrap_links())
 
+        # Provisioning
+        print(client.node.get_nodes())
 
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))
