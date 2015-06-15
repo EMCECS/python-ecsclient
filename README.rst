@@ -106,6 +106,12 @@ need to set your ``request_timeout`` to ``60.0``.
 
         # Provisioning
         print(client.node.get_nodes())
+        print(client.bucket.create_bucket(bucket_name='bucket-test1', namespace='namespace1'))
+        print(client.bucket.deactivate_bucket(bucket_name='bucket-test1', namespace='namespace1'))
+        print(client.bucket.get_buckets(namespace='namespace1'))
+        print(client.bucket.set_bucket_retention(bucket_name='bucket-test1', namespace='namespace1'))
+        print(client.bucket.get_bucket_retention(bucket_name='bucket-test1', namespace='namespace1'))
+        print(client.bucket.get_bucket_info(bucket_name='bucket-test1', namespace='namespace1'))
 
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))

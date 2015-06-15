@@ -18,6 +18,7 @@ from ecsminion.api.monitoring.dashboard import Dashboard
 from ecsminion.api.monitoring.events import Events
 
 from ecsminion.api.provisioning.node import Node
+from ecsminion.api.provisioning.bucket import Bucket
 
 from ecsminion.api.user_management.secret_key import SecretKey
 from ecsminion.api.user_management.user_object import ObjectUser
@@ -96,6 +97,7 @@ class ECSMinion(object):
 
         # API -> Provisioning
         self.node = Node(self)
+        self.bucket = Bucket(self)
 
         # API -> User Management
         self.secret_key = SecretKey(self)
