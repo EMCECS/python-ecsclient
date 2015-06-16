@@ -112,6 +112,11 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.bucket.set_bucket_retention(bucket_name='bucket-test1', namespace='namespace1'))
         print(client.bucket.get_bucket_retention(bucket_name='bucket-test1', namespace='namespace1'))
         print(client.bucket.get_bucket_info(bucket_name='bucket-test1', namespace='namespace1'))
+        print(client.bucket.update_bucket_owner(bucket_name='bucket-test1', new_owner='user2', namespace='namespace1'))
+        print(client.bucket.update_bucket_is_stale_allowed(bucket_name='bucket-test1', is_stale_allowed=False, namespace='namespace1'))
+        print(client.bucket.get_bucket_lock(bucket_name='bucket-test1', namespace='namespace1'))
+        # For the following is_locked must be passed as 'true' or 'false', not True/False
+        print(client.bucket.set_lock_bucket(bucket_name='bucket-test1', is_locked='false', namespace='namespace1'))
 
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))

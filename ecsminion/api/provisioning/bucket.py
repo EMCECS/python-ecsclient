@@ -220,6 +220,11 @@ class Bucket:
         """
         Gets bucket information for the specified bucket.
 
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+
         Example JSON result from the API:
 
         {
@@ -254,3 +259,130 @@ class Bucket:
         else:
             return self.conn.get(
                 url='object/bucket/{0}/info'.format(bucket_name))
+
+    def update_bucket_owner(self, bucket_name, new_owner, namespace=None):
+        """
+        Updates the owner for the specified bucket.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        Example JSON result from the API:
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param namespace: The namespace
+        :param new_owner: New owner must be a valid user
+        :param bucket_name: Name of the bucket for which owner will be updated
+        """
+        payload = {
+            "new_owner": new_owner
+        }
+
+        if namespace:
+            payload['namespace'] = namespace
+
+        return self.conn.post(
+            url='object/bucket/{0}/owner'.format(bucket_name),
+            json_payload=payload)
+
+    def update_bucket_is_stale_allowed(self, bucket_name, is_stale_allowed,
+                                       namespace=None):
+        """
+        Updates isStaleAllowed details for the specified bucket. If namespace
+        does not exist in the request payload, the current user's namespace
+        is used.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param namespace: The namespace
+        :param is_stale_allowed: true/false
+        :param bucket_name: Name of the bucket for which isStaleAllowed is to
+        be updated
+        """
+        payload = {
+            "is_stale_allowed": is_stale_allowed
+        }
+
+        if namespace:
+            payload['namespace'] = namespace
+
+        return self.conn.post(
+            url='object/bucket/{0}/isstaleallowed'.format(bucket_name),
+            json_payload=payload)
+
+    def get_bucket_lock(self, bucket_name, namespace=None):
+        """
+        Gets lock information for the specified bucket. The current user's
+        namespace is used.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        {
+            u'isLocked': False,
+            u'bucket_name': u'bucket-test1'
+        }
+
+        :param bucket_name: Example: The bucket name to get lock information
+        :param namespace: Name of the bucket for which lock information is to
+        be retrieved
+        """
+
+        if namespace:
+            return self.conn.get(
+                url='object/bucket/{0}/lock?namespace={1}'.format(
+                    bucket_name, namespace))
+        else:
+            return self.conn.get(
+                url='object/bucket/{0}/lock'.format(bucket_name))
+
+    def set_lock_bucket(self, bucket_name, is_locked='false', namespace=None):
+        """
+        Locks or unlocks the specified bucket. Current user's namespace
+        is used.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param bucket_name: Name of the bucket which is to be locked/unlocked.
+        :param is_locked: Set to "true" for lock bucket and "false" for unlock
+        bucket.
+        :param namespace: The namespace
+        """
+        payload = {}
+
+        if namespace:
+            payload = {
+                "namespace": namespace
+            }
+
+        return self.conn.put(
+            url='object/bucket/{0}/lock/{1}'.format(bucket_name, is_locked),
+            json_payload=payload
+        )
