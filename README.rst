@@ -117,6 +117,12 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.bucket.get_bucket_lock(bucket_name='bucket-test1', namespace='namespace1'))
         # For the following is_locked must be passed as 'true' or 'false', not True/False
         print(client.bucket.set_lock_bucket(bucket_name='bucket-test1', is_locked='false', namespace='namespace1'))
+        print(client.bucket.update_bucket_quota(bucket_name='bucket-test1', block_size=1, notification_size=2, namespace='namespace1'))
+        print(client.bucket.get_bucket_quota(bucket_name='bucket-test1', namespace='namespace1'))
+        print(client.bucket.delete_bucket_quota(bucket_name='bucket-test1', namespace='namespace1'))
+        print(client.bucket.get_bucket_acl(bucket_name='bucket-test1', namespace='namespace1'))
+        print(client.bucket.get_acl_permissions())
+        print(client.bucket.get_acl_groups())
 
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))

@@ -378,11 +378,245 @@ class Bucket:
         payload = {}
 
         if namespace:
-            payload = {
-                "namespace": namespace
-            }
+            payload['namespace'] = namespace
 
         return self.conn.put(
             url='object/bucket/{0}/lock/{1}'.format(bucket_name, is_locked),
             json_payload=payload
         )
+
+    def update_bucket_quota(self, bucket_name, block_size, notification_size,
+                            namespace=None):
+        """
+        Updates the quota for the specified bucket.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param bucket_name: Name of the bucket for which the quota is to be
+        updated
+        :param block_size:
+        :param notification_size:
+        :param namespace: The namespace
+        """
+        payload = {
+            "blockSize": block_size,
+            "notificationSize": notification_size
+        }
+
+        if namespace:
+            payload['namespace'] = namespace
+
+        return self.conn.put(
+            url='object/bucket/{0}/quota'.format(bucket_name),
+            json_payload=payload
+        )
+
+    def get_bucket_quota(self, bucket_name, namespace=None):
+        """
+        Gets the quota for the given bucket and namespace. The namespace with
+        which the bucket is associated can be specified as a query parameter.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        {
+            u'blockSize': 1,
+            u'notificationSize': 2,
+            u'namespace': u'namespace1',
+            u'bucketname': u'bucket-test1'
+        }
+
+        :param bucket_name: Name of the bucket which for which quota is to be
+        retrieved
+        :param namespace: Namespace with which bucket is associated. If it is
+        null, the current user's namespace is used.
+        """
+
+        if namespace:
+            return self.conn.get(
+                url='object/bucket/{0}/quota?namespace={1}'.format(
+                    bucket_name, namespace))
+        else:
+            return self.conn.get(
+                url='object/bucket/{0}/quota'.format(bucket_name))
+
+    def delete_bucket_quota(self, bucket_name, namespace=None):
+        """
+        Deletes the quota setting for the given bucket and namespace.
+        The namespace with which the bucket is associated can be specified as
+        a query parameter.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param bucket_name: Name of the bucket for which the quota is to
+        be deleted
+        :param namespace: Namespace with which bucket is associated. If it is
+        null, the current user's namespace is used.
+        """
+
+        params = {
+            'namespace': namespace
+        }
+
+        if namespace:
+            return self.conn.delete(
+                url='object/bucket/{0}/quota'.format(
+                    bucket_name), params=params)
+        else:
+            return self.conn.delete(
+                url='object/bucket/{0}/quota'.format(bucket_name))
+
+    def get_bucket_acl(self, bucket_name, namespace=None):
+        """
+        Gets the ACL for the given bucket. Current user's namespace is used.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+
+        Example JSON result from the API:
+
+        {
+            u'namespace': u'namespace1',
+            u'bucket': u'bucket-test1',
+            u'permission': []
+        }
+
+        :param bucket_name: Name of the bucket for which ACL is to be updated.
+        :param namespace: Namespace with which bucket is associated. If it is
+        null, the current user's namespace is used.
+        """
+
+        params = {
+            'namespace': namespace
+        }
+
+        if namespace:
+            return self.conn.get(
+                url='object/bucket/{0}/acl'.format(
+                    bucket_name), params=params)
+        else:
+            return self.conn.get(
+                url='object/bucket/{0}/acl'.format(bucket_name))
+
+    def get_acl_permissions(self):
+        """
+        Gets all ACL permissions.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        {
+            u'permission': [
+                {
+                    u'display_name': u'read',
+                    u'id': u'read'
+                },
+                {
+                    u'display_name': u'readACL',
+                    u'id': u'read_acl'
+                },
+                {
+                    u'display_name': u'write',
+                    u'id': u'write'
+                },
+                {
+                    u'display_name': u'writeACL',
+                    u'id': u'write_acl'
+                },
+                {
+                    u'display_name': u'execute',
+                    u'id': u'execute'
+                },
+                {
+                    u'display_name': u'fullcontrol',
+                    u'id': u'full_control'
+                },
+                {
+                    u'display_name': u'privilegedwrite',
+                    u'id': u'privileged_write'
+                },
+                {
+                    u'display_name': u'delete',
+                    u'id': u'delete'
+                },
+                {
+                    u'display_name': u'none',
+                    u'id': u'none'
+                }
+            ]
+        }
+        """
+
+        return self.conn.get(
+            url='object/bucket/acl/permissions')
+
+    def get_acl_groups(self):
+        """
+        Gets all ACL groups.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+        NAMESPACE_ADMIN
+
+        Example JSON result from the API:
+
+        {
+            u'group': [
+                {
+                    u'display_name': u'public',
+                    u'id': u'public',
+                    u'description': u'allusersincludingauthenticatedusersandanonymous'
+                },
+                {
+                    u'display_name': u'allusers',
+                    u'id': u'all_users',
+                    u'description': u'allauthenticatedusers'
+                },
+                {
+                    u'display_name': u'logdelivery',
+                    u'id': u'log_delivery',
+                    u'description': u'specifictoS3'
+                },
+                {
+                    u'display_name': u'other',
+                    u'id': u'other',
+                    u'description': u'allauthenticatedusersbuttheowner'
+                }
+            ]
+        }
+        """
+
+        return self.conn.get(
+            url='object/bucket/acl/groups')

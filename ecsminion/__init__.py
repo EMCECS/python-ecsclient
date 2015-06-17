@@ -145,6 +145,9 @@ class ECSMinion(object):
     def put(self, url, json_payload='{}'):
         return self._request(url, json_payload, http_verb='PUT')
 
+    def delete(self, url, params=None):
+        return self._request(url, params=params, http_verb='DELETE')
+
     def _request(self, url, json_payload='{}', http_verb='GET', params=None):
         json_payload = json.dumps(json_payload)
 
@@ -163,6 +166,19 @@ class ECSMinion(object):
                     headers=self._fetch_headers(),
                     timeout=self.request_timeout,
                     data=json_payload)
+            elif http_verb == 'DELETE':
+                # Need to follow up - if 'accept' is in the headers
+                # delete calls are not working because ECS 2.0 is returning
+                # XML even is JSON is specified
+                headers = self._fetch_headers()
+                del headers['Accept']
+
+                req = self._session.delete(
+                    self._construct_url(url),
+                    verify=self.verify_ssl,
+                    headers=headers,
+                    timeout=self.request_timeout,
+                    params=params)
             else:  # Default to GET
                 req = self._session.get(
                     self._construct_url(url),
