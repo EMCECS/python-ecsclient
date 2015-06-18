@@ -13,12 +13,18 @@ from ecsminion.api.configuration.configuration_properties \
     import ConfigurationProperties
 from ecsminion.api.configuration.licensing import Licensing
 
+from ecsminion.api.metering.billing import Billing
+
 from ecsminion.api.monitoring.capacity import Capacity
 from ecsminion.api.monitoring.dashboard import Dashboard
 from ecsminion.api.monitoring.events import Events
 
-from ecsminion.api.provisioning.node import Node
+from ecsminion.api.provisioning.base_url import BaseUrl
 from ecsminion.api.provisioning.bucket import Bucket
+from ecsminion.api.provisioning.data_store import DataStore
+from ecsminion.api.provisioning.node import Node
+from ecsminion.api.provisioning.storage_pool import StoragePool
+from ecsminion.api.provisioning.virtual_data_center import VirtualDataCenter
 
 from ecsminion.api.user_management.secret_key import SecretKey
 from ecsminion.api.user_management.user_object import ObjectUser
@@ -85,6 +91,9 @@ class ECSMinion(object):
         # API -> Authentication
         self.authentication = Authentication(self)
 
+        # API -> Billing
+        self.billing = Billing(self)
+
         # API -> Configuration
         self.certificate = Certificate(self)
         self.configuration_properties = ConfigurationProperties(self)
@@ -96,8 +105,12 @@ class ECSMinion(object):
         self.events = Events(self)
 
         # API -> Provisioning
-        self.node = Node(self)
+        self.base_url = BaseUrl(self)
         self.bucket = Bucket(self)
+        self.data_store = DataStore(self)
+        self.node = Node(self)
+        self.storage_pool = StoragePool(self)
+        self.virtual_data_center = VirtualDataCenter(self)
 
         # API -> User Management
         self.secret_key = SecretKey(self)

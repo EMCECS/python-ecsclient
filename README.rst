@@ -123,6 +123,28 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.bucket.get_bucket_acl(bucket_name='bucket-test1', namespace='namespace1'))
         print(client.bucket.get_acl_permissions())
         print(client.bucket.get_acl_groups())
+        print(client.base_url.get_all_configured_base_urls())
+        print(client.base_url.get_base_url('urn:ObjectBaseUrl:6c74e6fb-a2a1-4386-bc25-b4399a6e74ce'))
+        print(client.base_url.create_base_url('TestBaseURL', 'test.com', False))
+        print(client.base_url.modify_base_url('urn:ObjectBaseUrl:19c391eb-37f4-4c65-a7a9-474668f71607',
+                                              'SomeBaseURL', 'test.org', False))
+        print(client.base_url.delete_base_url('urn:ObjectBaseUrl:19c391eb-37f4-4c65-a7a9-474668f71607'))
+        print(client.data_store.get_data_store_list())
+        print(client.data_store.get_commodity_data_store_associated_wth_storage_pool('192.29.3.51'))
+        print(client.data_store.get_commodity_data_store_associated_wth_varray('urn:storageos:VirtualArray:3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'))
+        print(client.storage_pool.get_virtual_array('urn:storageos:VirtualArray:3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'))
+        print(client.storage_pool.get_virtual_arrays('urn:storageos:VirtualDataCenterData:a9faea85-d377-4a42-b5f1-fa15829f0c33'))
+        print(client.virtual_data_center.get_all_vdcs())
+
+        # Metering/Billing
+        print(client.billing.get_bucket_billing_info('bucket-test', 'namespace1'))
+        print(client.billing.get_namespace_billing_info('namespace1', include_bucket_detail=True))
+        print(client.billing.get_namespace_billing_sample(
+            'namespace1', start_time='2015-06-15T00:00',
+            end_time='2015-06-15T1:00', include_bucket_detail=True))
+        print(client.billing.get_bucket_billing_sample(
+            'bucket-test', 'namespace1',
+            start_time='2015-06-15T00:00', end_time='2015-06-15T1:00'))
 
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))
