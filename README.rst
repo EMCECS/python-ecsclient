@@ -141,6 +141,11 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.virtual_data_center.get_vdc_by_name('tiva01'))
         print(client.virtual_data_center.insert_vdc_attributes('vdc1', '10.247.179.200', '1234secret'))
         print(client.virtual_data_center.deactivate_vdc('urn:storageos:VirtualDataCenterData:a9faea85-d377-4a42-b5f1-fa15829f0c33'))
+        print(client.management_object.create_local_user_info('newadminuser', 'password', True, True))
+        print(client.management_object.modify_local_user_info('newadminuser', 'password2', False, True))
+        print(client.management_object.delete_local_user_info('newadminuser'))
+        print(client.management_object.get_local_management_users())
+        print(client.management_object.get_local_user_info('admin'))
 
         # Metering/Billing
         print(client.billing.get_bucket_billing_info('bucket-test', 'namespace1'))

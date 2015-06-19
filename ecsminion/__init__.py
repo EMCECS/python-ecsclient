@@ -27,6 +27,7 @@ from ecsminion.api.provisioning.storage_pool import StoragePool
 from ecsminion.api.provisioning.virtual_data_center import VirtualDataCenter
 
 from ecsminion.api.user_management.secret_key import SecretKey
+from ecsminion.api.user_management.user_management import ManagementUser
 from ecsminion.api.user_management.user_object import ObjectUser
 
 from ecsminion.api.undocumented.user_info import UserInfo
@@ -114,6 +115,7 @@ class ECSMinion(object):
 
         # API -> User Management
         self.secret_key = SecretKey(self)
+        self.management_object = ManagementUser(self)
         self.user_object = ObjectUser(self)
 
         # API -> Undocumented
