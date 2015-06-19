@@ -86,6 +86,21 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.user_object.get_object_user_lock('user1', 'namespace1'))
         print(client.user_object.lock_object_user('user1', False, 'namespace1'))
         print(client.user_object.get_object_user_lock('user1', 'namespace1'))
+        print(client.authentication_provider.get_authentication_providers())
+        print(client.authentication_provider.get_authentication_provider(
+            'urn:AuthProvider:317843ad-71eb-4a86-b1bd-806f4275008a'))
+
+        # Support
+        print(client.call_home.get_connectemc_config())
+
+        # Multi-tenancy
+        print(client.namespace.get_namespaces())
+        print(client.namespace.get_namespaces('namespace1'))
+        print(client.namespace.get_retention_classes('namespace1'))
+        print(client.namespace.create_retention_class('the-name', 2, 'namespace2'))
+        print(client.namespace.update_retention_class('the-name', 199, 'namespace2'))
+        print(client.namespace.get_namespace_quota('namespace1'))
+        print(client.namespace.update_namespace_quota(2, 2, 'namespace1'))
 
         # Monitoring
         print(client.capacity.get_cluster_capacity())

@@ -19,6 +19,8 @@ from ecsminion.api.monitoring.capacity import Capacity
 from ecsminion.api.monitoring.dashboard import Dashboard
 from ecsminion.api.monitoring.events import Events
 
+from ecsminion.api.multitenancy.namespace import Namespace
+
 from ecsminion.api.provisioning.base_url import BaseUrl
 from ecsminion.api.provisioning.bucket import Bucket
 from ecsminion.api.provisioning.data_store import DataStore
@@ -26,10 +28,14 @@ from ecsminion.api.provisioning.node import Node
 from ecsminion.api.provisioning.storage_pool import StoragePool
 from ecsminion.api.provisioning.virtual_data_center import VirtualDataCenter
 
+from ecsminion.api.support.call_home import CallHome
+
 from ecsminion.api.geo_replication.replication_group import ReplicationGroup
 from ecsminion.api.geo_replication.temporary_failed_zone import \
     TemporaryFailedZone
 
+from ecsminion.api.user_management.authentication_provider import \
+    AuthenticationProvider
 from ecsminion.api.user_management.secret_key import SecretKey
 from ecsminion.api.user_management.user_management import ManagementUser
 from ecsminion.api.user_management.user_object import ObjectUser
@@ -113,6 +119,9 @@ class ECSMinion(object):
         self.dashboard = Dashboard(self)
         self.events = Events(self)
 
+        # API -> Monitoring
+        self.namespace = Namespace(self)
+
         # API -> Provisioning
         self.base_url = BaseUrl(self)
         self.bucket = Bucket(self)
@@ -121,7 +130,11 @@ class ECSMinion(object):
         self.storage_pool = StoragePool(self)
         self.virtual_data_center = VirtualDataCenter(self)
 
+        # API -> Support
+        self.call_home = CallHome(self)
+
         # API -> User Management
+        self.authentication_provider = AuthenticationProvider(self)
         self.secret_key = SecretKey(self)
         self.management_object = ManagementUser(self)
         self.user_object = ObjectUser(self)
