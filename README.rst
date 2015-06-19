@@ -135,6 +135,12 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.storage_pool.get_virtual_array('urn:storageos:VirtualArray:3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'))
         print(client.storage_pool.get_virtual_arrays('urn:storageos:VirtualDataCenterData:a9faea85-d377-4a42-b5f1-fa15829f0c33'))
         print(client.virtual_data_center.get_all_vdcs())
+        print(client.virtual_data_center.get_vdcs_by_id('urn:storageos:VirtualDataCenterData:a9faea85-d377-4a42-b5f1-fa15829f0c33'))
+        print(client.virtual_data_center.get_local_vdc())
+        print(client.virtual_data_center.get_local_vdc_secret_key())
+        print(client.virtual_data_center.get_vdc_by_name('tiva01'))
+        print(client.virtual_data_center.insert_vdc_attributes('vdc1', '10.247.179.200', '1234secret'))
+        print(client.virtual_data_center.deactivate_vdc('urn:storageos:VirtualDataCenterData:a9faea85-d377-4a42-b5f1-fa15829f0c33'))
 
         # Metering/Billing
         print(client.billing.get_bucket_billing_info('bucket-test', 'namespace1'))
