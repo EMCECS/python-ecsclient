@@ -147,6 +147,17 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.management_object.get_local_management_users())
         print(client.management_object.get_local_user_info('admin'))
 
+        # Geo Replication
+        print(client.replication_group.get_replication_groups())
+        print(client.replication_group.get_replication_group(
+            'urn:storageos:ReplicationGroupInfo:c2b0d3c4-c778-4a24-8da5-6a89784c4eeb:global'))
+        print(client.replication_group.update_replication_group(
+            'urn:storageos:ReplicationGroupInfo:c2b0d3c4-c778-4a24-8da5-6a89784c4eeb:global',
+            'a-name' 'the-description', True)
+        print(client.temp_failed_zone.get_all_temp_failed_zones())
+        print(client.temp_failed_zone.get_temp_failed_zone(
+            'urn:storageos:ReplicationGroupInfo:c2b0d3c4-c778-4a24-8da5-6a89784c4eeb:global'))
+
         # Metering/Billing
         print(client.billing.get_bucket_billing_info('bucket-test', 'namespace1'))
         print(client.billing.get_namespace_billing_info('namespace1', include_bucket_detail=True))

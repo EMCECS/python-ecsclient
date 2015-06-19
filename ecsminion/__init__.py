@@ -26,6 +26,10 @@ from ecsminion.api.provisioning.node import Node
 from ecsminion.api.provisioning.storage_pool import StoragePool
 from ecsminion.api.provisioning.virtual_data_center import VirtualDataCenter
 
+from ecsminion.api.geo_replication.replication_group import ReplicationGroup
+from ecsminion.api.geo_replication.temporary_failed_zone import \
+    TemporaryFailedZone
+
 from ecsminion.api.user_management.secret_key import SecretKey
 from ecsminion.api.user_management.user_management import ManagementUser
 from ecsminion.api.user_management.user_object import ObjectUser
@@ -99,6 +103,10 @@ class ECSMinion(object):
         self.certificate = Certificate(self)
         self.configuration_properties = ConfigurationProperties(self)
         self.licensing = Licensing(self)
+
+        # API -> Geo Replication
+        self.replication_group = ReplicationGroup(self)
+        self.temp_failed_zone = TemporaryFailedZone(self)
 
         # API -> Monitoring
         self.capacity = Capacity(self)
