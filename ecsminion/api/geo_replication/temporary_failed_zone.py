@@ -33,7 +33,8 @@ class TemporaryFailedZone:
                     u'remote': None,
                     u'tags': [],
                     u'global': None,
-                    u'rgId': u'urn: storageos: ReplicationGroupInfo: c2b0d3c4-c778-4a24-8da5-6a89784c4eeb: global',
+                    u'rgId': u'urn: storageos: ReplicationGroupInfo:
+                                c2b0d3c4-c778-4a24-8da5-6a89784c4eeb: global',
                     u'vdc': None,
                     u'inactive': False,
                     u'failedZoneList': []
@@ -42,7 +43,8 @@ class TemporaryFailedZone:
                     u'remote': None,
                     u'tags': [],
                     u'global': None,
-                    u'rgId': u'urn: storageos: ReplicationGroupInfo: 4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
+                    u'rgId': u'urn: storageos: ReplicationGroupInfo:
+                                4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
                     u'vdc': None,
                     u'inactive': False,
                     u'failedZoneList': []
@@ -69,7 +71,8 @@ class TemporaryFailedZone:
             u'remote': None,
             u'tags': [],
             u'global': None,
-            u'rgId': u'urn: storageos: ReplicationGroupInfo: c2b0d3c4-c778-4a24-8da5-6a89784c4eeb: global',
+            u'rgId': u'urn: storageos: ReplicationGroupInfo:
+                        c2b0d3c4-c778-4a24-8da5-6a89784c4eeb: global',
             u'vdc': None,
             u'inactive': False,
             u'failedZoneList': []

@@ -55,7 +55,9 @@ class Namespace:
         Example JSON result from the API:
 
         {
-            u'default_data_services_vpool': u'urn: storageos: ReplicationGroupInfo: 4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
+            u'default_data_services_vpool':
+                u'urn: storageos: ReplicationGroupInfo:
+                    4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
             u'remote': None,
             u'name': u'namespace1',
             u'tags': [

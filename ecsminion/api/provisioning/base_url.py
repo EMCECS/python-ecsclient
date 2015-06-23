@@ -31,27 +31,33 @@ class BaseUrl:
             u'base_url': [
                 {
                     u'link': {
-                        u'href': u'/object/baseurl/urn: ObjectBaseUrl: 6c74e6fb-a2a1-4386-bc25-b4399a6e74ce',
+                        u'href': u'/object/baseurl/urn: ObjectBaseUrl:
+                                    6c74e6fb-a2a1-4386-bc25-b4399a6e74ce',
                         u'rel': u'self'
                     },
                     u'name': u'US1',
-                    u'id': u'urn: ObjectBaseUrl: 6c74e6fb-a2a1-4386-bc25-b4399a6e74ce'
+                    u'id': u'urn: ObjectBaseUrl:
+                                6c74e6fb-a2a1-4386-bc25-b4399a6e74ce'
                 },
                 {
                     u'link': {
-                        u'href': u'/object/baseurl/urn: ObjectBaseUrl: 70f63a6f-25be-432c-875f-61c4a3953c42',
+                        u'href': u'/object/baseurl/urn: ObjectBaseUrl:
+                                    70f63a6f-25be-432c-875f-61c4a3953c42',
                         u'rel': u'self'
                     },
                     u'name': u'DefaultBaseUrl',
-                    u'id': u'urn: ObjectBaseUrl: 70f63a6f-25be-432c-875f-61c4a3953c42'
+                    u'id': u'urn: ObjectBaseUrl:
+                                70f63a6f-25be-432c-875f-61c4a3953c42'
                 },
                 {
                     u'link': {
-                        u'href': u'/object/baseurl/urn: ObjectBaseUrl: 72863b71-27a8-4917-8df0-cc84d3bdfe98',
+                        u'href': u'/object/baseurl/urn: ObjectBaseUrl:
+                                    72863b71-27a8-4917-8df0-cc84d3bdfe98',
                         u'rel': u'self'
                     },
                     u'name': u'US2',
-                    u'id': u'urn: ObjectBaseUrl: 72863b71-27a8-4917-8df0-cc84d3bdfe98'
+                    u'id': u'urn: ObjectBaseUrl:
+                                72863b71-27a8-4917-8df0-cc84d3bdfe98'
                 }
             ]
         }
@@ -81,7 +87,8 @@ class BaseUrl:
             u'baseurl': u'os-us1.rraas-ops.com',
             u'vdc': None,
             u'link': {
-                u'href': u'/object/baseurl/urn: ObjectBaseUrl: 6c74e6fb-a2a1-4386-bc25-b4399a6e74ce',
+                u'href': u'/object/baseurl/urn: ObjectBaseUrl:
+                            6c74e6fb-a2a1-4386-bc25-b4399a6e74ce',
                 u'rel': u'self'
             },
             u'id': u'urn: ObjectBaseUrl: 6c74e6fb-a2a1-4386-bc25-b4399a6e74ce'
@@ -114,7 +121,8 @@ class BaseUrl:
             u'baseurl': u'test.com',
             u'vdc': None,
             u'link': {
-                u'href': u'/object/baseurl/urn: ObjectBaseUrl: 19c391eb-37f4-4c65-a7a9-474668f71607',
+                u'href': u'/object/baseurl/urn: ObjectBaseUrl:
+                            19c391eb-37f4-4c65-a7a9-474668f71607',
                 u'rel': u'self'
             },
             u'id': u'urn: ObjectBaseUrl: 19c391eb-37f4-4c65-a7a9-474668f71607'

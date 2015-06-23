@@ -44,7 +44,8 @@ class VirtualDataCenter:
                     172.29.3.153,
                     172.29.3.154,
                     172.29.3.155',
-                    u'vdcId': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
+                    u'vdcId': u'urn: storageos: VirtualDataCenterData:
+                                a9faea85-d377-4a42-b5f1-fa15829f0c33',
                     u'vdc': None,
                     u'inactive': False,
                     u'link': {
@@ -54,7 +55,8 @@ class VirtualDataCenter:
                     u'secretKeys': u'55fmIFBniRuCBVx327Av',
                     u'vdcName': u'tiva01',
                     u'local': True,
-                    u'id': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
+                    u'id': u'urn: storageos: VirtualDataCenterData:
+                                a9faea85-d377-4a42-b5f1-fa15829f0c33',
                     u'permanentlyFailed': False
                 },
                 {
@@ -72,7 +74,8 @@ class VirtualDataCenter:
                     172.29.3.217,
                     172.29.3.218,
                     172.29.3.219',
-                    u'vdcId': u'urn: storageos: VirtualDataCenterData: 7d7d2ed5-e253-4be9-b8bb-5ff5b2697e6f',
+                    u'vdcId': u'urn: storageos: VirtualDataCenterData:
+                                7d7d2ed5-e253-4be9-b8bb-5ff5b2697e6f',
                     u'vdc': None,
                     u'inactive': False,
                     u'link': {
@@ -82,7 +85,8 @@ class VirtualDataCenter:
                     u'secretKeys': u'99TilKh9aTwt9fLbCiKd',
                     u'vdcName': u'tiva02',
                     u'local': False,
-                    u'id': u'urn: storageos: VirtualDataCenterData: 7d7d2ed5-e253-4be9-b8bb-5ff5b2697e6f',
+                    u'id': u'urn: storageos: VirtualDataCenterData:
+                                7d7d2ed5-e253-4be9-b8bb-5ff5b2697e6f',
                     u'permanentlyFailed': False
                 }
             ]
@@ -117,7 +121,8 @@ class VirtualDataCenter:
             172.29.3.153,
             172.29.3.154,
             172.29.3.155',
-            u'vdcId': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
+            u'vdcId': u'urn: storageos: VirtualDataCenterData:
+                        a9faea85-d377-4a42-b5f1-fa15829f0c33',
             u'vdc': None,
             u'inactive': False,
             u'link': {
@@ -127,7 +132,8 @@ class VirtualDataCenter:
             u'secretKeys': u'55fmIFBniRuCBVx327Av',
             u'vdcName': u'tiva01',
             u'local': True,
-            u'id': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
+            u'id': u'urn: storageos: VirtualDataCenterData:
+                        a9faea85-d377-4a42-b5f1-fa15829f0c33',
             u'permanentlyFailed': False
         }
 
@@ -163,7 +169,8 @@ class VirtualDataCenter:
             172.29.3.153,
             172.29.3.154,
             172.29.3.155',
-            u'vdcId': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
+            u'vdcId': u'urn: storageos: VirtualDataCenterData:
+                        a9faea85-d377-4a42-b5f1-fa15829f0c33',
             u'vdc': None,
             u'inactive': False,
             u'link': {
@@ -173,7 +180,8 @@ class VirtualDataCenter:
             u'secretKeys': u'55fmIFBniRuCBVx327Av',
             u'vdcName': u'tiva01',
             u'local': True,
-            u'id': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
+            u'id': u'urn: storageos: VirtualDataCenterData:
+                        a9faea85-d377-4a42-b5f1-fa15829f0c33',
             u'permanentlyFailed': False
         }
         """
@@ -223,7 +231,8 @@ class VirtualDataCenter:
             172.29.3.153,
             172.29.3.154,
             172.29.3.155',
-            u'vdcId': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
+            u'vdcId': u'urn: storageos: VirtualDataCenterData:
+                        a9faea85-d377-4a42-b5f1-fa15829f0c33',
             u'vdc': None,
             u'inactive': False,
             u'link': {
@@ -233,7 +242,8 @@ class VirtualDataCenter:
             u'secretKeys': u'55fmIFBniRuCBVx327Av',
             u'vdcName': u'tiva01',
             u'local': True,
-            u'id': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
+            u'id': u'urn: storageos: VirtualDataCenterData:
+                        a9faea85-d377-4a42-b5f1-fa15829f0c33',
             u'permanentlyFailed': False
         }
 

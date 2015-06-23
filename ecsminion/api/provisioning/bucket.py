@@ -127,7 +127,8 @@ class Bucket:
                     u'locked': False,
                     u'notification_size': -1,
                     u'block_size': -1,
-                    u'vpool': u'urn: storageos: ReplicationGroupInfo: 3ba1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global'
+                    u'vpool': u'urn: storageos: ReplicationGroupInfo:
+                                3ba1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global'
                 },
                 {
                     u'remote': None,
@@ -146,7 +147,8 @@ class Bucket:
                     u'locked': False,
                     u'notification_size': -1,
                     u'block_size': -1,
-                    u'vpool': u'urn: storageos: ReplicationGroupInfo: 3ba1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global'
+                    u'vpool': u'urn: storageos: ReplicationGroupInfo:
+                                3ba1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global'
                 }
             ]
         }
@@ -205,7 +207,8 @@ class Bucket:
 
         :param bucket_name: Bucket name for which the retention setting will be
         retrieved
-        :param namespace: Namespace associated. If it is null, then current user's Namespace is used.
+        :param namespace: Namespace associated. If it is null, then current
+        user's Namespace is used.
         """
 
         if namespace:
@@ -244,7 +247,8 @@ class Bucket:
             u'locked': False,
             u'notification_size': -1,
             u'block_size': -1,
-            u'vpool': u'urn: storageos: ReplicationGroupInfo: 3af1fa7e-a7d1-4a9e-b8cc-e5a2c27f308d: global'
+            u'vpool': u'urn: storageos: ReplicationGroupInfo:
+                        3af1fa7e-a7d1-4a9e-b8cc-e5a2c27f308d: global'
         }
 
         :param bucket_name: Bucket name for which information will be retrieved
@@ -597,7 +601,7 @@ class Bucket:
                 {
                     u'display_name': u'public',
                     u'id': u'public',
-                    u'description': u'allusersincludingauthenticatedusersandanonymous'
+                    u'description': u'allusersincludingauthenticatedusers&anon'
                 },
                 {
                     u'display_name': u'allusers',

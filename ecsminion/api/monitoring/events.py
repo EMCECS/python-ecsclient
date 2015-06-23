@@ -30,7 +30,7 @@ class Events:
 
         {
             u'MaxEvents': 2,
-            u'NextMarker': u'CIbS7YbdKRI4dXJuOnN0b3JhZ2VvczpFdmVudDpkZmYwNGU1MS1kNDVkLTRkYzYtOWUxNy03MGFkYzAzMWUxNDQ=',
+            u'NextMarker': u'kNDVkLTRkYzYtOWUxNy03MGFkYzAzMWUxNDQ=',
             u'auditevent': [
                 {
                     u'serviceType': u'Bucket',
@@ -39,8 +39,8 @@ class Events:
                     u'userId': u'user1',
                     u'timestamp': u'2015-06-08T01: 30',
                     u'namespace': u'namespace1',
-                    u'resourceId': u'namespace1.ecstest-2a925333-5f91-43d0-b1a3-38f7d441fbd2',
-                    u'id': u'urn: storageos: Event: 29ffd597-7c64-41ef-bc5c-e29d180486c6'
+                    u'resourceId': u'namespace1.ecstest-2a925333-5f91-43d0-b1',
+                    u'id': u'urn: storageos: Event: 29ffd597-7c64-41ef-bc5c-e2'
                 },
                 {
                     u'serviceType': u'Bucket',
@@ -49,8 +49,8 @@ class Events:
                     u'userId': u'someone1',
                     u'timestamp': u'2015-06-08T01: 49',
                     u'namespace': u'namespace1',
-                    u'resourceId': u'namespace1.ecstest-18880408-64ed-4380-804b-e8c5c6f13c7c',
-                    u'id': u'urn: storageos: Event: 1ee5c8c2-be67-478a-86ac-0bf3aa9d742a'
+                    u'resourceId': u'namespace1.ecstest-18880408-64ed-4380-80',
+                    u'id': u'urn: storageos: Event: 1ee5c8c2-be67-478a-86ac'
                 }
             ]
         }

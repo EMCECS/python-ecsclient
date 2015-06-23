@@ -83,7 +83,8 @@ class DataStore:
                 u'rel': u'self'
             },
             u'free_gb': 333727,
-            u'varray': u'urn: storageos: VirtualArray: 3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
+            u'varray': u'urn: storageos: VirtualArray:
+                        3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
             u'id': u'192.29.3.51',
             u'description': u''
         }
@@ -127,7 +128,8 @@ class DataStore:
                         u'rel': u'self'
                     },
                     u'free_gb': 16775,
-                    u'varray': u'urn: storageos: VirtualArray: 3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
+                    u'varray': u'urn: storageos: VirtualArray:
+                                3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
                     u'id': u'192.29.3.51',
                     u'description': u''
                 },
@@ -149,7 +151,8 @@ class DataStore:
                         u'rel': u'self'
                     },
                     u'free_gb': 16774,
-                    u'varray': u'urn: storageos: VirtualArray: 3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
+                    u'varray': u'urn: storageos: VirtualArray:
+                                3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
                     u'id': u'192.29.3.54',
                     u'description': u''
                 }

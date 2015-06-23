@@ -34,7 +34,8 @@ class Billing:
             u'name': u'bucket-test',
             u'sample_time': u'2015-06-18T22: 20: 01Z',
             u'namespace': u'namespace1',
-            u'vpool_id': u'urn: storageos: ReplicationGroupInfo: 4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
+            u'vpool_id': u'urn: storageos: ReplicationGroupInfo:
+                            4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
             u'total_size_unit': u'GB'
         }
 
@@ -70,14 +71,16 @@ class Billing:
             u'namespace': u'namespace1',
             u'bucket_billing_info': [
                 {
-                    u'vpool_id': u'urn: storageos: ReplicationGroupInfo: 4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
+                    u'vpool_id': u'urn: storageos: ReplicationGroupInfo:
+                                4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
                     u'total_size_unit': u'GB',
                     u'total_objects': 0,
                     u'total_size_in_gb': 0.0,
                     u'name': u'bucket-test1'
                 },
                 {
-                    u'vpool_id': u'urn: storageos: ReplicationGroupInfo: 4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
+                    u'vpool_id': u'urn: storageos: ReplicationGroupInfo:
+                                4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
                     u'total_size_unit': u'GB',
                     u'total_objects': 90,
                     u'total_size_in_gb': 2.0,
@@ -107,7 +110,7 @@ class Billing:
                 namespace), params=params)
 
     def get_namespace_billing_sample(self, namespace, start_time, end_time,
-                                   include_bucket_detail=False, marker=None):
+                                     include_bucket_detail=False, marker=None):
         """
         Gets billing details for the specified namespace, interval and bucket
         details. This method will return one and only one time sample. If the
@@ -138,7 +141,8 @@ class Billing:
                     u'name': u'bucket-test1',
                     u'namespace': u'namespace1',
                     u'ingress': 0,
-                    u'vpool_id': u'urn: storageos: ReplicationGroupInfo: 4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
+                    u'vpool_id': u'urn: storageos: ReplicationGroupInfo:
+                                4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
                     u'objects_created': 0,
                     u'egress': 0,
                     u'sample_start_time': u'2015-06-15T00: 00: 00Z',
@@ -153,7 +157,8 @@ class Billing:
                     u'name': u'large-uploads',
                     u'namespace': u'namespace1',
                     u'ingress': 0,
-                    u'vpool_id': u'urn: storageos: ReplicationGroupInfo: 4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
+                    u'vpool_id': u'urn: storageos: ReplicationGroupInfo:
+                                4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
                     u'objects_created': 0,
                     u'egress': 0,
                     u'sample_start_time': u'2015-06-15T00: 00: 00Z',
@@ -197,7 +202,7 @@ class Billing:
                 namespace), params=params)
 
     def get_bucket_billing_sample(self, bucket_name, namespace,
-                                     start_time, end_time):
+                                  start_time, end_time):
         """
         Gets billing details for the specified namespace, interval and bucket
         details. By default, buckets are sampled every 5 minutes. If the
@@ -218,7 +223,8 @@ class Billing:
             u'name': u'bucket-test',
             u'namespace': u'namespace1',
             u'ingress': 0,
-            u'vpool_id': u'urn: storageos: ReplicationGroupInfo: 4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
+            u'vpool_id': u'urn: storageos: ReplicationGroupInfo:
+                            4ea1fa1e-a7d1-4a8e-b8cc-e5a2c27f308d: global',
             u'objects_created': 0,
             u'egress': 0,
             u'sample_start_time': u'2015-06-15T00: 00: 00Z',

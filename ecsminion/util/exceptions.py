@@ -24,9 +24,10 @@ class ECSMinionException(Exception):
         :return:
         """
         if message is None:
-            self.message = 'The ECSMinionException endpoint has thrown an ' \
-                           'error, check the http_status_code and ecs_message ' \
-                           'attributes of this exception for more details.'
+            self.message = 'The ECSMinionException endpoint has thrown ' \
+                           'an error, check the http_status_code and ' \
+                           'ecs_message attributes of this exception for ' \
+                           'more details.'
         else:
             self.message = message
 

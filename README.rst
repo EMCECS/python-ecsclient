@@ -261,18 +261,8 @@ Example: Removing a cached token
         except Exception as ex:
             print(ex.message)
 
-Running PEP8
-------------
-
-There are some example JSON comments in the source code that are over
-the allowed PEP8 length. You can ignore those by running:
-
-::
-
-    $ pep8 --ignore=E501 .
-
 License
--------
+^^^^^^^
 
 This software library is released to you under the Apache License 2.0. See
 `LICENSE <https://github.com/chadlung/ecsminion/blob/master/LICENSE>`__

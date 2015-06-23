@@ -44,11 +44,14 @@ class ReplicationGroup:
                     u'inactive': False,
                     u'varrayMappings': [
                         {
-                            u'name': u'urn: storageos: VirtualDataCenterData: 7d7d2ed5-e253-4be9-b8bb-5ff5b2697e6f',
-                            u'value': u'urn: storageos: VirtualArray: 527caf55-e989-4485-b92d-ce465d20dd56'
+                            u'name': u'urn: storageos: VirtualDataCenterData:
+                                    7d7d2ed5-e253-4be9-b8bb-5ff5b2697e6f',
+                            u'value': u'urn: storageos: VirtualArray:
+                                    527caf55-e989-4485-b92d-ce465d20dd56'
                         }
                     ],
-                    u'id': u'urn: storageos: ReplicationGroupInfo: 61f20dc2-a862-4935-9110-45030f0fe17c: global',
+                    u'id': u'urn: storageos: ReplicationGroupInfo:
+                                61f20dc2-a862-4935-9110-45030f0fe17c: global',
                     u'description': u''
                 },
                 {
@@ -64,11 +67,14 @@ class ReplicationGroup:
                     u'inactive': False,
                     u'varrayMappings': [
                         {
-                            u'name': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
-                            u'value': u'urn: storageos: VirtualArray: 3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'
+                            u'name': u'urn: storageos: VirtualDataCenterData:
+                                        a9faea85-d377-4a42-b5f1-fa15829f0c33',
+                            u'value': u'urn: storageos: VirtualArray:
+                                        3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'
                         }
                     ],
-                    u'id': u'urn: storageos: ReplicationGroupInfo: c2b0d3c4-c778-4a24-8da5-6a89784c4eeb: global',
+                    u'id': u'urn: storageos: ReplicationGroupInfo:
+                            c2b0d3c4-c778-4a24-8da5-6a89784c4eeb: global',
                     u'description': u''
                 }
             ]
@@ -102,11 +108,14 @@ class ReplicationGroup:
             u'inactive': False,
             u'varrayMappings': [
                 {
-                    u'name': u'urn: storageos: VirtualDataCenterData: a9faea85-d377-4a42-b5f1-fa15829f0c33',
-                    u'value': u'urn: storageos: VirtualArray: 3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'
+                    u'name': u'urn: storageos: VirtualDataCenterData:
+                                a9faea85-d377-4a42-b5f1-fa15829f0c33',
+                    u'value': u'urn: storageos: VirtualArray:
+                                3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'
                 }
             ],
-            u'id': u'urn: storageos: ReplicationGroupInfo: c2b0d3c4-c778-4a24-8da5-6a89784c4eeb: global',
+            u'id': u'urn: storageos: ReplicationGroupInfo:
+                        c2b0d3c4-c778-4a24-8da5-6a89784c4eeb: global',
             u'description': u''
         }
 

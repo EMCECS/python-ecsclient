@@ -30,7 +30,8 @@ class Licensing:
         {
             u'license_feature': [
                 {
-                    u'notice': u'ACTIVATEDTOLicenseSiteNumber: PTA06JUN20131086059',
+                    u'notice': u'ACTIVATEDTOLicenseSiteNumber:
+                                PTA06JUN20131086059',
                     u'trial_license_ind': False,
                     u'expired_ind': False,
                     u'licensed_ind': True,
@@ -45,7 +46,8 @@ class Licensing:
                     u'issuer': u'EMC'
                 },
                 {
-                    u'notice': u'ACTIVATEDTOLicenseSiteNumber: PTA06JUN20131086059',
+                    u'notice': u'ACTIVATEDTOLicenseSiteNumber:
+                                PTA06JUN20131086059',
                     u'trial_license_ind': False,
                     u'expired_ind': False,
                     u'licensed_ind': True,

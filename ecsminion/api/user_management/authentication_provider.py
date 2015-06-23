@@ -30,7 +30,8 @@ class AuthenticationProvider:
         {
             u'authnprovider': [
                 {
-                    u'id': u'urn: AuthProvider: fe4843f3-71eb-4a86-b1bd-806f4275998b',
+                    u'id': u'urn: AuthProvider:
+                            fe4843f3-71eb-4a86-b1bd-806f4275998b',
                     u'name': u'internal'
                 }
             ]

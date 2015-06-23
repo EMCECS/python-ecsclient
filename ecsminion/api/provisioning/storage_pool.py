@@ -29,7 +29,8 @@ class StoragePool:
 
         {
             u'isProtected': False,
-            u'id': u'urn: storageos: VirtualArray: 3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
+            u'id': u'urn: storageos: VirtualArray:
+                    3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
             u'name': u'storagepool1'
         }
 
@@ -54,7 +55,8 @@ class StoragePool:
             u'varray': [
                 {
                     u'isProtected': False,
-                    u'id': u'urn: storageos: VirtualArray: 3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
+                    u'id': u'urn: storageos: VirtualArray:
+                            3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
                     u'name': u'storagepool1'
                 }
             ]
