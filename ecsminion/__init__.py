@@ -37,6 +37,8 @@ from ecsminion.api.geo_replication.temporary_failed_zone import \
 from ecsminion.api.user_management.authentication_provider import \
     AuthenticationProvider
 from ecsminion.api.user_management.secret_key import SecretKey
+from ecsminion.api.user_management.secret_key_self_service import \
+    SecretKeySelfService
 from ecsminion.api.user_management.user_management import ManagementUser
 from ecsminion.api.user_management.user_object import ObjectUser
 
@@ -136,6 +138,7 @@ class ECSMinion(object):
         # API -> User Management
         self.authentication_provider = AuthenticationProvider(self)
         self.secret_key = SecretKey(self)
+        self.secret_key_self_service = SecretKeySelfService(self)
         self.management_object = ManagementUser(self)
         self.user_object = ObjectUser(self)
 

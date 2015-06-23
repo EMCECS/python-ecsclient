@@ -190,6 +190,77 @@ need to set your ``request_timeout`` to ``60.0``.
     except Exception as ex:
         print(ex.message)
 
+Example: Use a valid token instead of supplying a username and password
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You pass an authentication token directly to ECSMinion which means you
+don't need to supply a username/password. Here is an example (the token
+has been shortened):
+
+::
+
+    client = ECSMinion(token='ALAcbGZtbjh6eVB3eUF1TzFEZWNmc0M2VVl2QjBVPQM',
+                       token_endpoint='https://192.168.1.146:4443/login',
+                       ecs_endpoint='https://192.168.1.146:4443',
+                       request_timeout=15.0)
+
+Example: Fetching tokens
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Fetching a token for a user can be done as follows by setting the
+``cache_token`` parameter to false and then calling ``get_token``:
+
+::
+
+    from ecsminion import ECSMinion, ECSMinionException
+
+
+    if __name__ == "__main__":
+        try:
+            client = ECSMinion(username='someone',
+                               password='password',
+                               token=None,
+                               token_endpoint='https://192.168.1.146:4443/login',
+                               ecs_endpoint='https://192.168.1.146:4443',
+                               request_timeout=15.0,
+                               cache_token=False)
+
+            print(client.get_token())
+
+        except ECSMinionException as ecsminion_ex:
+            print('Message: {0}'.format(ecsminion_ex.message))
+            print('Status Code Returned: {0}\n'.format(ecsminion_ex.http_status_code))
+            print('ECS API Message: {0}'.format(ecsminion_ex.ecs_message))
+        except Exception as ex:
+            print(ex.message)
+
+Example: Removing a cached token
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    from ecsminion import ECSMinion, ECSMinionException
+
+
+    if __name__ == "__main__":
+        try:
+            client = ECSMinion(username='someone',
+                               password='password',
+                               token=None,
+                               token_endpoint='https://192.168.1.146:4443/login',
+                               ecs_endpoint='https://192.168.1.146:4443',
+                               request_timeout=15.0,
+                               cache_token=False)
+
+            print(client.remove_cached_token())
+
+        except ECSMinionException as ecsminion_ex:
+            print('Message: {0}'.format(ecsminion_ex.message))
+            print('Status Code Returned: {0}\n'.format(ecsminion_ex.http_status_code))
+            print('ECS API Message: {0}'.format(ecsminion_ex.ecs_message))
+        except Exception as ex:
+            print(ex.message)
+
 Running PEP8
 ------------
 
