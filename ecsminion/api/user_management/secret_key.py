@@ -8,7 +8,7 @@
 # None
 
 
-class SecretKey:
+class SecretKey(object):
 
     def __init__(self, connection):
         """

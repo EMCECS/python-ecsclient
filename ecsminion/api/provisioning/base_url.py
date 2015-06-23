@@ -8,7 +8,7 @@
 # None
 
 
-class BaseUrl:
+class BaseUrl(object):
 
     def __init__(self, connection):
         """

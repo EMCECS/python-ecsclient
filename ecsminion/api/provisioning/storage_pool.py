@@ -8,7 +8,7 @@
 # None
 
 
-class StoragePool:
+class StoragePool(object):
 
     def __init__(self, connection):
         """

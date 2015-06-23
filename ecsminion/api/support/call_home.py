@@ -8,7 +8,7 @@
 # None
 
 
-class CallHome:
+class CallHome(object):
 
     def __init__(self, connection):
         """

@@ -8,7 +8,7 @@
 # None
 
 
-class Namespace:
+class Namespace(object):
     def __init__(self, connection):
         """
         Initialize a new instance

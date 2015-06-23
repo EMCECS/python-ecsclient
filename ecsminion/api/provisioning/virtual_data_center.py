@@ -8,7 +8,7 @@
 # None
 
 
-class VirtualDataCenter:
+class VirtualDataCenter(object):
 
     def __init__(self, connection):
         """

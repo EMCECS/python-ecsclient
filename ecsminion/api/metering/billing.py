@@ -8,7 +8,7 @@
 # None
 
 
-class Billing:
+class Billing(object):
 
     def __init__(self, connection):
         """

@@ -8,7 +8,7 @@
 # None
 
 
-class ConfigurationProperties:
+class ConfigurationProperties(object):
 
     def __init__(self, connection):
         """

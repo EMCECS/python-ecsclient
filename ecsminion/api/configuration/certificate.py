@@ -8,7 +8,7 @@
 # None
 
 
-class Certificate:
+class Certificate(object):
 
     def __init__(self, connection):
         """

@@ -8,7 +8,7 @@
 # None
 
 
-class Dashboard:
+class Dashboard(object):
 
     def __init__(self, connection):
         """

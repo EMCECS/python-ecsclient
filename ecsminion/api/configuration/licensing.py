@@ -8,7 +8,7 @@
 # None
 
 
-class Licensing:
+class Licensing(object):
 
     def __init__(self, connection):
         """
@@ -16,7 +16,7 @@ class Licensing:
         """
         self.conn = connection
 
-    def get_license(self, category='ALL'):
+    def get_license(self):
         """
         Gets the currently configured licenses.
 

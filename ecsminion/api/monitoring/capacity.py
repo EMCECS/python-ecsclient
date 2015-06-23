@@ -8,7 +8,7 @@
 # None
 
 
-class Capacity:
+class Capacity(object):
 
     def __init__(self, connection):
         """

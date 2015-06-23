@@ -8,7 +8,7 @@
 # None
 
 
-class UserInfo:
+class UserInfo(object):
 
     def __init__(self, connection):
         """

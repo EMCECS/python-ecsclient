@@ -8,7 +8,7 @@
 # None
 
 
-class TemporaryFailedZone:
+class TemporaryFailedZone(object):
 
     def __init__(self, connection):
         """

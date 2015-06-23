@@ -8,7 +8,7 @@
 # None
 
 
-class ObjectUser:
+class ObjectUser(object):
 
     def __init__(self, connection):
         """

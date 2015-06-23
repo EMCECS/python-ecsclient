@@ -8,7 +8,7 @@
 # None
 
 
-class DataStore:
+class DataStore(object):
 
     def __init__(self, connection):
         """

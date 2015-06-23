@@ -8,7 +8,7 @@
 # None
 
 
-class ReplicationGroup:
+class ReplicationGroup(object):
 
     def __init__(self, connection):
         """

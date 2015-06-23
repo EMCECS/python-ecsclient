@@ -1,5 +1,5 @@
 
-class Authentication:
+class Authentication(object):
     def __init__(self, connection):
         """
         Initialize a new instance
