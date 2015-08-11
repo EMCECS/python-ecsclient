@@ -19,7 +19,7 @@ from `PyPi <http://pypi.python.org/>`__:
 
     $ pip install ecsminion
 
-Creating an instance of the ECSMinion class requires the following
+Creating an instance of the ECSMinion class allows the following
 arguments:
 
 +-----------------------+------------+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
@@ -150,7 +150,7 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.storage_pool.get_virtual_array('urn:storageos:VirtualArray:3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'))
         print(client.storage_pool.get_virtual_arrays('urn:storageos:VirtualDataCenterData:a9faea85-d377-4a42-b5f1-fa15829f0c33'))
         print(client.virtual_data_center.get_all_vdcs())
-        print(client.virtual_data_center.get_vdcs_by_id('urn:storageos:VirtualDataCenterData:a9faea85-d377-4a42-b5f1-fa15829f0c33'))
+        print(client.virtual_data_center.get_vdc_by_id('urn:storageos:VirtualDataCenterData:a9faea85-d377-4a42-b5f1-fa15829f0c33'))
         print(client.virtual_data_center.get_local_vdc())
         print(client.virtual_data_center.get_local_vdc_secret_key())
         print(client.virtual_data_center.get_vdc_by_name('tiva01'))
@@ -189,6 +189,51 @@ need to set your ``request_timeout`` to ``60.0``.
         print('ECS API Message: {0}'.format(ecsminion_ex.ecs_message))
     except Exception as ex:
         print(ex.message)
+
+Example: Enable logging output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ECSMinion leverages the Python ``logging`` module. Enable it from your
+application like so:
+
+::
+
+    import logging
+
+    # Default to INFO level logging
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.INFO)
+
+Now ECSMinion will tell you about what it's doing (and so will the
+``requests`` library).  If you'd like even more information about the
+HTTP requests and headers, use the following:
+
+::
+
+    import logging
+    import httplib
+
+    # Default to DEBUG level logging
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.DEBUG)
+
+    # Show HTTP headers and payloads
+    httplib.HTTPConnection.debuglevel = 1
+
+If you don't want to see *any* ``requests`` logging, either filter it with
+a ``logging`` filter or change the logging level for just that library:
+
+::
+
+    import logging
+
+    # Default to INFO level logging
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.INFO)
+
+    # Only show errors from requests lib
+    logging.getLogger('requests.packages.urllib3').setLevel(logging.ERROR)
+
 
 Example: Use a valid token instead of supplying a username and password
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

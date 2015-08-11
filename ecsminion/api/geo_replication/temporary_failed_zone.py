@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class TemporaryFailedZone(object):
@@ -52,7 +55,7 @@ class TemporaryFailedZone(object):
             ]
         }
         """
-
+        log.info("Fetching all Temporary Failed Zones")
         return self.conn.get(url='tempfailedzone/allfailedzones')
 
     def get_temp_failed_zone(self, replication_group_id):
@@ -78,8 +81,9 @@ class TemporaryFailedZone(object):
             u'failedZoneList': []
         }
 
-        param: replication_group_id: Replication group id to retrieve details
+        :param replication_group_id: Replication group id to retrieve details
         """
+        log.info("Fetching TFZs for vpool '{0}'".format(replication_group_id))
 
         return self.conn.get(
             url='tempfailedzone/rgid/{0}'.format(replication_group_id))

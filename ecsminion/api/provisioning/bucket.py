@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class Bucket(object):
@@ -54,7 +57,6 @@ class Bucket(object):
         :param namespace: The namespace
         :param is_stale_allowed:
         """
-
         payload = {
             "name": bucket_name,
             "vpool": vpool,
@@ -63,6 +65,8 @@ class Bucket(object):
             "namespace": namespace,
             "is_stale_allowed": is_stale_allowed
         }
+
+        log.info("Creating bucket '{0}': {1}".format(bucket_name, payload))
 
         if head_type:
             payload['head_type'] = head_type
@@ -86,14 +90,15 @@ class Bucket(object):
         :param bucket_name: The bucket name
         :param namespace: The namespace
         """
+        msg = "Deleting bucket '{0}'".format(bucket_name)
+        url = 'object/bucket/{0}/deactivate'.format(bucket_name)
 
         if namespace:
-            return self.conn.post(
-                url='object/bucket/{0}/deactivate?namespace={1}'.format(
-                    bucket_name, namespace))
-        else:
-            return self.conn.post(
-                url='object/bucket/{0}/deactivate'.format(bucket_name))
+            url += '?namespace={0}'.format(namespace)
+            msg += " in namespace '{0}'".format(namespace)
+
+        log.info(msg)
+        return self.conn.post(url=url)
 
     def get_buckets(self, namespace, marker='', limit=100):
         """
@@ -159,6 +164,8 @@ class Bucket(object):
         :param marker: Reference to last object returned
         :param limit: Number of objects requested in current fetch
         """
+        log.info("Getting all buckets in namespace '{0}'".format(namespace))
+
         return self.conn.get(
             url='object/bucket?namespace={0}&marker={1}&limit={2}'.format(
                 namespace, marker, limit))
@@ -182,15 +189,18 @@ class Bucket(object):
         :param period: Default retention period for bucket in seconds. Defaults
         to 30 days (2592000 seconds)
         """
-
         payload = {
             "period": period,
             "namespace": namespace
         }
 
+        log.info("Setting retention for bucket '{0}' in namespace "
+                 "'{1}': {2}".format(bucket_name, namespace, payload))
+
         return self.conn.put(
-            url='object/bucket/{0}/retention'.format(
-                bucket_name), json_payload=payload)
+            url='object/bucket/{0}/retention'.format(bucket_name),
+            json_payload=payload
+        )
 
     def get_bucket_retention(self, bucket_name, namespace=None):
         """
@@ -210,14 +220,15 @@ class Bucket(object):
         :param namespace: Namespace associated. If it is null, then current
         user's Namespace is used.
         """
+        msg = "Getting retention for bucket '{0}'".format(bucket_name)
+        url = 'object/bucket/{0}/retention'.format(bucket_name)
 
         if namespace:
-            return self.conn.get(
-                url='object/bucket/{0}/retention?namespace={1}'.format(
-                    bucket_name, namespace))
-        else:
-            return self.conn.get(
-                url='object/bucket/{0}/retention'.format(bucket_name))
+            url += '?namespace={0}'.format(namespace)
+            msg += " in namespace '{0}'".format(namespace)
+
+        log.info(msg)
+        return self.conn.get(url=url)
 
     def get_bucket_info(self, bucket_name, namespace=None):
         """
@@ -255,14 +266,15 @@ class Bucket(object):
         :param namespace: Namespace associated. If it is null, then current
         user's Namespace is used.
         """
+        msg = "Getting info for bucket '{0}'".format(bucket_name)
+        url = 'object/bucket/{0}/info'.format(bucket_name)
 
         if namespace:
-            return self.conn.get(
-                url='object/bucket/{0}/info?namespace={1}'.format(
-                    bucket_name, namespace))
-        else:
-            return self.conn.get(
-                url='object/bucket/{0}/info'.format(bucket_name))
+            url += '?namespace={0}'.format(namespace)
+            msg += " in namespace '{0}'".format(namespace)
+
+        log.info(msg)
+        return self.conn.get(url=url)
 
     def update_bucket_owner(self, bucket_name, new_owner, namespace=None):
         """
@@ -289,9 +301,12 @@ class Bucket(object):
         if namespace:
             payload['namespace'] = namespace
 
+        log.info("Updating owner for bucket '{0}': {1}".format(bucket_name,
+                                                               payload))
         return self.conn.post(
             url='object/bucket/{0}/owner'.format(bucket_name),
-            json_payload=payload)
+            json_payload=payload
+        )
 
     def update_bucket_is_stale_allowed(self, bucket_name, is_stale_allowed,
                                        namespace=None):
@@ -323,9 +338,13 @@ class Bucket(object):
         if namespace:
             payload['namespace'] = namespace
 
+        log.info("Updating 'isStaleAllowed' for bucket '{0}': {1}".format(
+                  bucket_name, payload))
+
         return self.conn.post(
             url='object/bucket/{0}/isstaleallowed'.format(bucket_name),
-            json_payload=payload)
+            json_payload=payload
+        )
 
     def get_bucket_lock(self, bucket_name, namespace=None):
         """
@@ -349,14 +368,15 @@ class Bucket(object):
         :param namespace: Name of the bucket for which lock information is to
         be retrieved
         """
+        msg = "Getting lock info for bucket '{0}'".format(bucket_name)
+        url = 'object/bucket/{0}/lock'.format(bucket_name)
 
         if namespace:
-            return self.conn.get(
-                url='object/bucket/{0}/lock?namespace={1}'.format(
-                    bucket_name, namespace))
-        else:
-            return self.conn.get(
-                url='object/bucket/{0}/lock'.format(bucket_name))
+            url += '?namespace={0}'.format(namespace)
+            msg += " in namespace '{0}'".format(namespace)
+
+        log.info(msg)
+        return self.conn.get(url=url)
 
     def set_lock_bucket(self, bucket_name, is_locked='false', namespace=None):
         """
@@ -383,6 +403,9 @@ class Bucket(object):
 
         if namespace:
             payload['namespace'] = namespace
+
+        log.info("Setting lock to '{0}' for bucket '{1}': {2}".format(
+                  is_locked, bucket_name, payload))
 
         return self.conn.put(
             url='object/bucket/{0}/lock/{1}'.format(bucket_name, is_locked),
@@ -419,6 +442,8 @@ class Bucket(object):
         if namespace:
             payload['namespace'] = namespace
 
+        log.info("Updating quota for bucket '{0}': {1}".format(bucket_name,
+                                                               payload))
         return self.conn.put(
             url='object/bucket/{0}/quota'.format(bucket_name),
             json_payload=payload
@@ -449,14 +474,15 @@ class Bucket(object):
         :param namespace: Namespace with which bucket is associated. If it is
         null, the current user's namespace is used.
         """
+        msg = "Getting quota for bucket '{0}'".format(bucket_name)
+        url = 'object/bucket/{0}/quota'.format(bucket_name)
 
         if namespace:
-            return self.conn.get(
-                url='object/bucket/{0}/quota?namespace={1}'.format(
-                    bucket_name, namespace))
-        else:
-            return self.conn.get(
-                url='object/bucket/{0}/quota'.format(bucket_name))
+            url += '?namespace={0}'.format(namespace)
+            msg += " in namespace '{0}'".format(namespace)
+
+        log.info(msg)
+        return self.conn.get(url=url)
 
     def delete_bucket_quota(self, bucket_name, namespace=None):
         """
@@ -480,18 +506,17 @@ class Bucket(object):
         :param namespace: Namespace with which bucket is associated. If it is
         null, the current user's namespace is used.
         """
-
-        params = {
-            'namespace': namespace
-        }
+        params = None
 
         if namespace:
-            return self.conn.delete(
-                url='object/bucket/{0}/quota'.format(
-                    bucket_name), params=params)
-        else:
-            return self.conn.delete(
-                url='object/bucket/{0}/quota'.format(bucket_name))
+            params = {'namespace': namespace}
+
+        log.info("Deleting quota for bucket '{0}'".format(bucket_name))
+
+        return self.conn.delete(
+            url='object/bucket/{0}/quota'.format(bucket_name),
+            params=params
+        )
 
     def get_bucket_acl(self, bucket_name, namespace=None):
         """
@@ -514,18 +539,17 @@ class Bucket(object):
         :param namespace: Namespace with which bucket is associated. If it is
         null, the current user's namespace is used.
         """
-
-        params = {
-            'namespace': namespace
-        }
+        params = None
 
         if namespace:
-            return self.conn.get(
-                url='object/bucket/{0}/acl'.format(
-                    bucket_name), params=params)
-        else:
-            return self.conn.get(
-                url='object/bucket/{0}/acl'.format(bucket_name))
+            params = {'namespace': namespace}
+
+        log.info("Getting ACL for bucket '{0}'".format(bucket_name))
+
+        return self.conn.get(
+            url='object/bucket/{0}/acl'.format(bucket_name),
+            params=params
+        )
 
     def get_acl_permissions(self):
         """
@@ -580,9 +604,8 @@ class Bucket(object):
             ]
         }
         """
-
-        return self.conn.get(
-            url='object/bucket/acl/permissions')
+        log.info('Getting all ACLs')
+        return self.conn.get(url='object/bucket/acl/permissions')
 
     def get_acl_groups(self):
         """
@@ -621,6 +644,5 @@ class Bucket(object):
             ]
         }
         """
-
-        return self.conn.get(
-            url='object/bucket/acl/groups')
+        log.info('Getting all ACL groups')
+        return self.conn.get(url='object/bucket/acl/groups')

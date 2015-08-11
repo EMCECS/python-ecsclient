@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class BaseUrl(object):
@@ -62,7 +65,7 @@ class BaseUrl(object):
             ]
         }
         """
-
+        log.info("Getting all Base URLs")
         return self.conn.get(url='object/baseurl')
 
     def get_base_url(self, base_url_id):
@@ -97,7 +100,7 @@ class BaseUrl(object):
         :param base_url_id: Base URL identifier for the Base URL that needs to
         be retrieved
         """
-
+        log.info("Getting Base URL '{0}'".format(base_url_id))
         return self.conn.get(url='object/baseurl/{0}'.format(base_url_id))
 
     def create_base_url(self, name, base_url, is_namespace_in_host=True):
@@ -138,7 +141,7 @@ class BaseUrl(object):
             "base_url": base_url,
             "is_namespace_in_host": is_namespace_in_host
         }
-
+        log.info("Creating Base URL '{0}': {1}".format(name, payload))
         return self.conn.post(url='object/baseurl', json_payload=payload)
 
     def delete_base_url(self, base_url_id):
@@ -157,6 +160,7 @@ class BaseUrl(object):
 
         :param base_url_id: Base URL identifier that needs to be deleted
         """
+        log.info("Deleting Base URL '{0}'".format(base_url_id))
 
         return self.conn.post(
             url='object/baseurl/{0}/deactivate'.format(base_url_id))
@@ -187,6 +191,8 @@ class BaseUrl(object):
             "base_url": base_url,
             "is_namespace_in_host": is_namespace_in_host
         }
+
+        log.info("Updating Base URL '{0}': {1}".format(base_url_id, payload))
 
         return self.conn.put(
             url='object/baseurl/{0}'.format(base_url_id), json_payload=payload)

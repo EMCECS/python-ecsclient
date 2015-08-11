@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class ObjectUser(object):
@@ -43,13 +46,16 @@ class ObjectUser(object):
         }
 
         :param namespace: Example: namespace1
-
-
         """
+        msg = 'Getting all users'
+        url = 'object/users'
+
         if namespace:
-            return self.conn.get(url='object/users/{0}'.format(namespace))
-        else:
-            return self.conn.get(url='object/users')
+            url += '/{0}'.format(namespace)
+            msg += " in namespace '{0}'".format(namespace)
+
+        log.info(msg)
+        return self.conn.get(url=url)
 
     def get_object_user_info(self, uid, namespace=None):
         """
@@ -74,13 +80,15 @@ class ObjectUser(object):
         :param namespace: Optional when userscope is GLOBAL. Required when
         userscope is NAMESPACE. The namespace to which the user belongs
         """
+        msg = "Getting user '{0}'".format(uid)
+        url = 'object/users/{0}/info'.format(uid)
 
         if namespace:
-            return self.conn.get(
-                url='object/users/{0}/info?namespace={1}'.format(
-                    uid, namespace))
-        else:
-            return self.conn.get(url='object/users/{0}/info'.format(uid))
+            url += '?namespace={0}'.format(namespace)
+            msg += " in namespace '{0}'".format(namespace)
+
+        log.info(msg)
+        return self.conn.get(url=url)
 
     def deactivate_object_user(self, uid, namespace=None):
         """
@@ -107,6 +115,8 @@ class ObjectUser(object):
             payload = {
                 "user": uid
             }
+
+        log.info("Deleting user: {0}".format(payload))
 
         return self.conn.post(url='object/users/deactivate',
                               json_payload=payload)
@@ -139,6 +149,9 @@ class ObjectUser(object):
 
         if tags:
             payload['tags'] = tags
+
+        log.info('Creating user: {0}'.format(payload))
+        log.info("(don't forget to create secret key)")
 
         return self.conn.post(url='object/users',
                               json_payload=payload)
@@ -173,6 +186,8 @@ class ObjectUser(object):
                 "isLocked": is_locked
             }
 
+        log.info("Toggling user lock: {0}".format(payload))
+
         return self.conn.put(url='object/users/lock',
                              json_payload=payload)
 
@@ -189,15 +204,20 @@ class ObjectUser(object):
 
         Example JSON result from the API:
 
-        TODO: JSON data
+        {
+            u'user_name': u'testlogin',
+            u'isLocked': False
+        }
 
         :param uid: Valid user identifier
         :param namespace: Example: namespace1
         """
+        msg = "Getting lock state for user '{0}'".format(uid)
+        url = 'object/users/lock/{0}'.format(uid)
 
         if namespace:
-            return self.conn.get(
-                url='object/users/lock/{0}/{1}'.format(uid, namespace))
-        else:
-            return self.conn.get(
-                url='object/users/lock/{0}'.format(uid))
+            url += '/{0}'.format(namespace)
+            msg += " in namespace '{0}'".format(namespace)
+
+        log.info(msg)
+        return self.conn.get(url=url)

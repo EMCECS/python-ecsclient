@@ -1,4 +1,5 @@
 # Standard lib imports
+import logging
 import os
 
 # Third party imports
@@ -12,6 +13,8 @@ from ecsminion.util.exceptions import ECSMinionException
 # https://urllib3.readthedocs.org/en/
 # latest/security.html#insecurerequestwarning
 requests.packages.urllib3.disable_warnings()
+
+log = logging.getLogger(__name__)
 
 
 class TokenRequest(object):
@@ -61,6 +64,7 @@ class TokenRequest(object):
 
         :return: Returns a valid token, or None if failed
         """
+        log.info("Getting new token")
         self.session.auth = (self.username, self.password)
 
         req = self.session.get(self.token_endpoint,
@@ -69,16 +73,22 @@ class TokenRequest(object):
                                timeout=self.request_timeout)
 
         if req.status_code == 401:
+            msg = 'Invalid username or password'
+            log.fatal(msg)
             raise ECSMinionException(
                 http_status_code=req.status_code,
-                message='Invalid username or password used')
+                message=msg)
         if req.status_code != 200:
+            msg = 'Non-200 status returned ({0})'.format(req.status_code)
+            log.fatal(msg)
             raise ECSMinionException(
-                http_status_code=req.status_code)
+                http_status_code=req.status_code,
+                message=msg)
 
         token = req.headers['x-sds-auth-token']
 
         if self.cache_token:
+            log.debug("Caching token to '{0}'".format(self.token_file))
             with open(self.token_file, 'w') as token_file:
                 token_file.write(token)
 
@@ -91,12 +101,17 @@ class TokenRequest(object):
 
         :return: A token
         """
+        # XXX(brett): Maybe honor `cache_token' flag here? If user sets
+        # cache_token to False, he may be expecting the cache to be skipped
+        # entirely.
         token = self._get_existing_token()
 
         if token:
+            log.debug("Validating cached token")
             req = self._request(token, self.token_verification_endpoint)
 
             if req.status_code == requests.codes.ok:
+                log.debug("Cached token is valid")
                 return token
 
         return self.get_new_token()
@@ -108,8 +123,10 @@ class TokenRequest(object):
         :return: If available return the token, if not return None
         """
         if os.path.isfile(self.token_file):
+            log.debug("Reading cached token at '{0}'".format(self.token_file))
             with open(self.token_file, 'r') as token_file:
                 return token_file.read()
+        log.debug("No cached token found")
         return None
 
     def _request(self, token, url):
@@ -127,8 +144,14 @@ class TokenRequest(object):
                                     headers=headers,
                                     timeout=self.request_timeout)
         except requests.ConnectionError as conn_err:
-            raise ECSMinionException(message=conn_err.message)
+            msg = 'Connection error: {0}'.format(conn_err.args)
+            log.error(msg)
+            raise ECSMinionException(message=msg)
         except requests.HTTPError as http_err:
-            raise ECSMinionException(message=http_err.message)
+            msg = 'HTTP error: {0}'.format(http_err.args)
+            log.error(msg)
+            raise ECSMinionException(message=msg)
         except requests.RequestException as req_err:
-            raise ECSMinionException(message=req_err.message)
+            msg = 'Request error: {0}'.format(req_err.args)
+            log.error(msg)
+            raise ECSMinionException(message=msg)

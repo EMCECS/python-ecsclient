@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class Events(object):
@@ -65,6 +68,8 @@ class Events(object):
         :param limit: Number of audit events requested in current fetch.
         :param marker: Reference of last audit event returned
         """
+        log.info("Getting audit events for namespace '{0}'".format(namespace))
+
         params = {
             'start_time': start_time,
             'end_time': end_time,

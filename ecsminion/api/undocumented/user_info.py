@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class UserInfo(object):
@@ -29,5 +32,5 @@ class UserInfo(object):
             ]
         }
         """
-
+        log.info('Getting my own user info (whoami)')
         return self.conn.get('user/whoami')

@@ -1,3 +1,15 @@
+# Standard lib imports
+import logging
+
+# Third party imports
+# None
+
+# Project level imports
+# None
+
+
+log = logging.getLogger(__name__)
+
 
 class Authentication(object):
     def __init__(self, connection):
@@ -22,6 +34,8 @@ class Authentication(object):
         params = {
             'force': force
         }
+
+        log.info('Terminating session (signing out): {0}'.format(params))
 
         if force:
             logout_resp = self.conn.get('logout', params=params)

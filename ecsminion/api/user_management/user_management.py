@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class ManagementUser(object):
@@ -42,6 +45,7 @@ class ManagementUser(object):
             "is_system_monitor": is_system_monitor
         }
 
+        log.info("Creating local user '{0}': {1}".format(uid, payload))
         return self.conn.post(url='vdc/users', json_payload=payload)
 
     def delete_local_user_info(self, uid):
@@ -62,7 +66,7 @@ class ManagementUser(object):
         :param uid: User identifier for which local user information needs to
         be deleted.
         """
-
+        log.info("Deleting local user '{0}'".format(uid))
         return self.conn.post(url='vdc/users/{0}/deactivate'.format(uid))
 
     def modify_local_user_info(self, uid, password, is_system_admin=False,
@@ -95,6 +99,8 @@ class ManagementUser(object):
             "is_system_monitor": is_system_monitor
         }
 
+        log.info("Updating local user '{0}': {1}".format(uid, payload))
+
         return self.conn.put(
             url='vdc/users/{0}'.format(uid), json_payload=payload)
 
@@ -118,7 +124,7 @@ class ManagementUser(object):
         :param uid: User identifier for which local user information needs to
         be retrieved
         """
-
+        log.info("Getting local user '{0}'".format(uid))
         return self.conn.get(url='vdc/users/{0}'.format(uid))
 
     def get_local_management_users(self):
@@ -147,5 +153,5 @@ class ManagementUser(object):
             ]
         }
         """
-
+        log.info('Getting all local management users')
         return self.conn.get(url='vdc/users')

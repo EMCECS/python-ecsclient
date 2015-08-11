@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class Dashboard(object):
@@ -29,7 +32,7 @@ class Dashboard(object):
 
         Too large to output here
         """
-
+        log.info("Getting local VDC info")
         return self.conn.get(url='dashboard/zones/localzone')
 
     def get_local_zone_replication_groups(self):
@@ -45,7 +48,7 @@ class Dashboard(object):
 
         Too large to output here
         """
-
+        log.info("Getting vpools in local VDC")
         return self.conn.get(url='dashboard/zones/localzone/replicationgroups')
 
     def get_local_zone_rglinks_failed(self):
@@ -73,7 +76,7 @@ class Dashboard(object):
             u'title': u'rglinksFailedList'
         }
         """
-
+        log.info("Getting failed links for vpools in local VDC")
         return self.conn.get(url='dashboard/zones/localzone/rglinksFailed')
 
     def get_local_zone_storage_pools(self):
@@ -89,7 +92,7 @@ class Dashboard(object):
 
         Too large to output here
         """
-
+        log.info("Getting varrays in local VDC")
         return self.conn.get(url='dashboard/zones/localzone/storagepools')
 
     def get_local_zone_nodes(self):
@@ -105,7 +108,7 @@ class Dashboard(object):
 
         Too large to output here
         """
-
+        log.info("Getting nodes in local VDC")
         return self.conn.get(url='dashboard/zones/localzone/nodes')
 
     def get_storage_pool(self, storage_pool_id):
@@ -123,6 +126,7 @@ class Dashboard(object):
 
         :param storage_pool_id: Storage pool identifier
         """
+        log.info("Getting info for varray '{0}'".format(storage_pool_id))
 
         return self.conn.get(
             url='dashboard/storagepools/{0}'.format(storage_pool_id))
@@ -142,6 +146,7 @@ class Dashboard(object):
 
         :param node_id: Node identifier
         """
+        log.info("Getting info for node '{0}'".format(node_id))
 
         return self.conn.get(
             url='dashboard/nodes/{0}'.format(node_id))
@@ -161,6 +166,7 @@ class Dashboard(object):
 
         :param disk_id: Storage pool identifier
         """
+        log.info("Getting info for disk '{0}'".format(disk_id))
 
         return self.conn.get(
             url='dashboard/disks/{0}'.format(disk_id))
@@ -180,6 +186,7 @@ class Dashboard(object):
 
         :param process_id: Identity of the process
         """
+        log.info("Getting info for PID '{0}'".format(process_id))
 
         return self.conn.get(
             url='dashboard/processes/{0}'.format(process_id))
@@ -199,11 +206,12 @@ class Dashboard(object):
 
         :param node_id: Identity of the process
         """
+        log.info("Getting processes for node '{0}'".format(node_id))
 
         return self.conn.get(
             url='dashboard/nodes/{0}/processes'.format(node_id))
 
-    def get_node_disks(self, disk_id):
+    def get_node_disks(self, node_id):
         """
         Gets the node instance disk details.
 
@@ -216,11 +224,12 @@ class Dashboard(object):
 
         Too large to output here
 
-        :param disk_id: Identity of the disk
+        :param node_id: Identity of the node
         """
+        log.info("Getting disks for node '{0}'".format(node_id))
 
         return self.conn.get(
-            url='dashboard/nodes/{0}/disks'.format(disk_id))
+            url='dashboard/nodes/{0}/disks'.format(node_id))
 
     def get_storage_pool_nodes(self, storage_pool_id):
         """
@@ -237,6 +246,7 @@ class Dashboard(object):
 
         :param storage_pool_id: Identity of the storage pool
         """
+        log.info("Getting nodes for varray '{0}'".format(storage_pool_id))
 
         return self.conn.get(
             url='dashboard/storagepools/{0}/nodes'.format(storage_pool_id))
@@ -266,6 +276,7 @@ class Dashboard(object):
             u'title': u'rglinksBootstrapList'
         }
         """
+        log.info("Getting vpool bootstrap links in local VDC")
 
         return self.conn.get(
             url='dashboard/zones/localzone/rglinksBootstrap')
@@ -285,11 +296,12 @@ class Dashboard(object):
 
         :param replication_group_id: Replication group identifier
         """
+        log.info("Getting info for vpool '{0}'".format(replication_group_id))
 
         return self.conn.get(
             url='dashboard/replicationgroups/{0}'.format(replication_group_id))
 
-    def get_replication_group_link(self, replication_group_id):
+    def get_replication_group_link(self, rglink_id):
         """
         Gets the replication group link instance details
 
@@ -302,11 +314,10 @@ class Dashboard(object):
 
         Too large to output here
 
-        :param replication_group_id: Replication group identifier
+        :param rglink_id: Replication group link identifier
         """
-
-        return self.conn.get(
-            url='dashboard/rglinks/{0}'.format(replication_group_id))
+        log.info("Getting info for vpool link '{0}'".format(rglink_id))
+        return self.conn.get(url='dashboard/rglinks/{0}'.format(rglink_id))
 
     def get_replication_group_links(self, replication_group_id):
         """
@@ -323,6 +334,7 @@ class Dashboard(object):
 
         :param replication_group_id: Replication group identifier
         """
+        log.info("Getting links for vpool '{0}'".format(replication_group_id))
 
         return self.conn.get(
             url='dashboard/replicationgroups/{0}/rglinks'.format(

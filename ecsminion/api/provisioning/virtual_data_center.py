@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class VirtualDataCenter(object):
@@ -92,12 +95,13 @@ class VirtualDataCenter(object):
             ]
         }
         """
-
+        log.info('Getting all VDCs')
         return self.conn.get(url='object/vdcs/vdc/list')
 
-    def get_vdcs_by_id(self, vdc_id):
+    def get_vdc_by_id(self, vdc_id):
         """
-        Gets all details of all configured VDCs.
+        Gets the details for a VDC the identity of which is specified by
+        its ID.
 
         Required role(s):
 
@@ -140,7 +144,7 @@ class VirtualDataCenter(object):
         param: vdc_id: VDC identifier for which VDC Information is to be
         retrieved.
         """
-
+        log.info("Getting VDC by id '{0}'".format(vdc_id))
         return self.conn.get(url='object/vdcs/vdcid/{0}'.format(vdc_id))
 
     def get_local_vdc(self):
@@ -185,7 +189,7 @@ class VirtualDataCenter(object):
             u'permanentlyFailed': False
         }
         """
-
+        log.info('Getting local VDC info')
         return self.conn.get(url='object/vdcs/vdc/local')
 
     def get_local_vdc_secret_key(self):
@@ -201,12 +205,12 @@ class VirtualDataCenter(object):
 
         {u'key': u'55fmIFBniRuCBVx327Av'}
         """
-
+        log.info('Getting local VDC secret key')
         return self.conn.get(url='object/vdcs/vdc/local/secretkey')
 
     def get_vdc_by_name(self, vdc_name):
         """
-        Gets the details for a VDC the identify of which is specified by
+        Gets the details for a VDC the identity of which is specified by
         its name.
 
         Required role(s):
@@ -249,7 +253,7 @@ class VirtualDataCenter(object):
 
         param: vdc_name: VDC name for which VDC Information is to be retrieved
         """
-
+        log.info("Getting VDC by name '{0}'".format(vdc_name))
         return self.conn.get(url='object/vdcs/vdc/{0}'.format(vdc_name))
 
     def insert_vdc_attributes(self, vdc_name, inter_vdc_end_point,
@@ -280,6 +284,8 @@ class VirtualDataCenter(object):
             "secret_key": secret_key
         }
 
+        log.info("Updating VDC '{0}': {1}".format(vdc_name, payload))
+
         return self.conn.put(
             url='object/vdcs/vdc/{0}'.format(vdc_name), json_payload=payload)
 
@@ -302,6 +308,7 @@ class VirtualDataCenter(object):
         :param vdc_id: VDC identifier for which VDC Information needs to be
         deleted
         """
+        log.info("Deleting VDC '{0}'".format(vdc_id))
 
         return self.conn.post(
             url='object/vdcs/vdc/{0}/deactivate'.format(vdc_id))

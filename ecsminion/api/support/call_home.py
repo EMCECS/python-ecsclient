@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class CallHome(object):
@@ -41,5 +44,5 @@ class CallHome(object):
             "enable_tls_cert": "no"
         }
         """
-
+        log.info('Getting callhome (connectemc) config')
         return self.conn.get(url='vdc/callhome/connectemc/config')
