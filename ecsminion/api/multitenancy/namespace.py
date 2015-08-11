@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class Namespace(object):
@@ -39,7 +42,7 @@ class Namespace(object):
             ]
         }
         """
-
+        log.info("Getting all namespaces")
         return self.conn.get(url='object/namespaces')
 
     def get_namespace(self, namespace):
@@ -83,9 +86,10 @@ class Namespace(object):
             u'id': u'namespace1'
         }
 
-        param: namespace: Namespace identifier for which details needs to
+        :param namespace: Namespace identifier for which details needs to
         be retrieved.
         """
+        log.info("Getting info for namespace '{0}'".format(namespace))
 
         return self.conn.get(
             url='object/namespaces/namespace/{0}'.format(namespace))
@@ -104,9 +108,10 @@ class Namespace(object):
 
         {u'retention_class': []}
 
-        param: namespace: Namespace identifier for which retention classes
+        :param namespace: Namespace identifier for which retention classes
         needs to retrieved
         """
+        log.info("Getting retention for namespace '{0}'".format(namespace))
 
         return self.conn.get(
             url='object/namespaces/namespace/{0}/retention'.format(namespace))
@@ -128,11 +133,12 @@ class Namespace(object):
             "period": 2
         }
 
-        param: namespace: Namespace for which retention period needs to
+        :param name: Class name for which retention period needs to
         be retrieved
-        param: name: Class name for which retention period needs to
+        :param namespace: Namespace for which retention period needs to
         be retrieved
         """
+        log.info("Getting retention '{0}' in ns {1}".format(name, namespace))
 
         return self.conn.get(
             url='object/namespaces/namespace/{0}/retention/{1}'.format(
@@ -154,20 +160,22 @@ class Namespace(object):
 
         Expect: HTTP/1.1 200 OK
 
-        param: namespace: Namespace identifier for which retention class needs
+        :param name: Name of the retention class
+        :param period: Period of the retention class in seconds
+        :param namespace: Namespace identifier for which retention class needs
         to be created.
-        param: name: Name of the retention class
-        param: period: Period of the retention class in seconds
         """
-
         payload = {
             "name": name,
             "period": period
         }
 
+        log.info("Creating retention '{0}' in ns {1}".format(name, namespace))
+
         return self.conn.post(
-            url='object/namespaces/namespace/{0}/retention'.format(
-                namespace), json_payload=payload)
+            url='object/namespaces/namespace/{0}/retention'.format(namespace),
+            json_payload=payload
+        )
 
     def update_retention_class(self, name, period, namespace):
         """
@@ -184,16 +192,18 @@ class Namespace(object):
 
         Expect: HTTP/1.1 200 OK
 
-        param: namespace: Namespace identifier for which retention class needs
+        :param name: Retention class name for which details needs to updated.
+        :param period: A new period value for class in seconds
+        :param namespace: Namespace identifier for which retention class needs
         to be retrieved.
-        param: name: Retention class name for which details needs to updated.
-        param: period: A new period value for class in seconds
         """
-
         payload = {
             "period": period
         }
 
+        log.info("Updating retention '{0}' in ns {1}: {2}".format(name,
+                                                                  namespace,
+                                                                  payload))
         return self.conn.put(
             url='object/namespaces/namespace/{0}/retention/{1}'.format(
                 namespace, name), json_payload=payload)
@@ -216,9 +226,10 @@ class Namespace(object):
             u'namespace': u'namespace1'
         }
 
-        param: namespace: Namespace identifier for which namespace quota
+        :param namespace: Namespace identifier for which namespace quota
         details needs to retrieved.
         """
+        log.info("Getting quota for namespace '{0}'".format(namespace))
 
         return self.conn.get(
             url='object/namespaces/namespace/{0}/quota'.format(namespace))
@@ -237,12 +248,11 @@ class Namespace(object):
 
         Expect: HTTP/1.1 200 OK
 
-        param: namespace: Namespace identifier for which namespace quota
+        :param block_size: Block size in GB.
+        :param notification_size: Notification size in GB.
+        :param namespace: Namespace identifier for which namespace quota
         details need to be updated.
-        param: block_size: Block size in GB.
-        param: notification_size: Notification size in GB.
         """
-
         # ----
         # Note
         # ----
@@ -255,6 +265,9 @@ class Namespace(object):
             "notificationSize": notification_size
         }
 
+        log.info("Updating quota for namespace '{0}': {1}".format(namespace,
+                                                                  payload))
         return self.conn.put(
-            url='object/namespaces/namespace/{0}/quota'.format(
-                namespace), json_payload=payload)
+            url='object/namespaces/namespace/{0}/quota'.format(namespace),
+            json_payload=payload
+        )

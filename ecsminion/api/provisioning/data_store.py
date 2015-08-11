@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class DataStore(object):
@@ -50,7 +53,7 @@ class DataStore(object):
             ]
         }
         """
-
+        log.info("Getting all data stores")
         return self.conn.get(url='vdc/data-stores')
 
     def get_commodity_data_store_associated_wth_storage_pool(
@@ -91,6 +94,7 @@ class DataStore(object):
 
         :param commodity_node_id: Identifier of the data store
         """
+        log.info("Getting commodity store '{0}'".format(commodity_node_id))
 
         return self.conn.get(
             url='vdc/data-stores/commodity/{0}'.format(commodity_node_id))
@@ -161,7 +165,8 @@ class DataStore(object):
 
         :param storage_pool_id: Identifier of the storage pool
         """
-
+        log.info("Getting commodity store for varray '{0}'".format(
+                                                              storage_pool_id))
         return self.conn.get(
             url='vdc/data-stores/commodity/search/varray/{0}'.format(
                 storage_pool_id))

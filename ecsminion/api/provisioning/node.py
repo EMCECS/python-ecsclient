@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class Node(object):
@@ -47,5 +50,5 @@ class Node(object):
             ]
         }
         """
-
+        log.info('Getting all nodes for cluster')
         return self.conn.get(url='vdc/nodes')

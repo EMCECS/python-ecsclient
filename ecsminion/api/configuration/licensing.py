@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class Licensing(object):
@@ -65,4 +68,5 @@ class Licensing(object):
             u'license_text': u'LONG-LONG--TEXT'
         }
         """
+        log.info("Retrieving license")
         return self.conn.get('license')

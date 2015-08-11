@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class Certificate(object):
@@ -33,7 +36,7 @@ class Certificate(object):
             REALLY-LONG-CERT\r\n-----ENDCERTIFICATE-----'
         }
         """
-
+        log.info("Fetching certificate chain")
         return self.conn.get('object-cert/keystore')
 
     def put_certificate_chain(self):
@@ -41,5 +44,5 @@ class Certificate(object):
         Sets private key and certificate pair. The new certificate and key
         will be rotated into all of the nodes within 1 hour.
         """
-
+        log.error("Certificate chain installation not supported")
         raise NotImplementedError

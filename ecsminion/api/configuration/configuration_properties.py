@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class ConfigurationProperties(object):
@@ -43,6 +46,7 @@ class ConfigurationProperties(object):
         }
 
         """
+        log.info("Getting configurations in category '{0}'".format(category))
         return self.conn.get(
             'config/object/properties?category={0}'.format(category))
 
@@ -86,6 +90,7 @@ class ConfigurationProperties(object):
         }
 
         """
+        log.info("Getting metadata properties")
         return self.conn.get('config/object/properties/metadata')
 
     def set_properties(self):
@@ -109,5 +114,5 @@ class ConfigurationProperties(object):
 
         The default setting is GLOBAL.
         """
-
+        log.error("Configuration properties modification not supported")
         raise NotImplementedError

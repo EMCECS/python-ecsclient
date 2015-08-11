@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class Capacity(object):
@@ -36,8 +39,9 @@ class Capacity(object):
         :param v_array_id: Storage pool identifier for which to retrieve
         capacity (optional)
         """
-
         if v_array_id:
+            log.info("Getting capacity of varray '{0}'".format(v_array_id))
             return self.conn.get(url='object/capacity/{0}'.format(v_array_id))
         else:
+            log.info("Getting capacity of storage cluster")
             return self.conn.get(url='object/capacity')

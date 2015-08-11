@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class AuthenticationProvider(object):
@@ -37,7 +40,7 @@ class AuthenticationProvider(object):
             ]
         }
         """
-
+        log.info('Getting all authentication providers')
         return self.conn.get(url='vdc/admin/authnproviders')
 
     def get_authentication_provider(self, auth_provider_id):
@@ -95,6 +98,7 @@ class AuthenticationProvider(object):
 
         param: auth_provider_id: Authentication provider identifier URN
         """
+        log.info("Getting auth provider '{0}'".format(auth_provider_id))
 
         return self.conn.get(
             url='vdc/admin/authnproviders/{0}'.format(auth_provider_id))

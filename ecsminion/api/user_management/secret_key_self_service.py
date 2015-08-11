@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class SecretKeySelfService(object):
@@ -38,7 +41,7 @@ class SecretKeySelfService(object):
           }
         }
         """
-
+        log.info('Getting all secrets for current api user (me)')
         return self.conn.get(url='object/secret-keys')
 
     def create_new_secret_key(self, key_expiration=2592000):
@@ -72,8 +75,9 @@ class SecretKeySelfService(object):
         """
         payload = {
             "existing_key_expiry_time_mins": key_expiration
-        }
 
+        }
+        log.info('Creating secret for current api user (me)')
         return self.conn.post(url='object/secret-keys', json_payload=payload)
 
     def deactivate_user_secret_key(self, secret_key=None):
@@ -96,6 +100,8 @@ class SecretKeySelfService(object):
         payload = {
             "secret_key": secret_key
         }
+
+        log.info("Deleting secret for current api user (me)")
 
         return self.conn.post(
             url='object/secret-keys/deactivate', json_payload=payload)

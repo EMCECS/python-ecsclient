@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class Billing(object):
@@ -39,10 +42,11 @@ class Billing(object):
             u'total_size_unit': u'GB'
         }
 
-        param: bucket_name: Bucket name for which billing information needs
+        :param bucket_name: Bucket name for which billing information needs
         to be retrieved
-        param: namespace: Namespace containing the bucket
+        :param namespace: Namespace containing the bucket
         """
+        log.info("Getting billing info for bucket '{0}'".format(bucket_name))
 
         return self.conn.get(
             url='object/billing/buckets/{0}/{1}/info'.format(
@@ -91,12 +95,13 @@ class Billing(object):
             u'next_marker': u'test-302599c4-5ewd-44f3-b0dc-716ae3782dbd'
         }
 
-        param: namespace: Namespace to get information about
-        param: include_bucket_detail: Optional. (default=False). If True,
+        :param namespace: Namespace to get information about
+        :param include_bucket_detail: Optional. (default=False). If True,
         include information about all the buckets owned by this namespace.
-        param: marker: Optional. Used to continue a truncated response. Omit
+        :param marker: Optional. Used to continue a truncated response. Omit
         this parameter on the first request.
         """
+        log.info("Getting billing info for namespace '{0}'".format(namespace))
 
         params = {
             "include_bucket_detail": include_bucket_detail
@@ -179,14 +184,15 @@ class Billing(object):
             u'next_marker': u'test-302599c4-5ewd-44f3-b0dc-716ae3782dbd'
         }
 
-        param: namespace: Namespace to get information about
-        param: include_bucket_detail: Optional. (default=False). If True,
+        :param namespace: Namespace to get information about
+        :param include_bucket_detail: Optional. (default=False). If True,
         include information about all the buckets owned by this namespace.
-        param: marker: Optional. Used to continue a truncated response. Omit
+        :param marker: Optional. Used to continue a truncated response. Omit
         this parameter on the first request.
         :param start_time: Starting time in ISO-8601 minute format
         :param end_time: Ending time in ISO-8601 minute format
         """
+        log.info("Samplng billing info for namespace '{0}'".format(namespace))
 
         params = {
             "include_bucket_detail": include_bucket_detail,
@@ -234,11 +240,13 @@ class Billing(object):
             u'bytes_delta': 0
         }
 
-        param: namespace: Namespace containing the bucket
-        param: bucket_name: Bucket name
+        :param namespace: Namespace containing the bucket
+        :param bucket_name: Bucket name
         :param start_time: Starting time in ISO-8601 minute format
         :param end_time: Ending time in ISO-8601 minute format
         """
+        log.info("Sampling billing info for bucket '{0}' in namespace "
+                 "'{1}'".format(bucket_name, namespace))
 
         params = {
             "start_time": start_time,

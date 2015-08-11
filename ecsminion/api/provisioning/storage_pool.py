@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class StoragePool(object):
@@ -36,6 +39,7 @@ class StoragePool(object):
 
         :param storage_pool_id: Storage pool identifier to be retrieved
         """
+        log.info("Getting varray '{0}'".format(storage_pool_id))
 
         return self.conn.get(
             url='vdc/data-services/varrays/{0}'.format(storage_pool_id))
@@ -65,6 +69,7 @@ class StoragePool(object):
         :param vdc_id: Virtual data center identifier for which list of
         storage pool is to be retrieved
         """
+        log.info("Getting varrays for VDC '{0}'".format(vdc_id))
 
         params = {
             'vdc-id': vdc_id

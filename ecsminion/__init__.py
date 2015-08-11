@@ -1,5 +1,6 @@
 # Standard lib imports
 import json
+import logging
 import os
 
 # Third party imports
@@ -52,6 +53,9 @@ from ecsminion.util.token_request import TokenRequest
 # https://urllib3.readthedocs.org/en/
 # latest/security.html#insecurerequestwarning
 requests.packages.urllib3.disable_warnings()
+
+# Initialize logger
+log = logging.getLogger(__name__)
 
 
 class ECSMinion(object):
@@ -160,20 +164,19 @@ class ECSMinion(object):
         and want to use a different token
         """
         if os.path.isfile(self.token_file):
+            log.debug("Removing cached token '{0}'".format(self.token_file))
             os.remove(self.token_file)
 
     def _fetch_headers(self):
-        if self.token:
-            return {'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'x-sds-auth-token': self.token}
-        else:
-            return {'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'x-sds-auth-token': self._token_request.get_token()}
+        token = self.token if self.token else self._token_request.get_token()
+        return {'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-sds-auth-token': token}
 
-    def _construct_url(self, url):
-        return '{0}/{1}'.format(self.ecs_endpoint, url)
+    def _construct_url(self, path):
+        url = '{0}/{1}'.format(self.ecs_endpoint, path)
+        log.debug('Constructed URL as: {0}'.format(url))
+        return url
 
     def get(self, url, params=None):
         return self._request(url, params=params)
@@ -227,16 +230,23 @@ class ECSMinion(object):
                     params=params)
 
             if req.status_code != 200:
+                log.error("Status code NOT OK")
                 raise ECSMinionException(
                     http_status_code=req.status_code,
                     ecs_message=req.text)
             return req.json()
 
         except requests.ConnectionError as conn_err:
-            raise ECSMinionException(message=conn_err.message)
+            msg = 'Connection error: {0}'.format(conn_err.args)
+            log.error(msg)
+            raise ECSMinionException(message=msg)
         except requests.HTTPError as http_err:
-            raise ECSMinionException(message=http_err.message)
+            msg = 'HTTP error: {0}'.format(http_err.args)
+            log.error(msg)
+            raise ECSMinionException(message=msg)
         except requests.RequestException as req_err:
-            raise ECSMinionException(message=req_err.message)
+            msg = 'Request error: {0}'.format(req_err.args)
+            log.error(msg)
+            raise ECSMinionException(message=msg)
         except ValueError:
             return

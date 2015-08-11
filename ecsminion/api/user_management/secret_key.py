@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class SecretKey(object):
@@ -44,12 +47,15 @@ class SecretKey(object):
         :param uid: Valid user identifier to get the keys from
         :param namespace: The namespace
         """
+        msg = "getting secret keys for user '{0}'".format(uid)
+        url = 'object/user-secret-keys/{0}'.format(uid)
 
         if namespace:
-            return self.conn.get(
-                url='object/user-secret-keys/{0}/{1}'.format(uid, namespace))
-        else:
-            return self.conn.get(url='object/user-secret-keys/{0}'.format(uid))
+            url += '/{0}'.format(namespace)
+            msg += " in namespace '{0}'".format(namespace)
+
+        log.info(msg)
+        return self.conn.get(url=url)
 
     def create_new_secret_key(self, uid, namespace=None,
                               key_expiration=2592000, secret_key=None):
@@ -90,6 +96,8 @@ class SecretKey(object):
         if secret_key:
             payload['secretkey'] = secret_key
 
+        log.info("Creating secret for user '{0}': {1}".format(uid, payload))
+
         return self.conn.post(url='object/user-secret-keys/{0}'.format(uid),
                               json_payload=payload)
 
@@ -118,6 +126,8 @@ class SecretKey(object):
             "secret_key": secret_key,
             "namespace": namespace
         }
+
+        log.info("Deleting secret for user '{0}': {1}".format(uid, payload))
 
         return self.conn.post(
             url='object/user-secret-keys/{0}/deactivate'.format(uid),

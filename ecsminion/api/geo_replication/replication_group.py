@@ -1,11 +1,14 @@
 # Standard lib imports
-# None
+import logging
 
 # Third party imports
 # None
 
 # Project level imports
 # None
+
+
+log = logging.getLogger(__name__)
 
 
 class ReplicationGroup(object):
@@ -18,8 +21,7 @@ class ReplicationGroup(object):
 
     def get_replication_groups(self):
         """
-        Gets the user lock state for the specified user belonging to the
-        specified namespace (if provided).
+        Lists all configured replication groups.
 
         Required role(s):
 
@@ -80,7 +82,7 @@ class ReplicationGroup(object):
             ]
         }
         """
-
+        log.info("Fetching list of replication groups")
         return self.conn.get(url='vdc/data-service/vpools')
 
     def get_replication_group(self, replication_group_id):
@@ -119,14 +121,15 @@ class ReplicationGroup(object):
             u'description': u''
         }
 
-        param: replication_group_id: Replication group identifier for which
+        :param replication_group_id: Replication group identifier for which
         details needs to be retrieved
         """
+        log.info("Fetching vpool ID '{0}'".format(replication_group_id))
 
         return self.conn.get(
             url='vdc/data-service/vpools/{0}'.format(replication_group_id))
 
-    def update_replication_group(self, uid, name, description,
+    def update_replication_group(self, replication_group_id, name, description,
                                  allow_all_namespaces=False):
         """
         Updates the name and description for a replication group.
@@ -141,9 +144,8 @@ class ReplicationGroup(object):
 
         Expect: HTTP/1.1 200 OK
 
-        :param uid: User identifier for which local user information needs to
-        be updated.
-        :param name: New name fro the replication group
+        :param replication_group_id: Replication group identifier to update
+        :param name: New name for the replication group
         :param description: New description for the replication group
         :param allow_all_namespaces: Allow all namespaces to update True/False
         """
@@ -153,6 +155,9 @@ class ReplicationGroup(object):
             "allow_all_namespaces": allow_all_namespaces
         }
 
+        log.info("Updating vpool '{0}' with: {1}".format(replication_group_id,
+                                                         payload))
         return self.conn.put(
-            url='vdc/data-service/vpools/{0}'.format(uid),
-            json_payload=payload)
+            url='vdc/data-service/vpools/{0}'.format(replication_group_id),
+            json_payload=payload
+        )
