@@ -165,8 +165,8 @@ class DataStore(object):
 
         :param storage_pool_id: Identifier of the storage pool
         """
-        log.info("Getting commodity store for varray '{0}'".format(
-                                                              storage_pool_id))
+        log.info("Getting commodity store for varray '{0}'"
+                 .format(storage_pool_id))
         return self.conn.get(
             url='vdc/data-stores/commodity/search/varray/{0}'.format(
                 storage_pool_id))
