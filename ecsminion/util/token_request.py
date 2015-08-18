@@ -77,12 +77,14 @@ class TokenRequest(object):
             log.fatal(msg)
             raise ECSMinionException(
                 http_status_code=req.status_code,
+                ecs_message=req.text,
                 message=msg)
         if req.status_code != 200:
             msg = 'Non-200 status returned ({0})'.format(req.status_code)
             log.fatal(msg)
             raise ECSMinionException(
                 http_status_code=req.status_code,
+                ecs_message=req.text,
                 message=msg)
 
         token = req.headers['x-sds-auth-token']
