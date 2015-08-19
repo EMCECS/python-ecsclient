@@ -70,3 +70,39 @@ class Licensing(object):
         """
         log.info("Retrieving license")
         return self.conn.get('license')
+
+    def add_license(self, license):
+        """
+        Adds specified license.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        Example JSON result from the API:
+
+        {
+            'license': {
+                u'license_feature': [
+                    {
+                        u'issued_date': u'01/10/2014',
+                        u'expired_ind': False,
+                        u'issuer': u'EMC',
+                        u'license_id_indicator': u'U',
+                        u'licensed_ind': True,
+                        u'model': u'ViPR_ECS',
+                        u'notice': u'ACTIVATED TO License Site Number: XYZ789',
+                        u'product': u'PXTYD1DZK59Y4C',
+                        u'serial': u'PXTYD1DZK59Y4C',
+                        u'site_id': u'UNKNOWN',
+                        u'storage_capacity': u'TB',
+                        u'trial_license_ind': False,
+                        u'version': u'2.0'
+                    }
+                ],
+                u'license_text': u'LicenseText'
+            }
+        }
+        """
+        log.info("Adding new license: {0}".format(license))
+        return self.conn.post(url='license', json_payload=license)

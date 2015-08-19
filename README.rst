@@ -67,6 +67,7 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.certificate.get_certificate_chain())
         print(client.configuration_properties.get_properties(category='ALL'))
         print(client.configuration_properties.get_properties_metadata())
+        print(client.licensing.add_license(license=data_dict))
         print(client.licensing.get_license())
 
         # User Management
@@ -183,6 +184,63 @@ need to set your ``request_timeout`` to ``60.0``.
             'bucket-test', 'namespace1',
             start_time='2015-06-15T00:00', end_time='2015-06-15T1:00'))
 
+    except ECSMinionException as ecsminion_ex:
+        print('Message: {0}'.format(ecsminion_ex.message))
+        print('Status Code Returned: {0}\n'.format(ecsminion_ex.http_status_code))
+        print('ECS API Message: {0}'.format(ecsminion_ex.ecs_message))
+    except Exception as ex:
+        print(ex.message)
+
+Example: Uploading an ECS license
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+According to ECS API documentation, a call to ``POST /license`` should contain
+a payload like the following:
+
+::
+
+    {
+      "license_feature": [
+        {
+          "serial": "",
+          "version": "",
+          "issued_date": "",
+          "expiration_date": "",
+          "model": "",
+          "product": "",
+          "site_id": "",
+          "issuer": "",
+          "notice": "",
+          "licensed_ind": "",
+          "expired_ind": "",
+          "license_id_indicator": "",
+          "error_message": "",
+          "storage_capacity_unit": "",
+          "storage_capacity": "",
+          "trial_license_ind": ""
+        }
+      ],
+      "license_text": ""
+    }
+
+Thus, if you consume a JSON file with such license data, you may upload it
+using the ``licensing.add_license()`` method:
+
+::
+
+    import json
+    import pprint
+
+    pp = pprint.PrettyPrinter()
+
+    try:
+        with open("ECS2.1_License.json") as data:
+            license = json.load(data)
+
+        pp.pprint(client.licensing.add_license(license))
+
+    except ValueError as val_ex:  # includes simplejson.decoder.JSONDecodeError
+        print("Couldn't parse JSON data: {0}".format(val_ex.message))
     except ECSMinionException as ecsminion_ex:
         print('Message: {0}'.format(ecsminion_ex.message))
         print('Status Code Returned: {0}\n'.format(ecsminion_ex.http_status_code))
