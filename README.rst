@@ -192,7 +192,7 @@ need to set your ``request_timeout`` to ``60.0``.
         print(ex.message)
 
 Example: Uploading an ECS license
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 According to ECS API documentation, a call to ``POST /license`` should contain
 a payload like the following:
@@ -200,27 +200,27 @@ a payload like the following:
 ::
 
     {
-      "license_feature": [
-        {
-          "serial": "",
-          "version": "",
-          "issued_date": "",
-          "expiration_date": "",
-          "model": "",
-          "product": "",
-          "site_id": "",
-          "issuer": "",
-          "notice": "",
-          "licensed_ind": "",
-          "expired_ind": "",
-          "license_id_indicator": "",
-          "error_message": "",
-          "storage_capacity_unit": "",
-          "storage_capacity": "",
-          "trial_license_ind": ""
-        }
-      ],
-      "license_text": ""
+        "license_feature": [
+            {
+                "serial": "",
+                "version": "",
+                "issued_date": "",
+                "expiration_date": "",
+                "model": "",
+                "product": "",
+                "site_id": "",
+                "issuer": "",
+                "notice": "",
+                "licensed_ind": "",
+                "expired_ind": "",
+                "license_id_indicator": "",
+                "error_message": "",
+                "storage_capacity_unit": "",
+                "storage_capacity": "",
+                "trial_license_ind": ""
+            }
+        ],
+        "license_text": ""
     }
 
 Thus, if you consume a JSON file with such license data, you may upload it
