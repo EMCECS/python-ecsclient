@@ -44,7 +44,7 @@ class StoragePool(object):
         return self.conn.get(
             url='vdc/data-services/varrays/{0}'.format(storage_pool_id))
 
-    def get_virtual_arrays(self, vdc_id):
+    def get_virtual_arrays(self, vdc_id=None):
         """
         Gets a list of storage pools from the local VDC.
 
@@ -69,10 +69,11 @@ class StoragePool(object):
         :param vdc_id: Virtual data center identifier for which list of
         storage pool is to be retrieved
         """
-        log.info("Getting varrays for VDC '{0}'".format(vdc_id))
+        params = None
 
-        params = {
-            'vdc-id': vdc_id
-        }
+        if vdc_id:
+            params = {'vdc-id': vdc_id}
+
+        log.info("Getting varrays for VDC: {0}".format(params))
 
         return self.conn.get(url='vdc/data-services/varrays', params=params)
