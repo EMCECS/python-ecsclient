@@ -77,3 +77,33 @@ class StoragePool(object):
         log.info("Getting varrays for VDC: {0}".format(params))
 
         return self.conn.get(url='vdc/data-services/varrays', params=params)
+
+    def add_virtual_array(self, name, description, is_protected=False):
+        """
+        Create a storage pool with the specified details.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+
+        Example JSON result from the API:
+
+        {
+            u'id': u'urn:storageos:VirtualArray:dd751e72-142-598-b4f833e93b61',
+            u'name': u'storage_pool',
+            u'isProtected': False
+        }
+        """
+        payload = {
+            "name": name,
+            "description": description,
+            "isProtected": is_protected
+        }
+
+        log.info("Creating varray '{0}': {1}".format(name, payload))
+
+        return self.conn.post(
+            url='/vdc/data-services/varrays',
+            json_payload=payload
+        )
