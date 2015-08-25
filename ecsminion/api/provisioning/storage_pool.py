@@ -44,7 +44,7 @@ class StoragePool(object):
         return self.conn.get(
             url='vdc/data-services/varrays/{0}'.format(storage_pool_id))
 
-    def get_virtual_arrays(self, vdc_id):
+    def get_virtual_arrays(self, vdc_id=None):
         """
         Gets a list of storage pools from the local VDC.
 
@@ -69,10 +69,41 @@ class StoragePool(object):
         :param vdc_id: Virtual data center identifier for which list of
         storage pool is to be retrieved
         """
-        log.info("Getting varrays for VDC '{0}'".format(vdc_id))
+        params = None
 
-        params = {
-            'vdc-id': vdc_id
-        }
+        if vdc_id:
+            params = {'vdc-id': vdc_id}
+
+        log.info("Getting varrays for VDC: {0}".format(params))
 
         return self.conn.get(url='vdc/data-services/varrays', params=params)
+
+    def add_virtual_array(self, name, description, is_protected=False):
+        """
+        Create a storage pool with the specified details.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+
+        Example JSON result from the API:
+
+        {
+            u'id': u'urn:storageos:VirtualArray:dd751e72-142-598-b4f833e93b61',
+            u'name': u'storage_pool',
+            u'isProtected': False
+        }
+        """
+        payload = {
+            "name": name,
+            "description": description,
+            "isProtected": is_protected
+        }
+
+        log.info("Creating varray '{0}': {1}".format(name, payload))
+
+        return self.conn.post(
+            url='/vdc/data-services/varrays',
+            json_payload=payload
+        )
