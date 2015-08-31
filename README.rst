@@ -96,7 +96,7 @@ need to set your ``request_timeout`` to ``60.0``.
 
         # Multi-tenancy
         print(client.namespace.get_namespaces())
-        print(client.namespace.get_namespaces('namespace1'))
+        print(client.namespace.get_namespace('namespace1'))
         print(client.namespace.get_retention_classes('namespace1'))
         print(client.namespace.create_retention_class('the-name', 2, 'namespace2'))
         print(client.namespace.update_retention_class('the-name', 199, 'namespace2'))

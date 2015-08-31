@@ -192,7 +192,7 @@ class Billing(object):
         :param start_time: Starting time in ISO-8601 minute format
         :param end_time: Ending time in ISO-8601 minute format
         """
-        log.info("Samplng billing info for namespace '{0}'".format(namespace))
+        log.info("Sampling billing info for namespace '{0}'".format(namespace))
 
         params = {
             "include_bucket_detail": include_bucket_detail,
