@@ -1,11 +1,11 @@
 # Standard lib imports
-import httplib
 import unittest
 
 # Third party imports
 from mock import MagicMock
 from mock import mock_open
 from mock import patch
+from six.moves import http_client, builtins
 
 # Project level imports
 from ecsminion.util.token_request import TokenRequest
@@ -37,7 +37,7 @@ class WhenTestingTokenRequest(unittest.TestCase):
 
     def test_should_get_existing_token(self):
         with patch('os.path.isfile', return_value=True),\
-            patch('__builtin__.open', mock_open(read_data='123TOKEN'),
+            patch('six.moves.builtins.open', mock_open(read_data='123TOKEN'),
                   create=True):
             self.assertEqual(self.token_request._get_existing_token(),
                              self.token_file_contents)
@@ -47,7 +47,7 @@ class WhenTestingTokenRequest(unittest.TestCase):
             self.assertEqual(self.token_request._get_existing_token(), None)
 
     def test_get_new_token_should_throw_ecsminionexception_500(self):
-        self.response.status_code = httplib.INTERNAL_SERVER_ERROR
+        self.response.status_code = http_client.INTERNAL_SERVER_ERROR
         self.requests = MagicMock(return_value=self.response)
         self.requests.get.side_effect = [self.response]
 
@@ -56,7 +56,7 @@ class WhenTestingTokenRequest(unittest.TestCase):
                 self.token_request.get_new_token()
 
     def test_get_new_token_should_throw_ecsminionexception_401(self):
-        self.response.status_code = httplib.UNAUTHORIZED
+        self.response.status_code = http_client.UNAUTHORIZED
         self.requests = MagicMock(return_value=self.response)
         self.requests.get.side_effect = [self.response]
 
