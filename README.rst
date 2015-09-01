@@ -19,6 +19,8 @@ from `PyPi <http://pypi.python.org/>`__:
 
     $ pip install ecsminion
 
+This library should be compatible with both Python 2.7.x and Python 3.4.x.
+
 Creating an instance of the ECSMinion class allows the following
 arguments:
 
