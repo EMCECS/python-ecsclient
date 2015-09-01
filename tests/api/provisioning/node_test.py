@@ -1,10 +1,10 @@
 # Standard lib imports
-from six.moves import http_client
 import unittest
 
 # Third party imports
 from mock import MagicMock
 from mock import patch
+from six.moves import http_client
 
 # Project level imports
 from ecsminion import ECSMinion
