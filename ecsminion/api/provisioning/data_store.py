@@ -165,3 +165,67 @@ class DataStore(object):
         return self.conn.get(
             url='vdc/data-stores/commodity/search/varray/{0}'.format(
                 storage_pool_id))
+
+    def create_data_store(self, name, description, node_id, storage_pool_id):
+        """
+        NOTE: This is an asychronous operation that returns a task object.
+
+        Creates one or more new commodity data stores. A data store represents
+        a commodity node providing backing storage for the object store. On
+        creating, the data store is associated with the storage pool specified
+        in the request.
+
+        Note that the data store creation is an asynchronous operation so a
+        successful invocation of this request does not necessarily mean that
+        the creation has completed.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        Example JSON result from the API:
+
+        {
+            u'tasks': {
+                u'task': {
+                    u'resource': {
+                        u'name': u'Sample_Volume',
+                        u'id': u'urn: storageos:
+                                Volume:5ba5b8d8-a0ca-4827-84f9-c1fef57733f5:',
+                        u'link': {
+                            u'rel': u'self',
+                            u'href': u'/block/volumes/urn: storageos: Volume:
+                                      5ba5b8d8-a0ca-4827-84f9-c1fef57733f5:'
+                        }
+                    },
+                    u'state': u'pending',
+                    u'start_time': u'1379398608574',
+                    u'op_id': u'265cf333-76a1-4129-903e-fac63f9b4adc',
+                    u'link': {
+                        u'rel': u'self',
+                        u'href': u'/block/volumes/urn: storageos: Volume:
+                                  5ba5b8d8-a0ca-4827-84f9-c1fef57733f5:
+                                  /tasks/265cf333-76a1-4129-903e-fac63f9b4adc'
+                    }
+                }
+            }
+        }
+
+        :param name: User provided name (not verified or unique)
+        :param description: User provided description (not verified or unique)
+        :param node_id: IP address for the commodity node
+        :param storage_pool_id: Desired storage pool ID for creating data store
+        """
+        payload = {
+            "name": name,
+            "description": description,
+            "nodeId": node_id,
+            "virtual_array": storage_pool_id
+        }
+
+        log.info("Creating data store '{0}': {1}".format(name, payload))
+
+        return self.conn.post(
+            url='vdc/data-stores/commodity',
+            json_payload=payload
+        )
