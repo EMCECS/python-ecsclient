@@ -147,9 +147,9 @@ need to set your ``request_timeout`` to ``60.0``.
         print(client.base_url.modify_base_url('urn:ObjectBaseUrl:19c391eb-37f4-4c65-a7a9-474668f71607',
                                               'SomeBaseURL', 'test.org', False))
         print(client.base_url.delete_base_url('urn:ObjectBaseUrl:19c391eb-37f4-4c65-a7a9-474668f71607'))
-        print(client.data_store.get_data_store_list())
-        print(client.data_store.get_commodity_data_store_associated_wth_storage_pool('192.29.3.51'))
-        print(client.data_store.get_commodity_data_store_associated_wth_varray('urn:storageos:VirtualArray:3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'))
+        print(client.data_store.get_data_stores())
+        print(client.data_store.get_data_store('192.29.3.51'))
+        print(client.data_store.get_data_stores_by_storage_pool_id('urn:storageos:VirtualArray:3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'))
         print(client.storage_pool.get_virtual_arrays()  # Local VDC
         print(client.storage_pool.get_virtual_arrays(vdc_id='urn:storageos:VirtualDataCenterData:a9faea85-d377-4a42-b5f1-fa15829f0c33'))
         print(client.storage_pool.get_virtual_array('urn:storageos:VirtualArray:3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37'))
