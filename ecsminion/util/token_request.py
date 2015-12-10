@@ -112,7 +112,7 @@ class TokenRequest(object):
             req = self._request(token, self.token_verification_endpoint)
 
             if req.status_code == requests.codes.ok:
-                log.debug("Cached is valid")
+                log.debug("Token is valid")
                 return token
 
         return self.get_new_token()
