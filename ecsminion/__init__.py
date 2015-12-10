@@ -56,6 +56,7 @@ requests.packages.urllib3.disable_warnings()
 
 # Initialize logger
 log = logging.getLogger(__name__)
+log.addHandler(logging.NullHandler())
 
 
 class ECSMinion(object):
