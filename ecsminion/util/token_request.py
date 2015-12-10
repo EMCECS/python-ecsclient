@@ -55,6 +55,7 @@ class TokenRequest(object):
         self.cache_token = cache_token
         self.token_file = os.path.join(
             self.token_location, self.token_filename)
+        self.token = None
         self.session = requests.Session()
 
     def get_new_token(self):
@@ -87,14 +88,14 @@ class TokenRequest(object):
                 ecs_message=req.text,
                 message=msg)
 
-        token = req.headers['x-sds-auth-token']
+        self.token = req.headers['x-sds-auth-token']
 
         if self.cache_token:
             log.debug("Caching token to '{0}'".format(self.token_file))
             with open(self.token_file, 'w') as token_file:
-                token_file.write(token)
+                token_file.write(self.token)
 
-        return token
+        return self.token
 
     def get_token(self):
         """
@@ -103,17 +104,15 @@ class TokenRequest(object):
 
         :return: A token
         """
-        # XXX(brett): Maybe honor `cache_token' flag here? If user sets
-        # cache_token to False, he may be expecting the cache to be skipped
-        # entirely.
+
         token = self._get_existing_token()
 
         if token:
-            log.debug("Validating cached token")
+            log.debug("Validating token")
             req = self._request(token, self.token_verification_endpoint)
 
             if req.status_code == requests.codes.ok:
-                log.debug("Cached token is valid")
+                log.debug("Cached is valid")
                 return token
 
         return self.get_new_token()
@@ -124,12 +123,19 @@ class TokenRequest(object):
 
         :return: If available return the token, if not return None
         """
-        if os.path.isfile(self.token_file):
-            log.debug("Reading cached token at '{0}'".format(self.token_file))
-            with open(self.token_file, 'r') as token_file:
-                return token_file.read()
-        log.debug("No cached token found")
-        return None
+
+        token = self.token
+
+        if not token and self.cache_token:
+            if os.path.isfile(self.token_file):
+                log.debug("Reading cached token at '{0}'".format(self.token_file))
+                with open(self.token_file, 'r') as token_file:
+                    token = token_file.read()
+
+        if not token:
+            log.debug("No token found")
+
+        return token
 
     def _request(self, token, url):
         """
