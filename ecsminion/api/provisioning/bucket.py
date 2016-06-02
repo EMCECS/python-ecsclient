@@ -67,7 +67,7 @@ class Bucket(object):
             "filesystem_enabled": filesystem_enabled,
             "head_type": head_type,
             "namespace": namespace,
-            "is_stale_allowed": is_stale_allowed
+            "is_stale_allowed": is_stale_allowed,
             "search_metadata": metadata
         }
 
