@@ -20,7 +20,8 @@ class Bucket(object):
         self.conn = connection
 
     def create_bucket(self, bucket_name, vpool='', filesystem_enabled=False,
-                      head_type=None, namespace=None, is_stale_allowed=False):
+                      head_type=None, namespace=None, is_stale_allowed=False,
+                      metadata=None):
         """
         Creates a bucket which could be used by users to create objects.
         The bucket is created in a storage pool associated with the specified
@@ -31,6 +32,8 @@ class Bucket(object):
           is used
         - For non SYSTEM_ADMIN user, Namespace should be current user's
           namespace
+        - Optional searchable metadata should be an array of JSON dictionaries,
+          e.g. [{"name" : "x-amz-meta-custom", "type" : "User", "datatype" : "string"}, ...] 
 
 
         Required role(s):
@@ -56,6 +59,7 @@ class Bucket(object):
         :param head_type:
         :param namespace: The namespace
         :param is_stale_allowed:
+        :param search_metadata: Searchable metadata
         """
         payload = {
             "name": bucket_name,
@@ -64,12 +68,15 @@ class Bucket(object):
             "head_type": head_type,
             "namespace": namespace,
             "is_stale_allowed": is_stale_allowed
+            "search_metadata": metadata
         }
 
         log.info("Creating bucket '{0}': {1}".format(bucket_name, payload))
 
         if head_type:
             payload['head_type'] = head_type
+        if metadata:
+            payload['search_metadata'] = metadata
 
         return self.conn.post(url='object/bucket', json_payload=payload)
 
