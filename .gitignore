@@ -1,0 +1,10 @@
+*~
+.DS_Store
+Vagrantfile
+.vagrant/
+*.log
+.idea/
+*.pyc
+.tox/
+*.egg-info/
+.coverage
