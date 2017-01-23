@@ -8,15 +8,15 @@
 # None
 
 
-class ECSMinionException(Exception):
+class ECSClientException(Exception):
     """
-    This is a custom ECSMinionException Exception class to better handle
-    errors that ECSMinionException can return in HTML format rather than JSON
+    This is a custom ECSClientException Exception class to better handle
+    errors that ECSClientException can return in HTML format rather than JSON
     """
 
     def __init__(self, message=None, http_status_code=None, ecs_message=None):
         """
-        This is a custom ECSMinion Exception class to handle
+        This is a custom ECSClientException class to handle
 
         :param message: A custom
         :param http_status_code:
@@ -24,7 +24,7 @@ class ECSMinionException(Exception):
         :return:
         """
         if message is None:
-            self.message = 'The ECSMinionException endpoint has thrown ' \
+            self.message = 'The ECSClientException endpoint has thrown ' \
                            'an error, check the http_status_code and ' \
                            'ecs_message attributes of this exception for ' \
                            'more details.'
@@ -34,5 +34,5 @@ class ECSMinionException(Exception):
         self.http_status_code = http_status_code
         self.ecs_message = ecs_message
 
-        super(ECSMinionException, self).__init__(
+        super(ECSClientException, self).__init__(
             message, http_status_code, ecs_message)

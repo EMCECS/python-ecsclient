@@ -7,46 +7,46 @@ import os
 import requests
 
 # Project level imports
-from ecsminion.api.authentication import Authentication
+from .api.authentication import Authentication
 
-from ecsminion.api.configuration.certificate import Certificate
-from ecsminion.api.configuration.configuration_properties \
+from .api.configuration.certificate import Certificate
+from .api.configuration.configuration_properties \
     import ConfigurationProperties
-from ecsminion.api.configuration.licensing import Licensing
+from .api.configuration.licensing import Licensing
 
-from ecsminion.api.metering.billing import Billing
+from .api.metering.billing import Billing
 
-from ecsminion.api.monitoring.capacity import Capacity
-from ecsminion.api.monitoring.dashboard import Dashboard
-from ecsminion.api.monitoring.events import Events
+from .api.monitoring.capacity import Capacity
+from .api.monitoring.dashboard import Dashboard
+from .api.monitoring.events import Events
 
-from ecsminion.api.multitenancy.namespace import Namespace
+from .api.multitenancy.namespace import Namespace
 
-from ecsminion.api.provisioning.base_url import BaseUrl
-from ecsminion.api.provisioning.bucket import Bucket
-from ecsminion.api.provisioning.data_store import DataStore
-from ecsminion.api.provisioning.node import Node
-from ecsminion.api.provisioning.storage_pool import StoragePool
-from ecsminion.api.provisioning.virtual_data_center import VirtualDataCenter
+from .api.provisioning.base_url import BaseUrl
+from .api.provisioning.bucket import Bucket
+from .api.provisioning.data_store import DataStore
+from .api.provisioning.node import Node
+from .api.provisioning.storage_pool import StoragePool
+from .api.provisioning.virtual_data_center import VirtualDataCenter
 
-from ecsminion.api.support.call_home import CallHome
+from .api.support.call_home import CallHome
 
-from ecsminion.api.geo_replication.replication_group import ReplicationGroup
-from ecsminion.api.geo_replication.temporary_failed_zone import \
+from .api.geo_replication.replication_group import ReplicationGroup
+from .api.geo_replication.temporary_failed_zone import \
     TemporaryFailedZone
 
-from ecsminion.api.user_management.authentication_provider import \
+from .api.user_management.authentication_provider import \
     AuthenticationProvider
-from ecsminion.api.user_management.secret_key import SecretKey
-from ecsminion.api.user_management.secret_key_self_service import \
+from .api.user_management.secret_key import SecretKey
+from .api.user_management.secret_key_self_service import \
     SecretKeySelfService
-from ecsminion.api.user_management.user_management import ManagementUser
-from ecsminion.api.user_management.user_object import ObjectUser
+from .api.user_management.user_management import ManagementUser
+from .api.user_management.user_object import ObjectUser
 
-from ecsminion.api.undocumented.user_info import UserInfo
+from .api.undocumented.user_info import UserInfo
 
-from ecsminion.util.exceptions import ECSMinionException
-from ecsminion.util.token_request import TokenRequest
+from .util.exceptions import ECSClientException
+from .util.token_request import TokenRequest
 
 
 # Suppress the insecure request warning
@@ -59,14 +59,14 @@ log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
 
 
-class ECSMinion(object):
+class ECSClient(object):
 
     def __init__(self, username=None, password=None, token=None,
                  ecs_endpoint=None, token_endpoint=None, verify_ssl=False,
-                 token_filename='ecsminion.tkn', token_location='/tmp',
+                 token_filename='ecsclient.tkn', token_location='/tmp',
                  request_timeout=15.0, cache_token=True):
         """
-        Creates the ECSMinion class that the client will directly work with
+        Creates the ECSClient class that the client will directly work with
 
         :param username: The username to fetch a token
         :param password: The password to fetch a token
@@ -153,9 +153,9 @@ class ECSMinion(object):
     def get_token(self):
         """
         Get a token directly back, typically you want to set the cache_token
-        param for ecsminion to false for this call.
+        param for ecsclient to false for this call.
 
-        :return: A valid token or an ecsminion exception
+        :return: A valid token or an ecsclient exception
         """
         return self._token_request.get_new_token()
 
@@ -212,7 +212,7 @@ class ECSMinion(object):
             elif http_verb == 'DELETE':
                 # Need to follow up - if 'accept' is in the headers
                 # delete calls are not working because ECS 2.0 is returning
-                # XML even is JSON is specified
+                # XML even if JSON is specified
                 headers = self._fetch_headers()
                 del headers['Accept']
 
@@ -232,7 +232,7 @@ class ECSMinion(object):
 
             if req.status_code != 200:
                 log.error("Status code NOT OK")
-                raise ECSMinionException(
+                raise ECSClientException(
                     http_status_code=req.status_code,
                     ecs_message=req.text)
             return req.json()
@@ -240,14 +240,14 @@ class ECSMinion(object):
         except requests.ConnectionError as conn_err:
             msg = 'Connection error: {0}'.format(conn_err.args)
             log.error(msg)
-            raise ECSMinionException(message=msg)
+            raise ECSClientException(message=msg)
         except requests.HTTPError as http_err:
             msg = 'HTTP error: {0}'.format(http_err.args)
             log.error(msg)
-            raise ECSMinionException(message=msg)
+            raise ECSClientException(message=msg)
         except requests.RequestException as req_err:
             msg = 'Request error: {0}'.format(req_err.args)
             log.error(msg)
-            raise ECSMinionException(message=msg)
+            raise ECSClientException(message=msg)
         except ValueError:
             return

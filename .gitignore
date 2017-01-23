@@ -8,3 +8,4 @@ Vagrantfile
 .tox/
 *.egg-info/
 .coverage
+build/

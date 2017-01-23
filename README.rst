@@ -1,27 +1,26 @@
-ECS Minion
-==========
+python-ecsclient
+================
 
-ECS Minion is a Python library for interacting with the ECS 2.x Management API
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This Python library provides interaction with the ECS Management API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: https://travis-ci.org/EMCECS/ecsminion.svg?branch=master
-    :target: https://travis-ci.org/EMCECS/ecsminion
+.. image:: https://travis-ci.org/adrianmo/python-ecsclient.svg?branch=master
+    :target: https://travis-ci.org/adrianmo/python-ecsclient
 
 **Note:** `ECS <https://www.emc.com>`__ is an EMC product,
 trademarked, copyrighted, etc.
 
 This library follows the ECS API documentation `located here. <https://www.emc.com/techpubs/api/ecs/v2-0-0-0/index.htm>`__
 
-Using this library is pretty straight forward. ECSMinion can be installed
-from `PyPi <http://pypi.python.org/>`__:
+You can install python-ecsclient using pip.
 
 ::
 
-    $ pip install ecsminion
+    $ pip install python-ecsclient
 
-This library should be compatible with both Python 2.7.x and Python 3.4.x.
+This library is compatible with both Python 2.7.x and Python 3.x.
 
-Creating an instance of the ECSMinion class allows the following
+Creating an instance of the ECSClient class allows the following
 arguments:
 
 +-----------------------+------------+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
@@ -31,7 +30,7 @@ arguments:
 +-----------------------+------------+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 | ``password``          | No         | None              | The password used to fetch the ECS token                                                                                                      |
 +-----------------------+------------+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| ``token``             | No         | None              | Pass a token to ECSMinion (username/password are ignored then)                                                                                |
+| ``token``             | No         | None              | Pass a token to ECSClient (username/password are ignored then)                                                                                |
 +-----------------------+------------+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 | ``ecs_endpoint``      | Yes        | None              | The ECS API endpoint, ex: ``https://192.168.0.149:4443``                                                                                      |
 +-----------------------+------------+-------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
@@ -54,10 +53,10 @@ need to set your ``request_timeout`` to ``60.0``.
 
 ::
 
-    from ecsminion import ECSMinion, ECSMinionException
+    from ecsclient import ECSClient, ECSClientException
 
     try:
-        client = ECSMinion(username='ecsadmin@internal',
+        client = ECSClient(username='ecsadmin@internal',
                            password='PASSWORD',
                            token_endpoint='https://192.168.0.149:4443/login',
                            ecs_endpoint='https://192.168.0.149:4443',
@@ -188,10 +187,10 @@ need to set your ``request_timeout`` to ``60.0``.
             'bucket-test', 'namespace1',
             start_time='2015-06-15T00:00', end_time='2015-06-15T1:00'))
 
-    except ECSMinionException as ecsminion_ex:
-        print('Message: {0}'.format(ecsminion_ex.message))
-        print('Status Code Returned: {0}\n'.format(ecsminion_ex.http_status_code))
-        print('ECS API Message: {0}'.format(ecsminion_ex.ecs_message))
+    except ECSClientException as ecsclient_ex:
+        print('Message: {0}'.format(ecsclient_ex.message))
+        print('Status Code Returned: {0}\n'.format(ecsclient_ex.http_status_code))
+        print('ECS API Message: {0}'.format(ecsclient_ex.ecs_message))
     except Exception as ex:
         print(ex.message)
 
@@ -245,17 +244,17 @@ using the ``licensing.add_license()`` method:
 
     except ValueError as val_ex:  # includes simplejson.decoder.JSONDecodeError
         print("Couldn't parse JSON data: {0}".format(val_ex.message))
-    except ECSMinionException as ecsminion_ex:
-        print('Message: {0}'.format(ecsminion_ex.message))
-        print('Status Code Returned: {0}\n'.format(ecsminion_ex.http_status_code))
-        print('ECS API Message: {0}'.format(ecsminion_ex.ecs_message))
+    except ECSClientException as ecsclient_ex:
+        print('Message: {0}'.format(ecsclient_ex.message))
+        print('Status Code Returned: {0}\n'.format(ecsclient_ex.http_status_code))
+        print('ECS API Message: {0}'.format(ecsclient_ex.ecs_message))
     except Exception as ex:
         print(ex.message)
 
 Example: Enable logging output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-ECSMinion leverages the Python ``logging`` module. Enable it from your
+ECSClient leverages the Python ``logging`` module. Enable it from your
 application like so:
 
 ::
@@ -266,7 +265,7 @@ application like so:
     logging.basicConfig()
     logging.getLogger().setLevel(logging.INFO)
 
-Now ECSMinion will tell you about what it's doing (and so will the
+Now ECSClient will tell you about what it's doing (and so will the
 ``requests`` library).  If you'd like even more information about the
 HTTP requests and headers, use the following:
 
@@ -300,13 +299,13 @@ a ``logging`` filter or change the logging level for just that library:
 Example: Use a valid token instead of supplying a username and password
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You pass an authentication token directly to ECSMinion which means you
+You pass an authentication token directly to ECSClient which means you
 don't need to supply a username/password. Here is an example (the token
 has been shortened):
 
 ::
 
-    client = ECSMinion(token='ALAcbGZtbjh6eVB3eUF1TzFEZWNmc0M2VVl2QjBVPQM',
+    client = ECSClient(token='ALAcbGZtbjh6eVB3eUF1TzFEZWNmc0M2VVl2QjBVPQM',
                        token_endpoint='https://192.168.1.146:4443/login',
                        ecs_endpoint='https://192.168.1.146:4443',
                        request_timeout=15.0)
@@ -319,12 +318,12 @@ Fetching a token for a user can be done as follows by setting the
 
 ::
 
-    from ecsminion import ECSMinion, ECSMinionException
+    from ecsclient import ECSClient, ECSClientException
 
 
     if __name__ == "__main__":
         try:
-            client = ECSMinion(username='someone',
+            client = ECSClient(username='someone',
                                password='password',
                                token=None,
                                token_endpoint='https://192.168.1.146:4443/login',
@@ -334,10 +333,10 @@ Fetching a token for a user can be done as follows by setting the
 
             print(client.get_token())
 
-        except ECSMinionException as ecsminion_ex:
-            print('Message: {0}'.format(ecsminion_ex.message))
-            print('Status Code Returned: {0}\n'.format(ecsminion_ex.http_status_code))
-            print('ECS API Message: {0}'.format(ecsminion_ex.ecs_message))
+        except ECSClientException as ecsclient_ex:
+            print('Message: {0}'.format(ecsclient_ex.message))
+            print('Status Code Returned: {0}\n'.format(ecsclient_ex.http_status_code))
+            print('ECS API Message: {0}'.format(ecsclient_ex.ecs_message))
         except Exception as ex:
             print(ex.message)
 
@@ -346,12 +345,12 @@ Example: Removing a cached token
 
 ::
 
-    from ecsminion import ECSMinion, ECSMinionException
+    from ecsclient import ECSClient, ECSClientException
 
 
     if __name__ == "__main__":
         try:
-            client = ECSMinion(username='someone',
+            client = ECSClient(username='someone',
                                password='password',
                                token=None,
                                token_endpoint='https://192.168.1.146:4443/login',
@@ -361,10 +360,10 @@ Example: Removing a cached token
 
             print(client.remove_cached_token())
 
-        except ECSMinionException as ecsminion_ex:
-            print('Message: {0}'.format(ecsminion_ex.message))
-            print('Status Code Returned: {0}\n'.format(ecsminion_ex.http_status_code))
-            print('ECS API Message: {0}'.format(ecsminion_ex.ecs_message))
+        except ECSClientException as ecsclient_ex:
+            print('Message: {0}'.format(ecsclient_ex.message))
+            print('Status Code Returned: {0}\n'.format(ecsclient_ex.http_status_code))
+            print('ECS API Message: {0}'.format(ecsclient_ex.ecs_message))
         except Exception as ex:
             print(ex.message)
 
@@ -372,5 +371,5 @@ License
 ^^^^^^^
 
 This software library is released to you under the Apache License 2.0. See
-`LICENSE <https://github.com/chadlung/ecsminion/blob/master/LICENSE>`__
+`LICENSE <https://github.com/adrianmo/python-ecsclient/blob/master/LICENSE>`__
 for more information.

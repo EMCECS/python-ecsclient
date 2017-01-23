@@ -1,8 +1,4 @@
-
-"""-*- coding: utf-8 -*-
-ECSMinion Setup
-"""
-
+#!/usr/bin/env python
 try:
     from setuptools import setup, find_packages
 except ImportError:
@@ -23,14 +19,14 @@ with open('README.rst', 'r') as f:
     readme = f.read()
 
 setup(
-    name='ecsminion',
-    url='https://github.com/chadlung/ecsminion',
-    keywords=['ecsminion'],
+    name='python-ecsclient',
+    url='https://github.com/EMCECS/python-ecsclient',
+    keywords=['ecsclient'],
     long_description=readme,
     version=read('VERSION')[0],
-    description='A library for interacting with the ECS 2.x Management API',
-    author='Chad Lung',
-    author_email='chad.lung@gmail.com',
+    description='A library for interacting with the ECS Management API',
+    author='ECS',
+    author_email='ecs@dell.com',
     tests_require=read('./test-requirements.txt'),
     install_requires=read('./requirements.txt'),
     test_suite='nose.collector',

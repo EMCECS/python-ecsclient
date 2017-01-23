@@ -6,7 +6,7 @@ import os
 import requests
 
 # Project level imports
-from ecsminion.util.exceptions import ECSMinionException
+from ecsclient.util.exceptions import ECSClientException
 
 
 # Suppress the insecure request warning
@@ -76,14 +76,14 @@ class TokenRequest(object):
         if req.status_code == 401:
             msg = 'Invalid username or password'
             log.fatal(msg)
-            raise ECSMinionException(
+            raise ECSClientException(
                 http_status_code=req.status_code,
                 ecs_message=req.text,
                 message=msg)
         if req.status_code != 200:
             msg = 'Non-200 status returned ({0})'.format(req.status_code)
             log.fatal(msg)
-            raise ECSMinionException(
+            raise ECSClientException(
                 http_status_code=req.status_code,
                 ecs_message=req.text,
                 message=msg)
@@ -154,12 +154,12 @@ class TokenRequest(object):
         except requests.ConnectionError as conn_err:
             msg = 'Connection error: {0}'.format(conn_err.args)
             log.error(msg)
-            raise ECSMinionException(message=msg)
+            raise ECSClientException(message=msg)
         except requests.HTTPError as http_err:
             msg = 'HTTP error: {0}'.format(http_err.args)
             log.error(msg)
-            raise ECSMinionException(message=msg)
+            raise ECSClientException(message=msg)
         except requests.RequestException as req_err:
             msg = 'Request error: {0}'.format(req_err.args)
             log.error(msg)
-            raise ECSMinionException(message=msg)
+            raise ECSClientException(message=msg)
