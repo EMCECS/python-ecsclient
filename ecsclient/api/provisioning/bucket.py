@@ -33,7 +33,7 @@ class Bucket(object):
         - For non SYSTEM_ADMIN user, Namespace should be current user's
           namespace
         - Optional searchable metadata should be an array of JSON dictionaries,
-          e.g. [{"name" : "x-amz-meta-custom", "type" : "User", "datatype" : "string"}, ...] 
+          e.g. [{"name" : "x-amz-meta-custom", "type" : "User", "datatype" : "string"}, ...]
 
 
         Required role(s):

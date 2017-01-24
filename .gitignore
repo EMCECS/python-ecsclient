@@ -9,3 +9,4 @@ Vagrantfile
 *.egg-info/
 .coverage
 build/
+dist/

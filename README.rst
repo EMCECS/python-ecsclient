@@ -4,11 +4,17 @@ python-ecsclient
 This Python library provides interaction with the ECS Management API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. image:: https://img.shields.io/pypi/v/python-ecsclient.svg
+    :target: https://pypi.python.org/pypi/python-ecsclient/
+    :alt: Latest Version
+
+.. image:: https://img.shields.io/pypi/pyversions/python-ecsclient.svg
+    :target: https://pypi.python.org/pypi/python-ecsclient/
+
 .. image:: https://travis-ci.org/adrianmo/python-ecsclient.svg?branch=master
     :target: https://travis-ci.org/adrianmo/python-ecsclient
 
-**Note:** `ECS <https://www.emc.com>`__ is an EMC product,
-trademarked, copyrighted, etc.
+
 
 This library follows the ECS API documentation `located here. <https://www.emc.com/techpubs/api/ecs/v2-0-0-0/index.htm>`__
 
@@ -373,3 +379,6 @@ License
 This software library is released to you under the Apache License 2.0. See
 `LICENSE <https://github.com/adrianmo/python-ecsclient/blob/master/LICENSE>`__
 for more information.
+
+**Note:** `ECS <https://www.emc.com>`__ is an Dell EMC product,
+trademarked, copyrighted, etc.
