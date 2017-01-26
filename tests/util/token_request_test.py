@@ -5,11 +5,11 @@ import unittest
 from mock import MagicMock
 from mock import mock_open
 from mock import patch
-from six.moves import http_client, builtins
+from six.moves import http_client
 
 # Project level imports
-from ecsclient.util.token_request import TokenRequest
-from ecsclient.util.exceptions import ECSClientException
+from ecsclient.common.token_request import TokenRequest
+from ecsclient.common.exceptions import ECSClientException
 
 
 def suite():
@@ -23,7 +23,7 @@ class WhenTestingTokenRequest(unittest.TestCase):
     def setUp(self):
         self.token_file_contents = '123TOKEN'
         self.response = MagicMock()
-        self.session_get = 'ecsclient.util.token_request.requests.Session.get'
+        self.session_get = 'ecsclient.common.token_request.requests.Session.get'
 
         self.token_request = TokenRequest(username='someone',
                                           password='password',

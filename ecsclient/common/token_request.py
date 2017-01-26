@@ -6,7 +6,7 @@ import os
 import requests
 
 # Project level imports
-from ecsclient.util.exceptions import ECSClientException
+from ecsclient.common.exceptions import ECSClientException
 
 
 # Suppress the insecure request warning

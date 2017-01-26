@@ -7,8 +7,8 @@ from mock import patch
 from six.moves import http_client
 
 # Project level imports
-from ecsclient import ECSClient
-from ecsclient.util.exceptions import ECSClientException
+from ecsclient.client import Client
+from ecsclient.common.exceptions import ECSClientException
 
 
 def suite():
@@ -23,7 +23,8 @@ class WhenTestingNode(unittest.TestCase):
         self.ecs_endpoint = 'https://127.0.0.1:4443'
         self.token_endpoint = 'https://127.0.0.1:4443/login'
 
-        self.client = ECSClient(
+        self.client = Client(
+            '2',
             ecs_endpoint=self.ecs_endpoint,
             token_endpoint=self.token_endpoint
         )
@@ -54,9 +55,9 @@ class WhenTestingNode(unittest.TestCase):
         self.requests = MagicMock(return_value=self.response)
         self.requests.get.side_effect = [self.response]
 
-        with patch('ecsclient.util.token_request.TokenRequest.get_new_token',
+        with patch('ecsclient.common.token_request.TokenRequest.get_new_token',
                    return_value='FAKE-TOKEN-123'):
-            with patch('ecsclient.util.token_request.requests.Session.get'):
+            with patch('ecsclient.common.token_request.requests.Session.get'):
                 with self.assertRaises(ECSClientException):
                     self.client.node.get_nodes()
 
@@ -67,9 +68,9 @@ class WhenTestingNode(unittest.TestCase):
         self.requests = MagicMock(return_value=self.response)
         self.requests.get.side_effect = [self.response]
 
-        with patch('ecsclient.util.token_request.TokenRequest.'
+        with patch('ecsclient.common.token_request.TokenRequest.'
                    '_get_existing_token', return_value='FAKE-TOKEN-123'):
-            with patch('ecsclient.requests.Session.get', self.requests):
+            with patch('ecsclient.baseclient.requests.Session.get', self.requests):
                 returned_json = self.client.node.get_nodes()
                 self.assertEqual(returned_json, self.returned_json)
 

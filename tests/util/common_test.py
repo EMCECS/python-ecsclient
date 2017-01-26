@@ -5,7 +5,7 @@ import unittest
 # None
 
 # Project level imports
-from ecsclient.util.common import get_formatted_time_string
+from ecsclient.common.util import get_formatted_time_string
 
 
 def suite():
