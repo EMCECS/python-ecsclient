@@ -53,7 +53,7 @@ class ConfigurationProperties(object):
     def get_properties_metadata(self):
         """
         Gets the meta data for each of the configuration properties.
-        Metatdata includes the possible values for the property, a description
+        Metadata includes the possible values for the property, a description
         of the property, whether a reboot is required when it is changed, etc.
 
         Required role(s):

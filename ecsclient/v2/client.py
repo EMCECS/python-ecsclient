@@ -1,11 +1,7 @@
 import logging
 
-import requests
-
 from ecsclient import baseclient
-from ecsclient.v2.configuration.certificate import Certificate
-from ecsclient.v2.configuration.configuration_properties import ConfigurationProperties
-from ecsclient.v2.configuration.licensing import Licensing
+from ecsclient.v2.configuration import certificate, configuration_properties, licensing
 from ecsclient.v2.geo_replication.replication_group import ReplicationGroup
 from ecsclient.v2.geo_replication.temporary_failed_zone import TemporaryFailedZone
 from ecsclient.v2.metering.billing import Billing
@@ -27,12 +23,6 @@ from ecsclient.v2.user_management.secret_key_self_service import SecretKeySelfSe
 from ecsclient.v2.user_management.user_management import ManagementUser
 from ecsclient.v2.user_management.user_object import ObjectUser
 
-# Suppress the insecure request warning
-# https://urllib3.readthedocs.org/en/
-# latest/security.html#insecurerequestwarning
-
-requests.packages.urllib3.disable_warnings()
-
 # Initialize logger
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
@@ -48,9 +38,9 @@ class Client(baseclient.Client):
         self.billing = Billing(self)
 
         # API -> Configuration
-        self.certificate = Certificate(self)
-        self.configuration_properties = ConfigurationProperties(self)
-        self.licensing = Licensing(self)
+        self.certificate = certificate.Certificate(self)
+        self.configuration_properties = configuration_properties.ConfigurationProperties(self)
+        self.licensing = licensing.Licensing(self)
 
         # API -> Geo Replication
         self.replication_group = ReplicationGroup(self)

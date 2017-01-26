@@ -1,12 +1,4 @@
-# Standard lib imports
 import logging
-
-# Third party imports
-# None
-
-# Project level imports
-# None
-
 
 log = logging.getLogger(__name__)
 
@@ -45,4 +37,5 @@ class Certificate(object):
         will be rotated into all of the nodes within 1 hour.
         """
         log.error("Certificate chain installation not supported")
+        # TODO: Implement it
         raise NotImplementedError
