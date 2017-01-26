@@ -1,30 +1,39 @@
+================
 python-ecsclient
 ================
 
-This Python library provides interaction with the ECS Management API
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+|Build_Status| |Python| |Version|
 
-.. image:: https://img.shields.io/pypi/v/python-ecsclient.svg
+This library is the Python Software Development Kit (SDK) for `Dell EMC
+Elastic Cloud Storage (ECS) <https://www.emc.com/en-us/storage/ecs/index.htm>`_.
+It allows developers to interact with the ECS Management API. You can find
+the ECS API specification `here. <https://www.emc.com/techpubs/api/ecs/v2-0-0-0/index.htm>`_.
+
+This library is the successor of `ECS Minion
+<https://github.com/chadlung/ecsminion>`_.
+
+
+.. |Build_Status| image:: https://travis-ci.org/EMCECS/python-ecsclient.svg?branch=master
+    :target: https://travis-ci.org/EMCECS/python-ecsclient
+    :alt: Build Status
+.. |Version| image:: https://img.shields.io/pypi/v/python-ecsclient.svg
     :target: https://pypi.python.org/pypi/python-ecsclient/
-    :alt: Latest Version
-
-.. image:: https://img.shields.io/pypi/pyversions/python-ecsclient.svg
+    :alt: Version
+.. |Python| image:: https://img.shields.io/pypi/pyversions/python-ecsclient.svg
     :target: https://pypi.python.org/pypi/python-ecsclient/
+    :alt: Python Versions
+.. |License| image:: http://img.shields.io/pypi/l/python-ecsclient.svg?style=flat
+    :target: https://github.com/EMCECS/python-ecsclient/blob/develop/LICENSE
+    :alt: License
 
-.. image:: https://travis-ci.org/adrianmo/python-ecsclient.svg?branch=master
-    :target: https://travis-ci.org/adrianmo/python-ecsclient
+Quick Start
+-----------
 
+You can install ``python-ecsclient`` using pip.
 
-
-This library follows the ECS API documentation `located here. <https://www.emc.com/techpubs/api/ecs/v2-0-0-0/index.htm>`__
-
-You can install python-ecsclient using pip.
-
-::
+.. code-block:: sh
 
     $ pip install python-ecsclient
-
-This library is compatible with both Python 2.7.x and Python 3.x.
 
 Creating an instance of the ECSClient class allows the following
 arguments:
