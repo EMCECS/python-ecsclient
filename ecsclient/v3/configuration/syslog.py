@@ -43,23 +43,33 @@ class Syslog(object):
         log.info("Getting syslog server information with ID '{}'".format(syslog_id))
         return self.conn.get('vdc/syslog/config/{}'.format(syslog_id))
 
-    def delete_syslog_server(self, syslog_id):
+    def create_syslog_server(self, server, port, protocol, severity):
         """
-        Delete specified Syslog Server.
+        Creates a Syslog server.
 
         Required role(s):
 
         SYSTEM_ADMIN
-        SYSTEM_MONITOR
 
-        There is no response body for this call
+        Example JSON result from the API:
+        {}
 
-        Expect: HTTP/1.1 200 OK
-
-        :param syslog_id: Syslog server ID
+        :param server: Fully qualified domain name or IP
+        :param port: Syslog port
+        :param protocol: Protocol Syslog protocol UDP/TCP
+        :param severity: Severity - minimal syslog message severity for this server
         """
-        log.info("Deleting syslog server with ID '{}'".format(syslog_id))
-        return self.conn.delete('vdc/syslog/config/{}'.format(syslog_id))
+        # TODO: Add example JSON response
+
+        payload = {
+          "server": server,
+          "port": port,
+          "protocol": protocol,
+          "severity": severity
+        }
+
+        log.info("Creating syslog server")
+        return self.conn.post('vdc/syslog/config', json_payload=payload)
 
     def update_syslog_server(self, syslog_id, server, port, protocol, severity):
         """
@@ -90,30 +100,20 @@ class Syslog(object):
         log.info("Updating syslog server with ID '{}'".format(syslog_id))
         return self.conn.put('vdc/syslog/config/{}'.format(syslog_id), json_payload=payload)
 
-    def create_syslog_server(self, server, port, protocol, severity):
+    def delete_syslog_server(self, syslog_id):
         """
-        Creates a Syslog server.
+        Delete specified Syslog Server.
 
         Required role(s):
 
         SYSTEM_ADMIN
+        SYSTEM_MONITOR
 
-        Example JSON result from the API:
-        {}
+        There is no response body for this call
 
-        :param server: Fully qualified domain name or IP
-        :param port: Syslog port
-        :param protocol: Protocol Syslog protocol UDP/TCP
-        :param severity: Severity - minimal syslog message severity for this server
+        Expect: HTTP/1.1 200 OK
+
+        :param syslog_id: Syslog server ID
         """
-        # TODO: Add example JSON response
-
-        payload = {
-          "server": server,
-          "port": port,
-          "protocol": protocol,
-          "severity": severity
-        }
-
-        log.info("Creating syslog server")
-        return self.conn.post('vdc/syslog/config', json_payload=payload)
+        log.info("Deleting syslog server with ID '{}'".format(syslog_id))
+        return self.conn.delete('vdc/syslog/config/{}'.format(syslog_id))
