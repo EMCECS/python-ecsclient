@@ -1,7 +1,7 @@
 import logging
 
 from ecsclient import baseclient
-from ecsclient.v3.configuration import certificate, configuration_properties, licensing, syslog, snmp
+from ecsclient.v3.configuration import certificate, configuration_properties, licensing, feature, syslog, snmp
 
 # Initialize logger
 log = logging.getLogger(__name__)
@@ -18,6 +18,7 @@ class Client(baseclient.Client):
         self.certificate = certificate.Certificate(self)
         self.configuration_properties = configuration_properties.ConfigurationProperties(self)
         self.licensing = licensing.Licensing(self)
+        self.feature = feature.Feature(self)
         self.syslog = syslog.Syslog(self)
         self.snmp = snmp.Snmp(self)
 
