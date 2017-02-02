@@ -10,3 +10,4 @@ Vagrantfile
 .coverage
 build/
 dist/
+.overcommit.yml
