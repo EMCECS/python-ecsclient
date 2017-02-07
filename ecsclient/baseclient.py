@@ -28,7 +28,8 @@ class Client(object):
         """
         Creates the ECSClient class that the client will directly work with
 
-        :param username: The username to fetch a token
+        :param username:
+        The username to fetch a token
         :param password: The password to fetch a token
         :param token: Supply a valid token to use instead of username/password
         :param ecs_endpoint: The URL where ECS is located

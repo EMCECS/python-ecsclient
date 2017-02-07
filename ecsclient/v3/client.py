@@ -2,8 +2,11 @@ import logging
 
 from ecsclient import baseclient
 from ecsclient.v3.configuration import certificate, configuration_properties, licensing, feature, syslog, snmp
+from ecsclient.v3.cas import cas
 
 # Initialize logger
+from ecsclient.v3.other import user_info
+
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
 
@@ -23,6 +26,7 @@ class Client(baseclient.Client):
         self.snmp = snmp.Snmp(self)
 
         # CAS
+        self.cas = cas.Cas(self)
 
         # File System Access
 
@@ -43,3 +47,6 @@ class Client(baseclient.Client):
         # Support
 
         # User Management
+
+        # Other
+        self.user_info = user_info.UserInfo(self)

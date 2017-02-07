@@ -1,10 +1,12 @@
 import logging
 
 import ecsclient.v2.client as v2_client
+import ecsclient.v3.client as v3_client
 
 _logger = logging.getLogger(__name__)
 
-_CLIENT_VERSIONS = {'2': v2_client.Client}
+_CLIENT_VERSIONS = {'2': v2_client.Client,
+                    '3': v3_client.Client}
 
 
 def Client(version=None, *args, **kwargs):
@@ -18,14 +20,13 @@ def Client(version=None, *args, **kwargs):
     """
 
     if not version:
-        msg = ("Please provide the API version. Options are: '2', '3'."
-               "http://$HOST:$PORT/v$VERSION_NUMBER")
+        msg = "Please provide the API version. Options are: '2', '3'."
         raise RuntimeError(msg)
 
     try:
         client_class = _CLIENT_VERSIONS[version]
     except KeyError:
-        msg = ('No client available for version: %s') % version
+        msg = 'No client available for version: %s' % version
         raise RuntimeError(msg)
 
     return client_class(*args, **kwargs)
