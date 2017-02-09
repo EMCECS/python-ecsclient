@@ -11,3 +11,4 @@ Vagrantfile
 build/
 dist/
 .overcommit.yml
+test.conf
