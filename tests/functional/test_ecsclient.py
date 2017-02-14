@@ -2,11 +2,13 @@ import os
 import re
 import unittest
 
+import time
 from six.moves import configparser
 from jsonschema import validate, FormatChecker
 
 from ecsclient.client import Client
 from tests.functional import helper
+from tests.functional import schemas
 
 
 class TestFunctional(unittest.TestCase):
@@ -196,3 +198,23 @@ class TestFunctional(unittest.TestCase):
             certificate_chain=certificate)
         self._validate_response(response, schema)
         self.assertSameCertificate(certificate, response['chain'])
+
+    def test_namespaces(self):
+
+        # Get all namespaces
+        response = self.client.namespace.get_namespaces()
+        self._validate_response(response, schemas.NAMESPACES)
+
+        # Get the first namespace returned individually
+        namespace_id = response['namespace'][0]['id']
+        response = self.client.namespace.get_namespace(namespace_id)
+        self._validate_response(response, schemas.NAMESPACE)
+
+        # Crete a new namespace
+        namespace_name = "functional-tests-namespace-%s" % int(time.time())
+        response = self.client.namespace.create_namespace(namespace_name)
+        self._validate_response(response, schemas.NAMESPACE)
+
+        # TODO: Update namespace
+
+        # TODO: Delete namespace

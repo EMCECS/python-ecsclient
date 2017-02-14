@@ -1,12 +1,4 @@
-# Standard lib imports
 import logging
-
-# Third party imports
-# None
-
-# Project level imports
-# None
-
 
 log = logging.getLogger(__name__)
 
@@ -93,6 +85,105 @@ class Namespace(object):
 
         return self.conn.get(
             url='object/namespaces/namespace/{0}'.format(namespace))
+
+    def create_namespace(self, name, default_object_project=None, default_data_services_vpool=None,
+                         default_bucket_block_size=None, allowed_vpools_list=[], disallowed_vpools_list=[],
+                         namespace_admins=None, external_group_admins=None, user_mapping=[],
+                         is_encryption_enabled=False, is_stale_allowed=False, is_compliance_enabled=False):
+        """
+        Creates a namespace with the given details
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        Example JSON result from the API:
+
+        {
+          "namespace": {
+            "id": "jt_namespace2",
+            "inactive": "false",
+            "isStaleAllowed": "true",
+            "link": {
+              "-rel": "self",
+              "-href": "/object/namespaces/namespace/jt_namespace2"
+            },
+            "name": "jt_namespace2",
+            "namespace_admins": "admin1,admin2,admin3",
+            "user_mapping": [
+              {
+                "attributes": {
+                  "attribute": [
+                    {
+                      "key": "key1",
+                      "value": "value1"
+                    },
+                    {
+                      "key": "key2",
+                      "value": "value2"
+                    }
+                  ]
+                },
+                "domain": "jt_domain",
+                "groups": { "group": "group1" }
+              },
+              {
+                "attributes": {
+                  "attribute": [
+                    {
+                      "key": "key2_1",
+                      "value": "value2_1"
+                    },
+                    {
+                      "key": "key2_2",
+                      "value": "value2_2"
+                    }
+                  ]
+                },
+                "domain": "jt_domain_2",
+                "groups": { "group": "group2" }
+              }
+            ]
+          }
+        }
+
+        :param name: User provided namespace (verified unique). Cannot include dots or slashes (.|/) in the name
+        :param default_object_project: Default project id for this tenant when creating buckets
+        :param default_data_services_vpool: Default replication group identifier for this tenant when creating buckets
+        :param default_bucket_block_size: Default bucket quota size
+        :param allowed_vpools_list: List of replication groups that are allowed to create buckets on the corresponding
+        namespace
+        :param disallowed_vpools_list: List of replication groups that are not allowed to create buckets on the
+        corresponding namespace
+        :param namespace_admins: Comma separated list of namespace admins
+        :param external_group_admins: List of groups from AD Server
+        :param user_mapping: List of user mapping objects
+        :param is_encryption_enabled: Flag to enable encryption for the namespace
+        :param is_stale_allowed: Flag to allow stale data within the namespace
+        :param is_compliance_enabled: Flag to enable namespace compliance
+        :returns The namespace created
+        """
+        payload = {
+            "namespace": name,
+            "default_object_project": default_object_project,
+            "default_data_services_vpool": default_data_services_vpool,
+            "allowed_vpools_list": allowed_vpools_list,
+            "disallowed_vpools_list": disallowed_vpools_list,
+            "namespace_admins": namespace_admins,
+            "user_mapping": user_mapping,
+            "is_encryption_enabled": is_encryption_enabled,
+            "default_bucket_block_size": default_bucket_block_size,
+            "external_group_admins": external_group_admins,
+            "is_stale_allowed": is_stale_allowed,
+            "compliance_enabled": is_compliance_enabled
+        }
+        return self.conn.post('object/namespaces/namespace', json_payload=payload)
+
+    def update_namespace(self):
+        raise NotImplementedError()
+
+    def delete_namespace(self):
+        raise NotImplementedError()
 
     def get_retention_classes(self, namespace):
         """

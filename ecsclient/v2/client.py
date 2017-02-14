@@ -9,7 +9,7 @@ from ecsclient.v2.metering.billing import Billing
 from ecsclient.v2.monitoring.capacity import Capacity
 from ecsclient.v2.monitoring.dashboard import Dashboard
 from ecsclient.v2.monitoring.events import Events
-from ecsclient.v2.multitenancy.namespace import Namespace
+from ecsclient.v2.multitenancy import namespace
 from ecsclient.v2.other import user_info
 from ecsclient.v2.provisioning.base_url import BaseUrl
 from ecsclient.v2.provisioning.bucket import Bucket
@@ -55,8 +55,8 @@ class Client(baseclient.Client):
         self.dashboard = Dashboard(self)
         self.events = Events(self)
 
-        # API -> Monitoring
-        self.namespace = Namespace(self)
+        # Multi-tenancy
+        self.namespace = namespace.Namespace(self)
 
         # API -> Provisioning
         self.base_url = BaseUrl(self)

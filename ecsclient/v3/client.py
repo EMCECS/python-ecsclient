@@ -5,6 +5,7 @@ from ecsclient.v3.configuration import certificate, configuration_properties, li
 from ecsclient.v3.cas import cas
 
 # Initialize logger
+from ecsclient.v3.multitenancy import namespace
 from ecsclient.v3.other import user_info
 
 log = logging.getLogger(__name__)
@@ -39,6 +40,7 @@ class Client(baseclient.Client):
         # Dashboard
 
         # Multi-tenancy
+        self.namespace = namespace.Namespace(self)
 
         # Geo-replication
 

@@ -47,7 +47,8 @@ class Certificate(object):
             REALLY-LONG-CERT\r\n-----ENDCERTIFICATE-----'
         }
 
-        :param selfsigned: Set true if the you want the system to generate a new self-signed certificate, false otherwise
+        :param selfsigned: Set true if the you want the system to generate a new self-signed certificate,
+        false otherwise
         :param ip_addresses: List of IP addresses. The IP addresses are taken into account only if selfsigned
         is set to true. i.e, User wants the system to generate a new self-signed certificate
         :param private_key: The private key used to sign the certificate in PEM format
