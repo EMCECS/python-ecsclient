@@ -154,8 +154,6 @@ class Namespace(object):
 
         SYSTEM_ADMIN
 
-        Example JSON result from the API:
-
         There is no response body for this call
 
         Expect: HTTP/1.1 200 OK

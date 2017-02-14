@@ -1,10 +1,12 @@
 import os
+import re
 import unittest
 
 from six.moves import configparser
 from jsonschema import validate, FormatChecker
 
 from ecsclient.client import Client
+from tests.functional import helper
 
 
 class TestFunctional(unittest.TestCase):
@@ -12,6 +14,13 @@ class TestFunctional(unittest.TestCase):
         super(TestFunctional, self).__init__(*args, **kwargs)
         self.skip_tests = False
         self._get_config()
+
+    def assertSameCertificate(self, first, second, msg=None):
+        """Fail if the two certificates are not equal.
+        """
+        first = re.sub(r"\s+", "", first)
+        second = re.sub(r"\s+", "", second)
+        self.assertEqual(first, second, msg=msg)
 
     def _get_config(self):
         config_file = os.environ.get('ECS_TEST_CONFIG_FILE',
@@ -25,6 +34,9 @@ class TestFunctional(unittest.TestCase):
             self.username = config.get('func_test', 'username')
             self.password = config.get('func_test', 'password')
             self.api_version = config.get('func_test', 'api_version')
+            license_file = config.get('func_test', 'license_file')
+            with open(license_file) as f:
+                self.license_text = f.read()
         else:
             self.skip_tests = True
 
@@ -130,3 +142,57 @@ class TestFunctional(unittest.TestCase):
         }
         response = self.client.licensing.get_license()
         self._validate_response(response, schema)
+
+    def test_add_license(self):
+        license = {
+            "license_text": self.license_text
+        }
+        response = self.client.licensing.add_license(license)
+        print(response)
+
+    def test_get_certificate(self):
+        schema = {
+            "type": "object",
+            "properties": {
+                "chain": {"type": "string"}
+            },
+            "required": [
+                "chain",
+            ]
+        }
+        response = self.client.certificate.get_certificate_chain()
+        self._validate_response(response, schema)
+
+    def test_set_certificate_selfsigned(self):
+        schema = {
+            "type": "object",
+            "properties": {
+                "chain": {"type": "string"}
+            },
+            "required": [
+                "chain",
+            ]
+        }
+        ip_addresses = ['10.0.0.1']
+        response = self.client.certificate.set_certificate_chain(
+            selfsigned=True,
+            ip_addresses=ip_addresses)
+        self._validate_response(response, schema)
+
+    def test_set_certificate_provided(self):
+        schema = {
+            "type": "object",
+            "properties": {
+                "chain": {"type": "string"}
+            },
+            "required": [
+                "chain",
+            ]
+        }
+        private_key = helper.get_sample_private_key()
+        certificate = helper.get_sample_certificate()
+        response = self.client.certificate.set_certificate_chain(
+            private_key=private_key,
+            certificate_chain=certificate)
+        self._validate_response(response, schema)
+        self.assertSameCertificate(certificate, response['chain'])
