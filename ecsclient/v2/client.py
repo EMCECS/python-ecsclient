@@ -15,7 +15,7 @@ from ecsclient.v2.provisioning.base_url import BaseUrl
 from ecsclient.v2.provisioning.bucket import Bucket
 from ecsclient.v2.provisioning.data_store import DataStore
 from ecsclient.v2.provisioning.node import Node
-from ecsclient.v2.provisioning.storage_pool import StoragePool
+from ecsclient.v2.provisioning import storage_pool
 from ecsclient.v2.provisioning.virtual_data_center import VirtualDataCenter
 from ecsclient.v2.support.call_home import CallHome
 from ecsclient.v2.user_management.authentication_provider import AuthenticationProvider
@@ -58,12 +58,12 @@ class Client(baseclient.Client):
         # Multi-tenancy
         self.namespace = namespace.Namespace(self)
 
-        # API -> Provisioning
+        # Provisioning
         self.base_url = BaseUrl(self)
         self.bucket = Bucket(self)
         self.data_store = DataStore(self)
         self.node = Node(self)
-        self.storage_pool = StoragePool(self)
+        self.storage_pool = storage_pool.StoragePool(self)
         self.virtual_data_center = VirtualDataCenter(self)
 
         # API -> Support

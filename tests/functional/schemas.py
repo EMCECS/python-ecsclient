@@ -169,3 +169,33 @@ LICENSE = {
         "license_text"
     ]
 }
+
+STORAGE_POOL = {
+    "type": "object",
+    "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "isProtected": {"type": "boolean"},
+        "isColdStorageEnabled": {"type": "boolean"}
+    },
+    "required": [
+        "id",
+        "name",
+        "isProtected",
+        "isColdStorageEnabled"
+    ]
+}
+
+STORAGE_POOLS = {
+    "type": "object",
+    "properties": {
+        "varray": {
+            "type": "array",
+            "minItems": 1,
+            "items": STORAGE_POOL
+        }
+    },
+    "required": [
+        "varray"
+    ]
+}

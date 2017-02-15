@@ -163,3 +163,33 @@ class TestFunctionalNamespaces(TestFunctional):
         self.client.namespace.delete(self.namespace_3)
         f = self.client.namespace.get
         self.assertRaises(ECSClientException, f, self.namespace_3)
+
+
+class TestFunctionalStoragePools(TestFunctional):
+
+    def __init__(self, *args, **kwargs):
+        super(TestFunctionalStoragePools, self).__init__(*args, **kwargs)
+        self.storage_pool_1 = "functional-tests-storagepool-%s" % int(time.time())
+        self.storage_pool_2 = self.storage_pool_1 + '_second'
+        self.storage_pool_3 = self.storage_pool_1 + '_third'
+
+    def setUp(self):
+        super(TestFunctionalStoragePools, self).setUp()
+        r = self.client.storage_pool.create(self.storage_pool_1)
+        self.storage_pool_1_id = r['id']
+
+    def tearDown(self):
+        super(TestFunctional, self).tearDown()
+
+    def test_storage_pools_list(self):
+        response = self.client.storage_pool.list()
+        self.assertValidSchema(response, schemas.STORAGE_POOLS)
+
+    def test_storage_pools_get_one(self):
+        response = self.client.storage_pool.get(self.storage_pool_1_id)
+        self.assertValidSchema(response, schemas.STORAGE_POOL)
+
+    def test_storage_pools_create(self):
+        response = self.client.storage_pool.create(self.storage_pool_2)
+        self.assertValidSchema(response, schemas.STORAGE_POOL)
+        self.assertEqual(response['name'], self.storage_pool_2)
