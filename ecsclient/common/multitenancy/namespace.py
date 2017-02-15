@@ -231,6 +231,7 @@ class Namespace(object):
             "is_encryption_enabled": is_encryption_enabled,
             "is_stale_allowed": is_stale_allowed
         }
+        # FIXME: According to the API, this call should return the updated object, but it does not
         log.info("Updating namespace ID '{}'".format(namespace_id))
         return self.conn.put('object/namespaces/namespace/{}'.format(namespace_id), json_payload=payload)
 

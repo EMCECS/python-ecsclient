@@ -67,14 +67,12 @@ class TestFunctional(unittest.TestCase):
 
 
 class TestFunctionalWhoami(TestFunctional):
-
     def test_whoami(self):
         response = self.client.user_info.whoami()
         self.assertValidSchema(response, schemas.WHOAMI)
 
 
 class TestFunctionalLicense(TestFunctional):
-
     def test_get_license(self):
         response = self.client.licensing.get_license()
         self.assertValidSchema(response, schemas.LICENSE)
@@ -88,7 +86,6 @@ class TestFunctionalLicense(TestFunctional):
 
 
 class TestFunctionalCertificate(TestFunctional):
-
     def test_get_certificate(self):
         response = self.client.certificate.get_certificate_chain()
         self.assertValidSchema(response, schemas.CERTIFICATE)
@@ -112,7 +109,6 @@ class TestFunctionalCertificate(TestFunctional):
 
 
 class TestFunctionalNamespaces(TestFunctional):
-
     def __init__(self, *args, **kwargs):
         super(TestFunctionalNamespaces, self).__init__(*args, **kwargs)
         self.namespace_1 = "functional-tests-namespace-%s" % int(time.time())
@@ -166,7 +162,6 @@ class TestFunctionalNamespaces(TestFunctional):
 
 
 class TestFunctionalStoragePools(TestFunctional):
-
     def __init__(self, *args, **kwargs):
         super(TestFunctionalStoragePools, self).__init__(*args, **kwargs)
         self.storage_pool_1 = "functional-tests-storagepool-%s" % int(time.time())
@@ -193,3 +188,18 @@ class TestFunctionalStoragePools(TestFunctional):
         response = self.client.storage_pool.create(self.storage_pool_2)
         self.assertValidSchema(response, schemas.STORAGE_POOL)
         self.assertEqual(response['name'], self.storage_pool_2)
+
+    def test_storage_pools_update(self):
+        new_name = self.storage_pool_1 + '-updated'
+        # Get the namespace and verify the value of one of its attributes
+        response = self.client.storage_pool.get(self.storage_pool_1_id)
+        self.assertNotEqual(response['name'], new_name)
+        self.assertFalse(response['isProtected'])
+        self.assertFalse(response['isColdStorageEnabled'])
+
+        # Update the attribute and check the response
+        response = self.client.storage_pool.update(self.storage_pool_1_id,
+                                                   name=new_name,
+                                                   is_protected=True)
+        self.assertEqual(response['name'], new_name)
+        self.assertTrue(response['isProtected'])

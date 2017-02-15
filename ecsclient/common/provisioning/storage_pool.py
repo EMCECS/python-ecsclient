@@ -4,7 +4,6 @@ log = logging.getLogger(__name__)
 
 
 class StoragePool(object):
-
     def __init__(self, connection):
         """
         Initialize a new instance
@@ -24,6 +23,7 @@ class StoragePool(object):
 
         {
             'isProtected': False,
+            'isColdStorageEnabled': False,
             'id': 'urn: storageos: VirtualArray:
                     3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
             'name': 'storagepool1'
@@ -49,12 +49,14 @@ class StoragePool(object):
             'varray': [
                 {
                     'isProtected': False,
+                    'isColdStorageEnabled': False,
                     'id': 'urn: storageos: VirtualArray:
                             3c4e8cca-2e3d-4f8d-b183-1c69ce2d5b37',
                     'name': 'storagepool1'
                 },
                 {
                     'isProtected': True,
+                    'isColdStorageEnabled': False,
                     'id': 'urn: storageos: VirtualArray:
                             c7fc54dc-6616-4b7e-a86c-0210ef9a8804',
                     'name': 'storagepool2'
@@ -85,7 +87,8 @@ class StoragePool(object):
         {
             'id': 'urn:storageos:VirtualArray:dd751e72-142-598-b4f833e93b61',
             'name': 'storage_pool',
-            'isProtected': False
+            'isProtected': False,
+            'isColdStorageEnabled': False
         }
 
         :param name: Storage pool name
@@ -105,8 +108,36 @@ class StoragePool(object):
         log.info("Creating storage pool '{}'".format(name))
         return self.conn.post('vdc/data-services/varrays', json_payload=payload)
 
-    def update(self):
-        raise NotImplementedError()
+    def update(self, storage_pool_id, name=None, is_protected=None):
+        """
+        Updates storage pool for the specified identifier.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        Example JSON result from the API:
+
+        {
+            'id': 'urn:storageos:VirtualArray:82cf257b-0782-433c-92ca-2ee6161b917e',
+            'name': 'CommodityvPool',
+            'description': 'desc',
+            'isProtected': True,
+            'isColdStorageEnabled': False
+        }
+
+        :param storage_pool_id: Storage pool identifier to be updated
+        :param name: Name of virtual array to be updated
+        :param is_protected: Set to True to enable storage pool protection, False otherwise
+        """
+        payload = {
+            "name": name,
+            "isProtected": is_protected
+        }
+        # FIXME: API throws error if 'isColdStorageEnabled' and 'description' fields are sent
+        log.info("Updating storage pool ID '{}'".format(storage_pool_id))
+        return self.conn.put('vdc/data-services/varrays/{}'.format(storage_pool_id),
+                             json_payload=payload)
 
     def delete(self):
         raise NotImplementedError()
