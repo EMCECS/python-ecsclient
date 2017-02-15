@@ -212,9 +212,15 @@ class TestFunctional(unittest.TestCase):
 
         # Crete a new namespace
         namespace_name = "functional-tests-namespace-%s" % int(time.time())
-        response = self.client.namespace.create_namespace(namespace_name)
+        response = self.client.namespace.create_namespace(namespace_name, is_stale_allowed=False)
         self._validate_response(response, schemas.NAMESPACE)
+        self.assertEqual(response['is_stale_allowed'], False)
 
-        # TODO: Update namespace
+        # Update a namespace
+        namespace_id = response['id']
+        self.client.namespace.update_namespace(namespace_id, is_stale_allowed=True)
+        response = self.client.namespace.get_namespace(namespace_id)
+        self.assertEqual(response['is_stale_allowed'], True)
 
         # TODO: Delete namespace
+

@@ -177,12 +177,64 @@ class Namespace(object):
             "is_stale_allowed": is_stale_allowed,
             "compliance_enabled": is_compliance_enabled
         }
+        log.info("Creating namespace '{0}'".format(name))
         return self.conn.post('object/namespaces/namespace', json_payload=payload)
 
-    def update_namespace(self):
-        raise NotImplementedError()
+    def update_namespace(self, namespace_id, default_data_services_vpool=None, vpools_added_to_allowed_vpools_list=[],
+                         vpools_added_to_disallowed_vpools_list=[], vpools_removed_from_allowed_vpools_list=[],
+                         vpools_removed_from_disallowed_vpools_list=[], namespace_admins=None, user_mapping=None,
+                         default_bucket_block_size=None, external_group_admins=None, is_encryption_enabled=None,
+                         is_stale_allowed=None):
+        """
+        Updates namespace details like replication group list, namespace admins and user mappings.
+        Replication group can be:
+            - Added to allowed or disallowed replication group list
+            - Removed from allowed or disallowed replication group list
 
-    def delete_namespace(self):
+        Required role(s):
+
+        SYSTEM_ADMIN
+        NAMESPACE_ADMIN
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param namespace_id: Namespace identifier whose details needs to be updated
+        :param default_data_services_vpool: Default replication group identifier when creating buckets
+        :param vpools_added_to_allowed_vpools_list: List of replication group identifier which will be added in the
+        allowed List for allowing namespace access
+        :param vpools_added_to_disallowed_vpools_list: List of replication group identifier which will be added in the
+        disallowed list for prohibiting namespace access
+        :param vpools_removed_from_allowed_vpools_list: List of replication group identifier which will be removed
+        from allowed list
+        :param vpools_removed_from_disallowed_vpools_list: List of replication group identifier which will be removed
+        from disallowed list for removing their prohibition namespace access
+        :param namespace_admins: Comma separated list of namespace admins
+        :param user_mapping: List of user mapping objects
+        :param default_bucket_block_size: Default bucket quota size
+        :param external_group_admins: List of groups from AD Server
+        :param is_encryption_enabled: Update encryption for the namespace. If null then encryption will not be updated.
+        :param is_stale_allowed: Flag to allow stale data within the namespace. If null then stale allowance will not be
+        updated
+        """
+        payload = {
+            "default_data_services_vpool": default_data_services_vpool,
+            "vpools_added_to_allowed_vpools_list": vpools_added_to_allowed_vpools_list,
+            "vpools_added_to_disallowed_vpools_list": vpools_added_to_disallowed_vpools_list,
+            "vpools_removed_from_allowed_vpools_list": vpools_removed_from_allowed_vpools_list,
+            "vpools_removed_from_disallowed_vpools_list": vpools_removed_from_disallowed_vpools_list,
+            "namespace_admins": namespace_admins,
+            "user_mapping": user_mapping,
+            "default_bucket_block_size": default_bucket_block_size,
+            "external_group_admins": external_group_admins,
+            "is_encryption_enabled": is_encryption_enabled,
+            "is_stale_allowed": is_stale_allowed
+        }
+        log.info("Updating namespace ID '{}'".format(namespace_id))
+        return self.conn.put('object/namespaces/namespace/{}'.format(namespace_id), json_payload=payload)
+
+    def delete_namespace(self, namespace_id):
         raise NotImplementedError()
 
     def get_retention_classes(self, namespace):
