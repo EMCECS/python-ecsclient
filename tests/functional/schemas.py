@@ -1,3 +1,32 @@
+WHOAMI = {
+    "type": "object",
+    "properties": {
+        "namespace": {"type": "string"},
+        "last_time_password_changed": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "distinguished_name": {"type": "string"},
+        "common_name": {"type": "string"},
+        "roles": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": True
+        }
+    },
+    "required": [
+        "namespace",
+        "last_time_password_changed",
+        "distinguished_name",
+        "common_name",
+        "roles",
+    ]
+}
+
 NAMESPACES = {
     "type": "object",
     "properties": {
@@ -80,5 +109,63 @@ NAMESPACE = {
         "default_bucket_block_size",
         "user_mapping",
         "link"
+    ]
+}
+
+CERTIFICATE = {
+    "type": "object",
+    "properties": {
+        "chain": {"type": "string"}
+    },
+    "required": [
+        "chain",
+    ]
+}
+
+LICENSE = {
+    "type": "object",
+    "properties": {
+        "license_feature": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "product": {"type": "string"},
+                    "version": {"type": "string"},
+                    "model": {"type": "string"},
+                    "licensed_ind": {"type": "boolean"},
+                    "trial_license_ind": {"type": "boolean"},
+                    "storage_capacity": {"type": "string"},
+                    "notice": {"type": "string"},
+                    "serial": {"type": "string"},
+                    "expired_ind": {"type": "boolean"},
+                    "issued_date": {"type": "string", "format": "date-time"},
+                    "license_id_indicator": {"type": "string"},
+                    "issuer": {"type": "string"},
+                    "site_id": {"type": "string"}
+                },
+                "required": [
+                    "product",
+                    "version",
+                    "model",
+                    "licensed_ind",
+                    "trial_license_ind",
+                    "storage_capacity",
+                    "notice",
+                    "serial",
+                    "expired_ind",
+                    "issued_date",
+                    "license_id_indicator",
+                    "issuer",
+                    "site_id"
+                ]
+            },
+        },
+        "license_text": {"type": "string"}
+    },
+    "required": [
+        "license_feature",
+        "license_text"
     ]
 }

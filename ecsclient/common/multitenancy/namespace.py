@@ -10,7 +10,7 @@ class Namespace(object):
         """
         self.conn = connection
 
-    def get_namespaces(self):
+    def list(self):
         """
         Gets the identifiers for all configured namespaces.
 
@@ -37,7 +37,7 @@ class Namespace(object):
         log.info("Getting all namespaces")
         return self.conn.get(url='object/namespaces')
 
-    def get_namespace(self, namespace):
+    def get(self, namespace):
         """
         Gets the details for the given namespace.
 
@@ -86,10 +86,10 @@ class Namespace(object):
         return self.conn.get(
             url='object/namespaces/namespace/{0}'.format(namespace))
 
-    def create_namespace(self, name, default_object_project=None, default_data_services_vpool=None,
-                         default_bucket_block_size=None, allowed_vpools_list=[], disallowed_vpools_list=[],
-                         namespace_admins=None, external_group_admins=None, user_mapping=[],
-                         is_encryption_enabled=False, is_stale_allowed=False, is_compliance_enabled=False):
+    def create(self, name, default_object_project=None, default_data_services_vpool=None,
+               default_bucket_block_size=None, allowed_vpools_list=[], disallowed_vpools_list=[],
+               namespace_admins=None, external_group_admins=None, user_mapping=[],
+               is_encryption_enabled=False, is_stale_allowed=False, is_compliance_enabled=False):
         """
         Creates a namespace with the given details
 
@@ -180,11 +180,11 @@ class Namespace(object):
         log.info("Creating namespace '{0}'".format(name))
         return self.conn.post('object/namespaces/namespace', json_payload=payload)
 
-    def update_namespace(self, namespace_id, default_data_services_vpool=None, vpools_added_to_allowed_vpools_list=[],
-                         vpools_added_to_disallowed_vpools_list=[], vpools_removed_from_allowed_vpools_list=[],
-                         vpools_removed_from_disallowed_vpools_list=[], namespace_admins=None, user_mapping=None,
-                         default_bucket_block_size=None, external_group_admins=None, is_encryption_enabled=None,
-                         is_stale_allowed=None):
+    def update(self, namespace_id, default_data_services_vpool=None, vpools_added_to_allowed_vpools_list=[],
+               vpools_added_to_disallowed_vpools_list=[], vpools_removed_from_allowed_vpools_list=[],
+               vpools_removed_from_disallowed_vpools_list=[], namespace_admins=None, user_mapping=None,
+               default_bucket_block_size=None, external_group_admins=None, is_encryption_enabled=None,
+               is_stale_allowed=None):
         """
         Updates namespace details like replication group list, namespace admins and user mappings.
         Replication group can be:
@@ -234,8 +234,22 @@ class Namespace(object):
         log.info("Updating namespace ID '{}'".format(namespace_id))
         return self.conn.put('object/namespaces/namespace/{}'.format(namespace_id), json_payload=payload)
 
-    def delete_namespace(self, namespace_id):
-        raise NotImplementedError()
+    def delete(self, namespace_id):
+        """
+        Deactivates and deletes the given namespace and all associated user mappings.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param namespace_id: An active namespace identifier which needs to be deleted
+        """
+        log.info("Deleting namespace ID '{}'".format(namespace_id))
+        return self.conn.post('object/namespaces/namespace/{}/deactivate'.format(namespace_id))
 
     def get_retention_classes(self, namespace):
         """

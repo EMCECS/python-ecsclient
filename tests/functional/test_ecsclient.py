@@ -7,6 +7,7 @@ from six.moves import configparser
 from jsonschema import validate, FormatChecker
 
 from ecsclient.client import Client
+from ecsclient.common.exceptions import ECSClientException
 from tests.functional import helper
 from tests.functional import schemas
 
@@ -16,13 +17,6 @@ class TestFunctional(unittest.TestCase):
         super(TestFunctional, self).__init__(*args, **kwargs)
         self.skip_tests = False
         self._get_config()
-
-    def assertSameCertificate(self, first, second, msg=None):
-        """Fail if the two certificates are not equal.
-        """
-        first = re.sub(r"\s+", "", first)
-        second = re.sub(r"\s+", "", second)
-        self.assertEqual(first, second, msg=msg)
 
     def _get_config(self):
         config_file = os.environ.get('ECS_TEST_CONFIG_FILE',
@@ -59,91 +53,31 @@ class TestFunctional(unittest.TestCase):
     def tearDown(self):
         super(TestFunctional, self).tearDown()
 
-    def _validate_response(self, response, schema):
-        validate(response, schema, format_checker=FormatChecker())
+    def assertSameCertificate(self, first, second, msg=None):
+        """Fail if the two certificates are not equal.
+        """
+        first = re.sub(r"\s+", "", first)
+        second = re.sub(r"\s+", "", second)
+        self.assertEqual(first, second, msg=msg)
+
+    def assertValidSchema(self, object, schema):
+        """Fail if the object does not comply with the given schema.
+        """
+        validate(object, schema, format_checker=FormatChecker())
+
+
+class TestFunctionalWhoami(TestFunctional):
 
     def test_whoami(self):
-        schema = {
-            "type": "object",
-            "properties": {
-                "namespace": {"type": "string"},
-                "last_time_password_changed": {
-                    "type": "string",
-                    "format": "date-time"
-                },
-                "distinguished_name": {"type": "string"},
-                "common_name": {"type": "string"},
-                "roles": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "minLength": 1
-                    },
-                    "minItems": 1,
-                    "uniqueItems": True
-                }
-            },
-            "required": [
-                "namespace",
-                "last_time_password_changed",
-                "distinguished_name",
-                "common_name",
-                "roles",
-            ]
-        }
         response = self.client.user_info.whoami()
-        self._validate_response(response, schema)
+        self.assertValidSchema(response, schemas.WHOAMI)
+
+
+class TestFunctionalLicense(TestFunctional):
 
     def test_get_license(self):
-        schema = {
-            "type": "object",
-            "properties": {
-                "license_feature": {
-                    "type": "array",
-                    "minItems": 1,
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "product": {"type": "string"},
-                            "version": {"type": "string"},
-                            "model": {"type": "string"},
-                            "licensed_ind": {"type": "boolean"},
-                            "trial_license_ind": {"type": "boolean"},
-                            "storage_capacity": {"type": "string"},
-                            "notice": {"type": "string"},
-                            "serial": {"type": "string"},
-                            "expired_ind": {"type": "boolean"},
-                            "issued_date": {"type": "string", "format": "date-time"},
-                            "license_id_indicator": {"type": "string"},
-                            "issuer": {"type": "string"},
-                            "site_id": {"type": "string"}
-                        },
-                        "required": [
-                            "product",
-                            "version",
-                            "model",
-                            "licensed_ind",
-                            "trial_license_ind",
-                            "storage_capacity",
-                            "notice",
-                            "serial",
-                            "expired_ind",
-                            "issued_date",
-                            "license_id_indicator",
-                            "issuer",
-                            "site_id"
-                        ]
-                    },
-                },
-                "license_text": {"type": "string"}
-            },
-            "required": [
-                "license_feature",
-                "license_text"
-            ]
-        }
         response = self.client.licensing.get_license()
-        self._validate_response(response, schema)
+        self.assertValidSchema(response, schemas.LICENSE)
 
     def test_add_license(self):
         license = {
@@ -152,75 +86,80 @@ class TestFunctional(unittest.TestCase):
         response = self.client.licensing.add_license(license)
         print(response)
 
-    def test_get_certificate(self):
-        schema = {
-            "type": "object",
-            "properties": {
-                "chain": {"type": "string"}
-            },
-            "required": [
-                "chain",
-            ]
-        }
-        response = self.client.certificate.get_certificate_chain()
-        self._validate_response(response, schema)
 
-    def test_set_certificate_selfsigned(self):
-        schema = {
-            "type": "object",
-            "properties": {
-                "chain": {"type": "string"}
-            },
-            "required": [
-                "chain",
-            ]
-        }
+class TestFunctionalCertificate(TestFunctional):
+
+    def test_get_certificate(self):
+        response = self.client.certificate.get_certificate_chain()
+        self.assertValidSchema(response, schemas.CERTIFICATE)
+
+    def test_set_certificate(self):
+        # First, set a self-signed certificate
         ip_addresses = ['10.0.0.1']
         response = self.client.certificate.set_certificate_chain(
             selfsigned=True,
             ip_addresses=ip_addresses)
-        self._validate_response(response, schema)
+        self.assertValidSchema(response, schemas.CERTIFICATE)
 
-    def test_set_certificate_provided(self):
-        schema = {
-            "type": "object",
-            "properties": {
-                "chain": {"type": "string"}
-            },
-            "required": [
-                "chain",
-            ]
-        }
+        # Then, provide a private key and a certificate
         private_key = helper.get_sample_private_key()
         certificate = helper.get_sample_certificate()
         response = self.client.certificate.set_certificate_chain(
             private_key=private_key,
             certificate_chain=certificate)
-        self._validate_response(response, schema)
+        self.assertValidSchema(response, schemas.CERTIFICATE)
         self.assertSameCertificate(certificate, response['chain'])
 
-    def test_namespaces(self):
 
-        # Get all namespaces
-        response = self.client.namespace.get_namespaces()
-        self._validate_response(response, schemas.NAMESPACES)
+class TestFunctionalNamespaces(TestFunctional):
 
-        # Get the first namespace returned individually
-        namespace_id = response['namespace'][0]['id']
-        response = self.client.namespace.get_namespace(namespace_id)
-        self._validate_response(response, schemas.NAMESPACE)
+    def __init__(self, *args, **kwargs):
+        super(TestFunctionalNamespaces, self).__init__(*args, **kwargs)
+        self.namespace_1 = "functional-tests-namespace-%s" % int(time.time())
+        self.namespace_2 = self.namespace_1 + '_second'
+        self.namespace_3 = self.namespace_1 + '_third'
 
-        # Crete a new namespace
-        namespace_name = "functional-tests-namespace-%s" % int(time.time())
-        response = self.client.namespace.create_namespace(namespace_name, is_stale_allowed=False)
-        self._validate_response(response, schemas.NAMESPACE)
+    def setUp(self):
+        super(TestFunctionalNamespaces, self).setUp()
+        self.client.namespace.create(self.namespace_1)
+        self.client.namespace.create(self.namespace_3)
+
+    def tearDown(self):
+        super(TestFunctional, self).tearDown()
+        for namespace in [self.namespace_1,
+                          self.namespace_2,
+                          self.namespace_3]:
+            try:
+                self.client.namespace.delete(namespace)
+            except ECSClientException:
+                pass
+
+    def test_namespaces_list(self):
+        response = self.client.namespace.list()
+        self.assertValidSchema(response, schemas.NAMESPACES)
+
+    def test_namespaces_get_one(self):
+        response = self.client.namespace.get(self.namespace_1)
+        self.assertValidSchema(response, schemas.NAMESPACE)
+
+    def test_namespaces_update(self):
+        # Get the namespace and verify the value of one of its attributes
+        response = self.client.namespace.get(self.namespace_1)
         self.assertEqual(response['is_stale_allowed'], False)
 
-        # Update a namespace
-        namespace_id = response['id']
-        self.client.namespace.update_namespace(namespace_id, is_stale_allowed=True)
-        response = self.client.namespace.get_namespace(namespace_id)
+        # Update the attribute
+        self.client.namespace.update(self.namespace_1, is_stale_allowed=True)
+
+        # Get it again and verify that the value was correctly updated
+        response = self.client.namespace.get(self.namespace_1)
         self.assertEqual(response['is_stale_allowed'], True)
 
-        # TODO: Delete namespace
+    def test_namespaces_create(self):
+        response = self.client.namespace.create(self.namespace_2)
+        self.assertValidSchema(response, schemas.NAMESPACE)
+        self.assertEqual(response['name'], self.namespace_2)
 
+    def test_namespaces_delete(self):
+        self.client.namespace.delete(self.namespace_3)
+        f = self.client.namespace.get
+        self.assertRaises(ECSClientException, f, self.namespace_3)
