@@ -139,5 +139,19 @@ class StoragePool(object):
         return self.conn.put('vdc/data-services/varrays/{}'.format(storage_pool_id),
                              json_payload=payload)
 
-    def delete(self):
-        raise NotImplementedError()
+    def delete(self, storage_pool_id):
+        """
+        Deletes the storage pool for the specified identifier.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param storage_pool_id: storage pool identifier to be deleted
+        """
+        log.info("Deleting storage pool ID '{}'".format(storage_pool_id))
+        return self.conn.delete('vdc/data-services/varrays/{}'.format(storage_pool_id))

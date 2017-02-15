@@ -250,6 +250,7 @@ class Namespace(object):
         :param namespace_id: An active namespace identifier which needs to be deleted
         """
         log.info("Deleting namespace ID '{}'".format(namespace_id))
+        # FIXME: This should be a DELETE request
         return self.conn.post('object/namespaces/namespace/{}/deactivate'.format(namespace_id))
 
     def get_retention_classes(self, namespace):

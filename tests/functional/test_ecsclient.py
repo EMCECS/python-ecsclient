@@ -121,7 +121,7 @@ class TestFunctionalNamespaces(TestFunctional):
         self.client.namespace.create(self.namespace_3)
 
     def tearDown(self):
-        super(TestFunctional, self).tearDown()
+        super(TestFunctionalNamespaces, self).tearDown()
         for namespace in [self.namespace_1,
                           self.namespace_2,
                           self.namespace_3]:
@@ -172,9 +172,19 @@ class TestFunctionalStoragePools(TestFunctional):
         super(TestFunctionalStoragePools, self).setUp()
         r = self.client.storage_pool.create(self.storage_pool_1)
         self.storage_pool_1_id = r['id']
+        self.storage_pool_2_id = 'placeholder'
+        r = self.client.storage_pool.create(self.storage_pool_3)
+        self.storage_pool_3_id = r['id']
 
     def tearDown(self):
-        super(TestFunctional, self).tearDown()
+        super(TestFunctionalStoragePools, self).tearDown()
+        for storage_pool_id in [self.storage_pool_1_id,
+                                self.storage_pool_2_id,
+                                self.storage_pool_3_id]:
+            try:
+                self.client.storage_pool.delete(storage_pool_id)
+            except ECSClientException:
+                pass
 
     def test_storage_pools_list(self):
         response = self.client.storage_pool.list()
@@ -203,3 +213,8 @@ class TestFunctionalStoragePools(TestFunctional):
                                                    is_protected=True)
         self.assertEqual(response['name'], new_name)
         self.assertTrue(response['isProtected'])
+
+    def test_storage_pools_delete(self):
+        self.client.storage_pool.delete(self.storage_pool_3_id)
+        f = self.client.storage_pool.get
+        self.assertRaises(ECSClientException, f, self.storage_pool_3_id)
