@@ -3,8 +3,7 @@ import logging
 from ecsclient import baseclient
 from ecsclient.v2.cas import cas
 from ecsclient.v2.configuration import certificate, configuration_properties, licensing
-from ecsclient.v2.geo_replication.replication_group import ReplicationGroup
-from ecsclient.v2.geo_replication.temporary_failed_zone import TemporaryFailedZone
+from ecsclient.v2.geo_replication import replication_group, temporary_failed_zone
 from ecsclient.v2.metering.billing import Billing
 from ecsclient.v2.monitoring.capacity import Capacity
 from ecsclient.v2.monitoring.dashboard import Dashboard
@@ -46,8 +45,8 @@ class Client(baseclient.Client):
         self.cas = cas.Cas(self)
 
         # API -> Geo Replication
-        self.replication_group = ReplicationGroup(self)
-        self.temp_failed_zone = TemporaryFailedZone(self)
+        self.replication_group = replication_group.ReplicationGroup(self)
+        self.temp_failed_zone = temporary_failed_zone.TemporaryFailedZone(self)
 
         # API -> Monitoring
         self.capacity = Capacity(self)

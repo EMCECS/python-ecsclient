@@ -241,7 +241,7 @@ VDC = {
         "permanentlyFailed": {"type": "boolean"}
     },
     "required": [
-        "id",
+        "id"
         "vdcId",
         "name",
         "vdcName",
@@ -271,5 +271,72 @@ VDCS = {
     },
     "required": [
         "vdc"
+    ]
+}
+
+REPLICATION_GROUP = {
+    "type": "object",
+    "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "inactive": {"type": "boolean"},
+        "global": {"type": ["boolean", "null"]},
+        "remote": {"type": ["boolean", "null"]},
+        "vdc": {
+            "type": ["object", "null"],
+            "properties": {
+                "id": {"type": "string"},
+                "link": {"type": "string"}
+            },
+            "required": [
+                "id",
+                "link"
+            ]
+        },
+        "description": {"type": "string"},
+        "varrayMappings": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "value": {"type": "string"}
+                },
+                "required": [
+                    "name",
+                    "value"
+                ]
+            }
+        },
+        "creation_time": {"type": "number"},
+        "isAllowAllNamespaces": {"type": "boolean"},
+        "enable_rebalancing": {"type": "boolean"},
+        "isFullRep": {"type": "boolean"}
+    },
+    "required": [
+        "id",
+        "name",
+        "global",
+        "remote",
+        "vdc",
+        "description",
+        "varrayMappings",
+        "isAllowAllNamespaces",
+        "enable_rebalancing",
+        "isFullRep"
+    ]
+}
+
+REPLICATION_GROUPS = {
+    "type": "object",
+    "properties": {
+        "data_service_vpool": {
+            "type": "array",
+            "minItems": 1,
+            "items": REPLICATION_GROUP
+        }
+    },
+    "required": [
+        "data_service_vpool"
     ]
 }

@@ -3,12 +3,12 @@ import logging
 from ecsclient import baseclient
 from ecsclient.v3.configuration import certificate, configuration_properties, licensing, feature, syslog, snmp
 from ecsclient.v3.cas import cas
-
-# Initialize logger
 from ecsclient.v3.multitenancy import namespace
 from ecsclient.v3.other import user_info
+from ecsclient.v3.geo_replication import replication_group
 from ecsclient.v3.provisioning import storage_pool, virtual_data_center
 
+# Initialize logger
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
 
@@ -44,6 +44,7 @@ class Client(baseclient.Client):
         self.namespace = namespace.Namespace(self)
 
         # Geo-replication
+        self.replication_group = replication_group.ReplicationGroup(self)
 
         # Provisioning
         self.storage_pool = storage_pool.StoragePool(self)
