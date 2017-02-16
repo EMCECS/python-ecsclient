@@ -199,3 +199,77 @@ STORAGE_POOLS = {
         "varray"
     ]
 }
+
+VDC = {
+    "type": "object",
+    "properties": {
+        "id": {"type": "string"},
+        "vdcId": {"type": "string"},
+        "name": {"type": "string"},
+        "vdcName": {"type": "string"},
+        "link": {
+            "type": "object",
+            "properties": {
+                "rel": {"type": "string"},
+                "href": {"type": "string"}
+            },
+            "required": [
+                "rel",
+                "href"
+            ]
+        },
+        "inactive": {"type": "boolean"},
+        "local": {"type": "boolean"},
+        "global": {"type": ["boolean", "null"]},
+        "remote": {"type": ["boolean", "null"]},
+        "vdc": {
+            "type": ["object", "null"],
+            "properties": {
+                "id": {"type": "string"},
+                "link": {"type": "string"}
+            },
+            "required": [
+                "id",
+                "link"
+            ]
+        },
+        "is_encryption_enabled": {"type": "boolean"},
+        "managementEndPoints": {"type": "string"},
+        "interVdcEndPoints": {"type": "string"},
+        "interVdcCmdEndPoints": {"type": "string"},
+        "secretKeys": {"type": "string"},
+        "permanentlyFailed": {"type": "boolean"}
+    },
+    "required": [
+        "id",
+        "vdcId",
+        "name",
+        "vdcName",
+        "link",
+        "inactive",
+        "local",
+        "global",
+        "remote",
+        "vdc",
+        "is_encryption_enabled",
+        "managementEndPoints",
+        "interVdcEndPoints",
+        "interVdcCmdEndPoints",
+        "secretKeys",
+        "permanentlyFailed"
+    ]
+}
+
+VDCS = {
+    "type": "object",
+    "properties": {
+        "vdc": {
+            "type": "array",
+            "minItems": 1,
+            "items": VDC
+        }
+    },
+    "required": [
+        "vdc"
+    ]
+}

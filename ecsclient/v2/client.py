@@ -15,8 +15,7 @@ from ecsclient.v2.provisioning.base_url import BaseUrl
 from ecsclient.v2.provisioning.bucket import Bucket
 from ecsclient.v2.provisioning.data_store import DataStore
 from ecsclient.v2.provisioning.node import Node
-from ecsclient.v2.provisioning import storage_pool
-from ecsclient.v2.provisioning.virtual_data_center import VirtualDataCenter
+from ecsclient.v2.provisioning import storage_pool, virtual_data_center
 from ecsclient.v2.support.call_home import CallHome
 from ecsclient.v2.user_management.authentication_provider import AuthenticationProvider
 from ecsclient.v2.user_management.secret_key import SecretKey
@@ -64,7 +63,7 @@ class Client(baseclient.Client):
         self.data_store = DataStore(self)
         self.node = Node(self)
         self.storage_pool = storage_pool.StoragePool(self)
-        self.virtual_data_center = VirtualDataCenter(self)
+        self.vdc = virtual_data_center.VirtualDataCenter(self)
 
         # API -> Support
         self.call_home = CallHome(self)

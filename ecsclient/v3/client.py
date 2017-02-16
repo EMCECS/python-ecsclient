@@ -7,7 +7,7 @@ from ecsclient.v3.cas import cas
 # Initialize logger
 from ecsclient.v3.multitenancy import namespace
 from ecsclient.v3.other import user_info
-from ecsclient.v3.provisioning import storage_pool
+from ecsclient.v3.provisioning import storage_pool, virtual_data_center
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
@@ -47,6 +47,7 @@ class Client(baseclient.Client):
 
         # Provisioning
         self.storage_pool = storage_pool.StoragePool(self)
+        self.vdc = virtual_data_center.VirtualDataCenter(self)
 
         # Support
 

@@ -1,25 +1,16 @@
-# Standard lib imports
 import logging
-
-# Third party imports
-# None
-
-# Project level imports
-# None
-
 
 log = logging.getLogger(__name__)
 
 
 class VirtualDataCenter(object):
-
     def __init__(self, connection):
         """
         Initialize a new instance
         """
         self.conn = connection
 
-    def get_all_vdcs(self):
+    def list(self):
         """
         Gets all details of all configured VDCs.
 
@@ -27,6 +18,7 @@ class VirtualDataCenter(object):
 
         SYSTEM_ADMIN
         SYSTEM_MONITOR
+        SECURITY_ADMIN
 
         Example JSON result from the API:
 
@@ -95,13 +87,13 @@ class VirtualDataCenter(object):
             ]
         }
         """
-        log.info('Getting all VDCs')
+        log.info('Listing VDCs')
         return self.conn.get(url='object/vdcs/vdc/list')
 
-    def get_vdc_by_id(self, vdc_id):
+    def get(self, vdc_id=None, name=None):
         """
-        Gets the details for a VDC the identity of which is specified by
-        its ID.
+        Gets the details for a VDC by its ID or its name. Either of the two have to be set.
+        If both are set, only the ID is used.
 
         Required role(s):
 
@@ -141,13 +133,22 @@ class VirtualDataCenter(object):
             u'permanentlyFailed': False
         }
 
-        param: vdc_id: VDC identifier for which VDC Information is to be
-        retrieved.
+        param: vdc_id: VDC identifier for which VDC Information is to be retrieved.
+        param: name: VDC name for which VDC Information is to be retrieved.
         """
-        log.info("Getting VDC by id '{0}'".format(vdc_id))
-        return self.conn.get(url='object/vdcs/vdcid/{0}'.format(vdc_id))
+        if not vdc_id and not name:
+            raise ValueError('Either the ID or the name have to be set.')
 
-    def get_local_vdc(self):
+        if vdc_id:
+            log.info("Getting VDC by ID '{}'".format(vdc_id))
+            url = 'object/vdcs/vdcid/{}'.format(vdc_id)
+        else:
+            log.info("Getting VDC by name '{}'".format(name))
+            url = 'object/vdcs/vdc/{}'.format(name)
+
+        return self.conn.get(url)
+
+    def get_local(self):
         """
         Gets the details for the local VDC.
 
@@ -155,6 +156,7 @@ class VirtualDataCenter(object):
 
         SYSTEM_ADMIN
         SYSTEM_MONITOR
+        SECURITY_ADMIN
 
         Example JSON result from the API:
 
@@ -189,10 +191,9 @@ class VirtualDataCenter(object):
             u'permanentlyFailed': False
         }
         """
-        log.info('Getting local VDC info')
-        return self.conn.get(url='object/vdcs/vdc/local')
+        return self.get(name='local')
 
-    def get_local_vdc_secret_key(self):
+    def get_local_secret_key(self):
         """
         Gets the secret key for the local VDC.
 
@@ -208,58 +209,10 @@ class VirtualDataCenter(object):
         log.info('Getting local VDC secret key')
         return self.conn.get(url='object/vdcs/vdc/local/secretkey')
 
-    def get_vdc_by_name(self, vdc_name):
+    def update(self, vdc_name, new_name=None, inter_vdc_endpoints=None, inter_vdc_cmd_endpoints=None,
+               management_endpoints=None, secret_key=None):
         """
-        Gets the details for a VDC the identity of which is specified by
-        its name.
-
-        Required role(s):
-
-        SYSTEM_ADMIN
-        SYSTEM_MONITOR
-
-        Example JSON result from the API:
-
-        {
-            u'remote': None,
-            u'name': u'tiva01',
-            u'tags': [
-
-            ],
-            u'global': None,
-            u'interVdcEndPoints': u'192.29.3.48,
-            172.29.3.149,
-            172.29.3.150,
-            172.29.3.151,
-            172.29.3.152,
-            172.29.3.153,
-            172.29.3.154,
-            172.29.3.155',
-            u'vdcId': u'urn: storageos: VirtualDataCenterData:
-                        a9faea85-d377-4a42-b5f1-fa15829f0c33',
-            u'vdc': None,
-            u'inactive': False,
-            u'link': {
-                u'href': u'/object/vdcs/vdc/tiva01',
-                u'rel': u'self'
-            },
-            u'secretKeys': u'55fmIFBniRuCBVx327Av',
-            u'vdcName': u'tiva01',
-            u'local': True,
-            u'id': u'urn: storageos: VirtualDataCenterData:
-                        a9faea85-d377-4a42-b5f1-fa15829f0c33',
-            u'permanentlyFailed': False
-        }
-
-        param: vdc_name: VDC name for which VDC Information is to be retrieved
-        """
-        log.info("Getting VDC by name '{0}'".format(vdc_name))
-        return self.conn.get(url='object/vdcs/vdc/{0}'.format(vdc_name))
-
-    def insert_vdc_attributes(self, vdc_name, inter_vdc_end_point,
-                              secret_key):
-        """
-        Insert the attributes for the current VDC or a VDC which you want the
+        Update the attributes for the current VDC or a VDC which you want the
         current VDC to connect. Enables the name of the VDC, the end points
         that can be used to communicate with it, and a secret key used to
         encrypt traffic between VDCs to be set.
@@ -274,22 +227,27 @@ class VirtualDataCenter(object):
 
         Expect: HTTP/1.1 200 OK
 
-        :param vdc_name: Name of VDC to be inserted
-        :param inter_vdc_end_point: End points for the VDC
+        :param vdc_name: VDC name for which mapping needs to be update
+        :param new_name: Name of VDC to be updated
+        :param inter_vdc_endpoints: Endpoints for the VDC
+        :param inter_vdc_cmd_endpoints: Control Plane endpoints for the VDC
+        :param management_endpoints: The management end points for the VDC
         :param secret_key: Secret key to encrypt communication between VDC
         """
         payload = {
-            "vdc_name": vdc_name,
-            "inter_vdc_end_point": inter_vdc_end_point,
-            "secret_key": secret_key
+            "vdcName": new_name,
+            # "interVdcEndPoints": inter_vdc_endpoints,
+            # "interVdcCmdEndPoints": inter_vdc_cmd_endpoints,
+            # "managementEndPoints": management_endpoints,
+            # "secretKeys": secret_key
         }
 
-        log.info("Updating VDC '{0}': {1}".format(vdc_name, payload))
+        log.info("Updating the VDC with name '{}'".format(vdc_name))
 
         return self.conn.put(
-            url='object/vdcs/vdc/{0}'.format(vdc_name), json_payload=payload)
+            url='object/vdcs/vdc/{}'.format(vdc_name), json_payload=payload)
 
-    def deactivate_vdc(self, vdc_id):
+    def delete(self, vdc_id):
         """
         Deactivates and deletes a VDC. Enables attributes for the current VDC
         to be deleted and enables information held by a VDC about other VDCs
@@ -308,7 +266,11 @@ class VirtualDataCenter(object):
         :param vdc_id: VDC identifier for which VDC Information needs to be
         deleted
         """
-        log.info("Deleting VDC '{0}'".format(vdc_id))
+        log.info("Deleting VDC '{}'".format(vdc_id))
 
         return self.conn.post(
-            url='object/vdcs/vdc/{0}/deactivate'.format(vdc_id))
+            url='object/vdcs/vdc/{}/deactivate'.format(vdc_id))
+
+    def create(self):
+        # FIXME: The API does not offer an endpoint to create a VDC
+        raise NotImplementedError()
