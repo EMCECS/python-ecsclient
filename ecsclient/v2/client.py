@@ -3,28 +3,19 @@ import logging
 from ecsclient import baseclient
 from ecsclient.v2.cas import cas
 from ecsclient.v2.configuration import certificate, configuration_properties, licensing
+from ecsclient.v2.configuration import feature
 from ecsclient.v2.geo_replication import replication_group, temporary_failed_zone
-from ecsclient.v2.metering.billing import Billing
-from ecsclient.v2.monitoring.capacity import Capacity
-from ecsclient.v2.monitoring.dashboard import Dashboard
-from ecsclient.v2.monitoring.events import Events
+from ecsclient.v2.provisioning import base_url, bucket, data_store, storage_pool, virtual_data_center, node
+from ecsclient.v2.metering import billing
+from ecsclient.v2.monitoring import capacity, dashboard, events
 from ecsclient.v2.multitenancy import namespace
+from ecsclient.v2.user_management import authentication_provider, management_user, object_user, secret_key, \
+    secret_key_self_service
 from ecsclient.v2.other import user_info
-from ecsclient.v2.provisioning.base_url import BaseUrl
-from ecsclient.v2.provisioning.bucket import Bucket
-from ecsclient.v2.provisioning.data_store import DataStore
-from ecsclient.v2.provisioning.node import Node
-from ecsclient.v2.provisioning import storage_pool, virtual_data_center
-from ecsclient.v2.support.call_home import CallHome
-from ecsclient.v2.user_management.authentication_provider import AuthenticationProvider
-from ecsclient.v2.user_management.secret_key import SecretKey
-from ecsclient.v2.user_management.secret_key_self_service import SecretKeySelfService
-from ecsclient.v2.user_management.user_management import ManagementUser
-from ecsclient.v2.user_management.user_object import ObjectUser
+
 
 # Initialize logger
 log = logging.getLogger(__name__)
-log.addHandler(logging.NullHandler())
 
 
 class Client(baseclient.Client):
@@ -33,46 +24,56 @@ class Client(baseclient.Client):
     def __init__(self, *args, **kwargs):
         super(Client, self).__init__(*args, **kwargs)
 
-        # API -> Billing
-        self.billing = Billing(self)
-
-        # API -> Configuration
+        # Configuration
         self.certificate = certificate.Certificate(self)
         self.configuration_properties = configuration_properties.ConfigurationProperties(self)
         self.licensing = licensing.Licensing(self)
+        self.feature = feature.Feature(self)
 
-        # API -> CAS
+        # CAS
         self.cas = cas.Cas(self)
 
-        # API -> Geo Replication
-        self.replication_group = replication_group.ReplicationGroup(self)
-        self.temp_failed_zone = temporary_failed_zone.TemporaryFailedZone(self)
+        # File system access
+        # TODO: self.nfs = nfs.NFS(self)
 
-        # API -> Monitoring
-        self.capacity = Capacity(self)
-        self.dashboard = Dashboard(self)
-        self.events = Events(self)
+        # Metering
+        self.billing = billing.Billing(self)
+
+        # Migration
+        # TODO: self.transformation = transformation.Transformation(self)
+
+        # Monitoring
+        self.capacity = capacity.Capacity(self)
+        self.dashboard = dashboard.Dashboard(self)
+        self.events = events.Events(self)
+        # TODO: self.alerts = alerts.Alerts(self)
 
         # Multi-tenancy
         self.namespace = namespace.Namespace(self)
 
+        # Geo-replication
+        self.replication_group = replication_group.ReplicationGroup(self)
+        self.temp_failed_zone = temporary_failed_zone.TemporaryFailedZone(self)
+
         # Provisioning
-        self.base_url = BaseUrl(self)
-        self.bucket = Bucket(self)
-        self.data_store = DataStore(self)
-        self.node = Node(self)
+        self.base_url = base_url.BaseUrl(self)
+        self.bucket = bucket.Bucket(self)
+        self.data_store = data_store.DataStore(self)
+        self.node = node.Node(self)
         self.storage_pool = storage_pool.StoragePool(self)
         self.vdc = virtual_data_center.VirtualDataCenter(self)
+        # TODO: vdc_keystore = vdc_keystore.VdcKeystore(self)
 
-        # API -> Support
-        self.call_home = CallHome(self)
+        # Support
+        # TODO: self.call_home = call_home.CallHome(self)
 
-        # API -> User Management
-        self.authentication_provider = AuthenticationProvider(self)
-        self.secret_key = SecretKey(self)
-        self.secret_key_self_service = SecretKeySelfService(self)
-        self.management_object = ManagementUser(self)
-        self.user_object = ObjectUser(self)
+        # User Management
+        self.authentication_provider = authentication_provider.AuthenticationProvider(self)
+        # TODO: self.password_group = password_group.PasswordGroup(self)
+        self.secret_key = secret_key.SecretKey(self)
+        self.secret_key_self_service = secret_key_self_service.SecretKeySelfService(self)
+        self.management_user = management_user.ManagementUser(self)
+        self.object_user = object_user.ObjectUser(self)
 
         # Other
         self.user_info = user_info.UserInfo(self)
