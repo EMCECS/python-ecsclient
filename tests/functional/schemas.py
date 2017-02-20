@@ -241,7 +241,7 @@ VDC = {
         "permanentlyFailed": {"type": "boolean"}
     },
     "required": [
-        "id"
+        "id",
         "vdcId",
         "name",
         "vdcName",
