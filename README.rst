@@ -14,19 +14,19 @@ This library is the successor of `ECS Minion
 
 
 .. |Build_Status| image:: https://travis-ci.org/EMCECS/python-ecsclient.svg?branch=master
-    :target: https://travis-ci.org/EMCECS/python-ecsclient
+:target: https://travis-ci.org/EMCECS/python-ecsclient
     :alt: Build Status
 .. |Docs| image:: https://readthedocs.org/projects/python-ecsclient/badge/?version=latest&style=flat
-    :target: https://python-ecsclient.readthedocs.io/en/latest/
+:target: https://python-ecsclient.readthedocs.io/en/latest/
     :alt: Read the docs
 .. |Version| image:: https://img.shields.io/pypi/v/python-ecsclient.svg
-    :target: https://pypi.python.org/pypi/python-ecsclient/
+:target: https://pypi.python.org/pypi/python-ecsclient/
     :alt: Version
 .. |Python| image:: https://img.shields.io/pypi/pyversions/python-ecsclient.svg
-    :target: https://pypi.python.org/pypi/python-ecsclient/
+:target: https://pypi.python.org/pypi/python-ecsclient/
     :alt: Python Versions
 .. |License| image:: http://img.shields.io/pypi/l/python-ecsclient.svg?style=flat
-    :target: https://github.com/EMCECS/python-ecsclient/blob/develop/LICENSE
+:target: https://github.com/EMCECS/python-ecsclient/blob/develop/LICENSE
     :alt: License
 .. _`documentation`: https://python-ecsclient.readthedocs.io/en/latest/
 
@@ -116,6 +116,121 @@ to obtain a new token on the next call. To do so, you can remove the cached toke
 .. code-block:: python
 
     client.remove_cached_token()
+
+
+Supported endpoints
+-------------------
+
+.. _`v2`: https://www.emc.com/techpubs/api/ecs/v2-2-1-0/index.htm
+.. _`v3`: https://www.emc.com/techpubs/api/ecs/v3-0-0-0/index.htm
+
+The following table shows the supported endpoints per API version.
+
++--------------------------+---------+---------+
+|                          |  `v2`_  |  `v3`_  |
++==========================+=========+=========+
+| **Configuration**                            |
++--------------------------+---------+---------+
+| Certificate              |    ✓    |    ✓    |
++--------------------------+---------+---------+
+| Configuration Properties |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| Licensing                |    ✓    |    ✓    |
++--------------------------+---------+---------+
+| Feature                  |    ✓    |    ✓    |
++--------------------------+---------+---------+
+| Syslog                   |         |    ✓*   |
++--------------------------+---------+---------+
+| Snmp                     |         |    ✓*   |
++--------------------------+---------+---------+
+| **CAS**                                      |
++--------------------------+---------+---------+
+| CAS User Profile         |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| **File System Access**                       |
++--------------------------+---------+---------+
+| NFS                      |    ✗    |    ✗    |
++--------------------------+---------+---------+
+| **Metering**                                 |
++--------------------------+---------+---------+
+| Billing                  |    ~    |    ~    |
++--------------------------+---------+---------+
+| **Migration**                                |
++--------------------------+---------+---------+
+| Transformation           |    ✗    |    ✗    |
++--------------------------+---------+---------+
+| **Monitoring**                               |
++--------------------------+---------+---------+
+| Capacity                 |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| Dashboard                |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| Events                   |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| Alerts                   |    ✗    |    ✗    |
++--------------------------+---------+---------+
+| **Multi-tenancy**                            |
++--------------------------+---------+---------+
+| Namespace                |    ✓    |    ✓    |
++--------------------------+---------+---------+
+| **Geo-Replication**                          |
++--------------------------+---------+---------+
+| Replication Group        |    ✓    |    ✓    |
++--------------------------+---------+---------+
+| Temporary Failed Zone    |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| **Provisioning**                             |
++--------------------------+---------+---------+
+| Base URL                 |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| Bucket                   |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| Data Store               |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| Node                     |    ~    |    ~    |
++--------------------------+---------+---------+
+| Storage Pool             |    ✓    |    ✓    |
++--------------------------+---------+---------+
+| Virtual Data Center      |    ✓    |    ✓    |
++--------------------------+---------+---------+
+| VDC Keystore             |    ✗    |    ✗    |
++--------------------------+---------+---------+
+| **Support**                                  |
++--------------------------+---------+---------+
+| Call Home                |    ✗    |    ✗    |
++--------------------------+---------+---------+
+| **User Management**                          |
++--------------------------+---------+---------+
+| Authentication Provider  |    ~    |    ~    |
++--------------------------+---------+---------+
+| Password Group (Swift)   |    ✗    |    ✗    |
++--------------------------+---------+---------+
+| Secret Key               |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| Secret Key Self-Service  |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| User (Object)            |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| User (Management)        |    ✓*   |    ✓*   |
++--------------------------+---------+---------+
+| **Other**                                    |
++--------------------------+---------+---------+
+| Who am I                 |    ✓    |    ✓    |
++--------------------------+---------+---------+
+
+**Legend:**
+
++-------+-------------------------------------+
+|   ✓   | Supported and tested                |
++-------+-------------------------------------+
+|   ✓*  | Supported but not tested yet        |
++-------+-------------------------------------+
+|   ~   | Partially supported                 |
++-------+-------------------------------------+
+|   ✗   | Not supported yet                   |
++-------+-------------------------------------+
+|       | Not available in this API version   |
++-------+-------------------------------------+
 
 Development
 -----------
