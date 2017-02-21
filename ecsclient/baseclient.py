@@ -23,7 +23,7 @@ class Client(object):
 
     def __init__(self, username=None, password=None, token=None,
                  ecs_endpoint=None, token_endpoint=None, verify_ssl=False,
-                 token_filename='ecsclient.tkn', token_location='/tmp',
+                 token_path='/tmp/ecsclient.tkn',
                  request_timeout=15.0, cache_token=True):
         """
         Creates the ECSClient class that the client will directly work with
@@ -35,22 +35,31 @@ class Client(object):
         :param ecs_endpoint: The URL where ECS is located
         :param token_endpoint: The URL where the ECS login is located
         :param verify_ssl: Verify SSL certificates
-        :param token_filename: The name of the cached token filename
-        :param token_location: By default this is stored in /tmp
+        :param token_path: Path to the cached token file
         :param request_timeout: How long to wait for ECS to respond
         :param cache_token: Whether to cache the token, by default this is true
         you should only switch this to false when you want to directly fetch
         a token for a user
         """
+        if not ecs_endpoint:
+            raise ECSClientException("Missing 'ecs_endpoint'")
+
+        self.token_endpoint = token_endpoint
+
+        if token_endpoint:
+            if not (username and password):
+                raise ECSClientException("'token_endpoint' provided but missing ('username','password')")
+            self.token_endpoint = self.token_endpoint.rstrip('/')
+        else:
+            if not (token or os.path.isfile(token_path)):
+                raise ECSClientException("'token_endpoint' not provided and missing 'token'|'token_path'")
 
         self.username = username
         self.password = password
         self.token = token
         self.ecs_endpoint = ecs_endpoint.rstrip('/')
-        self.token_endpoint = token_endpoint.rstrip('/')
         self.verify_ssl = verify_ssl
-        self.token_filename = token_filename
-        self.token_location = token_location
+        self.token_path = token_path
         self.request_timeout = request_timeout
         self.cache_token = cache_token
         self._session = requests.Session()
@@ -60,12 +69,9 @@ class Client(object):
             ecs_endpoint=self.ecs_endpoint,
             token_endpoint=self.token_endpoint,
             verify_ssl=self.verify_ssl,
-            token_filename=self.token_filename,
-            token_location=self.token_location,
+            token_path=self.token_path,
             request_timeout=self.request_timeout,
             cache_token=self.cache_token)
-        self.token_file = os.path.join(
-            self.token_location, self.token_filename)
 
         # API -> Authentication
         self.authentication = Authentication(self)

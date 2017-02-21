@@ -46,9 +46,6 @@ class TestReplicationGroup(functional.BaseTestCase):
                 self.client.replication_group.delete(replication_group_id)
             except ECSClientException:
                 pass
-            except NotImplementedError:
-                # TODO: remove once the Delete call is implemented
-                pass
 
     def test_replication_group_list(self):
         response = self.client.replication_group.list()
@@ -100,4 +97,6 @@ class TestReplicationGroup(functional.BaseTestCase):
         self.assertEqual(response['varrayMappings'][0]['value'], self.storage_pool_1_id)
 
     def test_replication_group_delete(self):
-        self.skipTest('This call is not supported by the API yet.')
+        self.client.replication_group.delete(self.replication_group_1_id)
+        f = self.client.replication_group.get
+        self.assertRaises(ECSClientException, f, self.replication_group_1_id)

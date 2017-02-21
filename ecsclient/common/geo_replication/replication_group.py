@@ -233,7 +233,8 @@ class ReplicationGroup(object):
 
         :param replication_group_id: Replication group to be deleted
         """
-        raise NotImplementedError('This call is not supported by the API yet.')
+        log.info("Deleting replication group with ID='{}'".format(replication_group_id))
+        return self.conn.post('vdc/data-service/vpools/{}/deactivate'.format(replication_group_id))
 
     def add_storage_pool(self):
         raise NotImplementedError()

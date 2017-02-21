@@ -1,23 +1,12 @@
-# Standard lib imports
 import unittest
-
-# Third party imports
 from mock import MagicMock
 from mock import patch
 from six.moves import http_client
-
-# Project level imports
 from ecsclient.client import Client
 from ecsclient.common.exceptions import ECSClientException
 
 
-def suite():
-    test_suite = unittest.TestSuite()
-    test_suite.addTest(WhenTestingNode())
-    return test_suite
-
-
-class WhenTestingNode(unittest.TestCase):
+class TestNode(unittest.TestCase):
 
     def setUp(self):
         self.ecs_endpoint = 'https://127.0.0.1:4443'
@@ -26,7 +15,9 @@ class WhenTestingNode(unittest.TestCase):
         self.client = Client(
             '2',
             ecs_endpoint=self.ecs_endpoint,
-            token_endpoint=self.token_endpoint
+            token_endpoint=self.token_endpoint,
+            username='user',
+            password='password'
         )
 
         self.returned_json = {
@@ -73,6 +64,3 @@ class WhenTestingNode(unittest.TestCase):
             with patch('ecsclient.baseclient.requests.Session.get', self.requests):
                 returned_json = self.client.node.get_nodes()
                 self.assertEqual(returned_json, self.returned_json)
-
-if __name__ == '__main__':
-    unittest.main()

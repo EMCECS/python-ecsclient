@@ -1,20 +1,8 @@
-# Standard lib imports
 import unittest
-
-# Third party imports
-# None
-
-# Project level imports
 from ecsclient.common.util import get_formatted_time_string
 
 
-def suite():
-    test_suite = unittest.TestSuite()
-    test_suite.addTest(WhenTestingCommonFunctions())
-    return test_suite
-
-
-class WhenTestingCommonFunctions(unittest.TestCase):
+class TestCommonFunctions(unittest.TestCase):
 
     def setUp(self):
         self.time_bucket_no_minute = '2014-11-18T00'
@@ -31,6 +19,3 @@ class WhenTestingCommonFunctions(unittest.TestCase):
     def test_should_throw_value_error(self):
             self.assertRaises(ValueError,
                               get_formatted_time_string, 2014, 11, 18, 'abc')
-
-if __name__ == '__main__':
-    unittest.main()

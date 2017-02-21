@@ -26,7 +26,7 @@ class TokenRequest(object):
     """
 
     def __init__(self, username, password, ecs_endpoint, token_endpoint,
-                 verify_ssl, token_filename, token_location, request_timeout,
+                 verify_ssl, token_path, request_timeout,
                  cache_token):
         """
         Create a new TokenRequest instance
@@ -36,8 +36,7 @@ class TokenRequest(object):
         :param ecs_endpoint: The URL where ECS is located
         :param token_endpoint: The URL where the ECS login is located
         :param verify_ssl: Verify SSL certificates
-        :param token_filename: The name of the cached token filename
-        :param token_location: By default this is stored in /tmp
+        :param token_path: Path to the cached token file
         :param request_timeout: How long to wait for ECS to respond
         :param cache_token: Whether to cache the token, by default this is true
         you should only switch this to false when you want to directly fetch
@@ -49,12 +48,9 @@ class TokenRequest(object):
         self.token_endpoint = token_endpoint
         self.verify_ssl = verify_ssl
         self.token_verification_endpoint = ecs_endpoint + '/user/whoami'
-        self.token_filename = token_filename
-        self.token_location = token_location
+        self.token_path = token_path
         self.request_timeout = request_timeout
         self.cache_token = cache_token
-        self.token_file = os.path.join(
-            self.token_location, self.token_filename)
         self.token = None
         self.session = requests.Session()
 
@@ -91,8 +87,8 @@ class TokenRequest(object):
         self.token = req.headers['x-sds-auth-token']
 
         if self.cache_token:
-            log.debug("Caching token to '{0}'".format(self.token_file))
-            with open(self.token_file, 'w') as token_file:
+            log.debug("Caching token to '{0}'".format(self.token_path))
+            with open(self.token_path, 'w') as token_file:
                 token_file.write(self.token)
 
         return self.token
@@ -127,9 +123,9 @@ class TokenRequest(object):
         token = self.token
 
         if not token and self.cache_token:
-            if os.path.isfile(self.token_file):
-                log.debug("Reading cached token at '{0}'".format(self.token_file))
-                with open(self.token_file, 'r') as token_file:
+            if os.path.isfile(self.token_path):
+                log.debug("Reading cached token at '{0}'".format(self.token_path))
+                with open(self.token_path, 'r') as token_file:
                     token = token_file.read()
 
         if not token:

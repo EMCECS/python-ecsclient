@@ -1,24 +1,13 @@
-# Standard lib imports
 import unittest
-
-# Third party imports
 from mock import MagicMock
 from mock import mock_open
 from mock import patch
 from six.moves import http_client
-
-# Project level imports
 from ecsclient.common.token_request import TokenRequest
 from ecsclient.common.exceptions import ECSClientException
 
 
-def suite():
-    test_suite = unittest.TestSuite()
-    test_suite.addTest(WhenTestingTokenRequest())
-    return test_suite
-
-
-class WhenTestingTokenRequest(unittest.TestCase):
+class TestTokenRequest(unittest.TestCase):
 
     def setUp(self):
         self.token_file_contents = '123TOKEN'
@@ -30,8 +19,7 @@ class WhenTestingTokenRequest(unittest.TestCase):
                                           ecs_endpoint='https://localhost',
                                           token_endpoint='https://localhost',
                                           verify_ssl=False,
-                                          token_filename='ecstoken.tkn',
-                                          token_location='/tmp',
+                                          token_path='/tmp/ecstoken.tkn',
                                           request_timeout=5.0,
                                           cache_token=True)
 
@@ -63,6 +51,3 @@ class WhenTestingTokenRequest(unittest.TestCase):
         with patch(self.session_get, self.requests):
             with self.assertRaises(ECSClientException):
                 self.token_request.get_new_token()
-
-if __name__ == '__main__':
-    unittest.main()

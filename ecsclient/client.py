@@ -26,7 +26,7 @@ def Client(version=None, *args, **kwargs):
     try:
         client_class = _CLIENT_VERSIONS[version]
     except KeyError:
-        msg = 'No client available for version: %s' % version
+        msg = "No client available for version '%s'" % version
         raise RuntimeError(msg)
 
     return client_class(*args, **kwargs)
