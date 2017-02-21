@@ -10,3 +10,9 @@ Vagrantfile
 .coverage
 build/
 dist/
+.overcommit.yml
+test.conf
+.venv/
+.direnv/
+.envrc
+*.lic
