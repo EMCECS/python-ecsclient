@@ -14,21 +14,23 @@ This library is the successor of `ECS Minion
 
 
 .. |Build_Status| image:: https://travis-ci.org/EMCECS/python-ecsclient.svg?branch=master
-:target: https://travis-ci.org/EMCECS/python-ecsclient
+    :target: https://travis-ci.org/EMCECS/python-ecsclient
     :alt: Build Status
 .. |Docs| image:: https://readthedocs.org/projects/python-ecsclient/badge/?version=latest&style=flat
-:target: https://python-ecsclient.readthedocs.io/en/latest/
+    :target: https://python-ecsclient.readthedocs.io/en/latest/
     :alt: Read the docs
 .. |Version| image:: https://img.shields.io/pypi/v/python-ecsclient.svg
-:target: https://pypi.python.org/pypi/python-ecsclient/
+    :target: https://pypi.python.org/pypi/python-ecsclient/
     :alt: Version
 .. |Python| image:: https://img.shields.io/pypi/pyversions/python-ecsclient.svg
-:target: https://pypi.python.org/pypi/python-ecsclient/
+    :target: https://pypi.python.org/pypi/python-ecsclient/
     :alt: Python Versions
 .. |License| image:: http://img.shields.io/pypi/l/python-ecsclient.svg?style=flat
-:target: https://github.com/EMCECS/python-ecsclient/blob/develop/LICENSE
+    :target: https://github.com/EMCECS/python-ecsclient/blob/develop/LICENSE
     :alt: License
 .. _`documentation`: https://python-ecsclient.readthedocs.io/en/latest/
+.. _`v2`: https://www.emc.com/techpubs/api/ecs/v2-2-1-0/index.htm
+.. _`v3`: https://www.emc.com/techpubs/api/ecs/v3-0-0-0/index.htm
 
 Quick Start
 -----------
@@ -120,9 +122,6 @@ to obtain a new token on the next call. To do so, you can remove the cached toke
 
 Supported endpoints
 -------------------
-
-.. _`v2`: https://www.emc.com/techpubs/api/ecs/v2-2-1-0/index.htm
-.. _`v3`: https://www.emc.com/techpubs/api/ecs/v3-0-0-0/index.htm
 
 The following table shows the supported endpoints per API version.
 
