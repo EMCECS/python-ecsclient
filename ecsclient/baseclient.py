@@ -161,7 +161,10 @@ class Client(object):
                 raise ECSClientException(
                     http_status_code=req.status_code,
                     ecs_message=req.text)
-            return req.json()
+            try:
+                return req.json()
+            except ValueError:
+                return req.text
 
         except requests.ConnectionError as conn_err:
             msg = 'Connection error: {0}'.format(conn_err.args)
@@ -175,5 +178,3 @@ class Client(object):
             msg = 'Request error: {0}'.format(req_err.args)
             log.error(msg)
             raise ECSClientException(message=msg)
-        except ValueError:
-            return

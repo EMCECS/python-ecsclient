@@ -1,12 +1,14 @@
-import os
 import unittest
+
 import mock
-from ecsclient.client import Client
+
 from ecsclient import v2, v3
+from ecsclient.client import Client
 from ecsclient.common.exceptions import ECSClientException
 
 
 class TestEcsClient(unittest.TestCase):
+
     def test_client_without_version(self):
         with self.assertRaises(RuntimeError) as error:
             Client(username='user',
