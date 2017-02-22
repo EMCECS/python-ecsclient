@@ -2,12 +2,32 @@ import unittest
 
 import mock
 
+from ecsclient import baseclient
 from ecsclient import v2, v3
 from ecsclient.client import Client
 from ecsclient.common.exceptions import ECSClientException
 
 
 class TestEcsClient(unittest.TestCase):
+    def test_verify_attributes(self):
+        c = baseclient.Client(username='someone',
+                              password='password',
+                              ecs_endpoint='http://127.0.0.1:4443',
+                              token_endpoint='http://127.0.0.1:4443/login')
+        attributes = ['token_endpoint',
+                      'username',
+                      'password',
+                      'token',
+                      'ecs_endpoint',
+                      'verify_ssl',
+                      'token_path',
+                      'request_timeout',
+                      'cache_token',
+                      '_session',
+                      '_token_request',
+                      'authentication']
+        for attr in attributes:
+            self.assertTrue(hasattr(c, attr))
 
     def test_client_without_version(self):
         with self.assertRaises(RuntimeError) as error:
@@ -37,7 +57,9 @@ class TestEcsClient(unittest.TestCase):
         exception = error.exception.message
         self.assertEqual("Missing 'ecs_endpoint'", str(exception))
 
-    def test_client_without_token_endpoint(self):
+    @mock.patch('ecsclient.baseclient.os.path.isfile')
+    def test_client_without_token_endpoint(self, mock_isfile):
+        mock_isfile.return_value = False
         with self.assertRaises(ECSClientException) as error:
             Client(version='3',
                    username='user',

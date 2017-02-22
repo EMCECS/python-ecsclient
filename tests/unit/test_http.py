@@ -16,7 +16,7 @@ class TestHttp(testtools.TestCase):
         self.client = Client('3',
                              username='user',
                              password='password',
-                             token='1234567890',
+                             token='token',
                              ecs_endpoint='http://127.0.0.1:4443',
                              token_endpoint='http://127.0.0.1:4443/login')
 
@@ -33,6 +33,7 @@ class TestHttp(testtools.TestCase):
         self.assertEqual('resp', body)
         self.assertEqual(self.requests_mock.last_request.method, 'GET')
         self.assertEqual(self.requests_mock.last_request.url, self.TEST_URL + '?key1=value1')
+        self.assertEqual(self.requests_mock.last_request.headers['x-sds-auth-token'], 'token')
 
     def test_get_request_json_resp(self):
         self.requests_mock.register_uri('GET', self.TEST_URL, text='{"key2": "value2"}')
@@ -43,6 +44,7 @@ class TestHttp(testtools.TestCase):
         self.assertEqual(body['key2'], "value2")
         self.assertEqual(self.requests_mock.last_request.method, 'GET')
         self.assertEqual(self.requests_mock.last_request.url, self.TEST_URL + '?key1=value1')
+        self.assertEqual(self.requests_mock.last_request.headers['x-sds-auth-token'], 'token')
 
     def test_post_request(self):
         self.requests_mock.register_uri('POST', self.TEST_URL, text=None)
@@ -53,6 +55,7 @@ class TestHttp(testtools.TestCase):
         self.assertEqual(self.requests_mock.last_request.method, 'POST')
         self.assertEqual(json.loads(self.requests_mock.last_request.text), payload)
         self.assertEqual(self.requests_mock.last_request.url, self.TEST_URL)
+        self.assertEqual(self.requests_mock.last_request.headers['x-sds-auth-token'], 'token')
 
     def test_put_request(self):
         self.requests_mock.register_uri('PUT', self.TEST_URL, text=None)
@@ -63,6 +66,7 @@ class TestHttp(testtools.TestCase):
         self.assertEqual(self.requests_mock.last_request.method, 'PUT')
         self.assertEqual(json.loads(self.requests_mock.last_request.text), payload)
         self.assertEqual(self.requests_mock.last_request.url, self.TEST_URL)
+        self.assertEqual(self.requests_mock.last_request.headers['x-sds-auth-token'], 'token')
 
     def test_delete_request(self):
         self.requests_mock.register_uri('DELETE', self.TEST_URL, text=None)
@@ -71,3 +75,4 @@ class TestHttp(testtools.TestCase):
 
         self.assertEqual(self.requests_mock.last_request.method, 'DELETE')
         self.assertEqual(self.requests_mock.last_request.url, self.TEST_URL)
+        self.assertEqual(self.requests_mock.last_request.headers['x-sds-auth-token'], 'token')

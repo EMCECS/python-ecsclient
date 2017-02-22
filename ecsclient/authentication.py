@@ -1,12 +1,4 @@
-# Standard lib imports
 import logging
-
-# Third party imports
-# None
-
-# Project level imports
-# None
-
 
 log = logging.getLogger(__name__)
 

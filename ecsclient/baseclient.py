@@ -1,4 +1,3 @@
-# Standard lib imports
 import json
 import logging
 import os
@@ -73,7 +72,7 @@ class Client(object):
             request_timeout=self.request_timeout,
             cache_token=self.cache_token)
 
-        # API -> Authentication
+        # Authentication
         self.authentication = Authentication(self)
 
     def get_token(self):
@@ -90,9 +89,9 @@ class Client(object):
         Remove the cached token file, this is useful if you switch users
         and want to use a different token
         """
-        if os.path.isfile(self.token_file):
-            log.debug("Removing cached token '{0}'".format(self.token_file))
-            os.remove(self.token_file)
+        if os.path.isfile(self.token_path):
+            log.debug("Removing cached token '{0}'".format(self.token_path))
+            os.remove(self.token_path)
 
     def _fetch_headers(self):
         token = self.token if self.token else self._token_request.get_token()
