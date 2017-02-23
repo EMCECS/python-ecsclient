@@ -2,7 +2,7 @@
 python-ecsclient
 ================
 
-|Build_Status| |Docs| |Python| |Version|
+|Build_Status| |Docs| |Python| |Version| |Coverage|
 
 This library is the Python Software Development Kit (SDK) for `Dell EMC
 Elastic Cloud Storage (ECS) <https://www.emc.com/en-us/storage/ecs/index.htm>`_.
@@ -25,6 +25,9 @@ This library is the successor of `ECS Minion
 .. |Python| image:: https://img.shields.io/pypi/pyversions/python-ecsclient.svg
     :target: https://pypi.python.org/pypi/python-ecsclient/
     :alt: Python Versions
+.. |Coverage| image:: https://coveralls.io/repos/github/EMCECS/python-ecsclient/badge.svg?branch=add-coveralls
+    :target: https://coveralls.io/github/EMCECS/python-ecsclient?branch=add-coveralls
+    :alt: Coverage
 .. |License| image:: http://img.shields.io/pypi/l/python-ecsclient.svg?style=flat
     :target: https://github.com/EMCECS/python-ecsclient/blob/develop/LICENSE
     :alt: License
