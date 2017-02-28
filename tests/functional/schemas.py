@@ -454,3 +454,49 @@ DATA_STORE_TASKS = {
         "task"
     ]
 }
+
+OBJECT_USER = {
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"},
+        "created": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "namespace": {"type": "string"},
+        "locked": {"type": "boolean"}
+    },
+    "required": [
+        "name",
+        "created",
+        "namespace",
+        "locked"
+    ]
+}
+
+OBJECT_USER_2 = {
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"},
+        "namespace": {"type": "string"},
+    },
+    "required": [
+        "userid",
+        "namespace"
+    ]
+}
+
+OBJECT_USERS = {
+    "type": "object",
+    "properties": {
+        "blobuser": {
+            "type": "array",
+            "minItems": 0,
+            "items": OBJECT_USER_2
+        },
+        "Filter": {"type": "string"}
+    },
+    "required": [
+        "blobuser"
+    ]
+}

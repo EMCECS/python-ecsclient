@@ -1,11 +1,4 @@
-# Standard lib imports
 import logging
-
-# Third party imports
-# None
-
-# Project level imports
-# None
 
 
 log = logging.getLogger(__name__)
@@ -19,7 +12,7 @@ class ObjectUser(object):
         """
         self.conn = connection
 
-    def get_object_users(self, namespace=None):
+    def list(self, namespace=None):
         """
         Gets identifiers for all configured users. If namespace is provided
         then returns all users for the specified namespace.
@@ -45,19 +38,19 @@ class ObjectUser(object):
             ]
         }
 
-        :param namespace: Example: namespace1
+        :param namespace: Namespace for which users should be returned. Optional.
         """
-        msg = 'Getting all users'
+        msg = 'Listing all users'
         url = 'object/users'
 
         if namespace:
-            url += '/{0}'.format(namespace)
-            msg += " in namespace '{0}'".format(namespace)
+            url += '/{}'.format(namespace)
+            msg += " in namespace '{}'".format(namespace)
 
         log.info(msg)
         return self.conn.get(url=url)
 
-    def get_object_user_info(self, uid, namespace=None):
+    def get(self, user_id, namespace=None):
         """
         Gets user details for the specified user.
 
@@ -76,21 +69,21 @@ class ObjectUser(object):
             u'created': u'ThuMay2105: 43: 27UTC2015'
         }
 
-        :param uid: Valid user identifier
-        :param namespace: Optional when userscope is GLOBAL. Required when
-        userscope is NAMESPACE. The namespace to which the user belongs
+        :param user_id: Valid user identifier
+        :param namespace: Optional when user scope is GLOBAL. Required when
+        user scope is NAMESPACE. The namespace to which the user belongs
         """
-        msg = "Getting user '{0}'".format(uid)
-        url = 'object/users/{0}/info'.format(uid)
+        msg = "Getting user ID '{}'".format(user_id)
+        url = 'object/users/{}/info'.format(user_id)
 
         if namespace:
-            url += '?namespace={0}'.format(namespace)
-            msg += " in namespace '{0}'".format(namespace)
+            url += '?namespace={}'.format(namespace)
+            msg += " in namespace '{}'".format(namespace)
 
         log.info(msg)
         return self.conn.get(url=url)
 
-    def deactivate_object_user(self, uid, namespace=None):
+    def delete(self, user_id, namespace=None):
         """
         Deletes the specified user and its secret keys.
 
@@ -103,25 +96,17 @@ class ObjectUser(object):
 
         Expect: HTTP/1.1 200 OK
 
-        :param uid: Valid user identifier
+        :param user_id: Valid user identifier
         :param namespace: Example: namespace1 (optional)
         """
+        payload = {"user": user_id}
         if namespace:
-            payload = {
-                "user": uid,
-                "namespace": namespace
-            }
-        else:
-            payload = {
-                "user": uid
-            }
+            payload["namespace"] = namespace
 
-        log.info("Deleting user: {0}".format(payload))
+        log.info("Deleting user ID '{}'".format(user_id))
+        return self.conn.post('object/users/deactivate', json_payload=payload)
 
-        return self.conn.post(url='object/users/deactivate',
-                              json_payload=payload)
-
-    def add_object_user(self, uid, namespace, tags=None):
+    def create(self, user_id, namespace, tags=None):
         """
         Creates a user for a specified namespace. The user must subsequently
         be assigned a secret key in order to access the object store.
@@ -134,16 +119,21 @@ class ObjectUser(object):
         Example JSON result from the API:
 
         {
-            u'isLocked': True,
-            u'user_name': u'janedoe'
+            "link": {
+              "href": "/object/user-secret-keys/wuser1@sanity.local",
+              "rel": "self"
+          }
         }
 
-        :param uid: Valid user identifier
-        :param namespace: Example: namespace1
+        :param user_id: User to be created
+        :param namespace: Namespace identifier to associate with the user
+        :param tags: A list of arbitrary tags to assign to the new user. These can
+        be used to track additional information about the user and will also
+        appear on bucket billing responses for buckets owned by the user
         """
 
         payload = {
-            "user": uid,
+            "user": user_id,
             "namespace": namespace
         }
 
@@ -151,14 +141,11 @@ class ObjectUser(object):
             payload['tags'] = tags
 
         log.info('Creating user: {0}'.format(payload))
-        log.info("(don't forget to create secret key)")
+        return self.conn.post('object/users', json_payload=payload)
 
-        return self.conn.post(url='object/users',
-                              json_payload=payload)
-
-    def lock_object_user(self, uid, is_locked=True, namespace=None):
+    def lock(self, user_id, namespace=None):
         """
-        Locks or unlocks the specified user. If the user belongs to a
+        Locks the specified user. If the user belongs to a
         namespace, the namespace must be supplied.
 
         Required role(s):
@@ -170,28 +157,44 @@ class ObjectUser(object):
 
         Expect: HTTP/1.1 200 OK
 
-        :param uid: Valid user identifier
-        :param is_locked: Example: True/False (optional)
-        :param namespace: Example: namespace1 (optional)
+        :param user_id: User name to be locked
+        :param namespace: Namespace for this user (optional)
         """
+        return self.__lock(user_id, namespace, True)
+
+    def unlock(self, user_id, namespace=None):
+        """
+        Unlocks the specified user. If the user belongs to a
+        namespace, the namespace must be supplied.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        NAMESPACE_ADMIN
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param user_id: User name to be unlocked
+        :param namespace: Namespace for this user (optional)
+        """
+        return self.__lock(user_id, namespace, False)
+
+    def __lock(self, user_id, namespace, lock):
+        payload = {
+            "user": user_id,
+            "isLocked": lock
+        }
+
         if namespace:
-            payload = {
-                "user": uid,
-                "namespace": namespace,
-                "isLocked": is_locked
-            }
-        else:
-            payload = {
-                "user": uid,
-                "isLocked": is_locked
-            }
+            payload["namespace"] = namespace
 
-        log.info("Toggling user lock: {0}".format(payload))
+        verb = "Locking" if lock else "Unlocking"
+        log.info("{} user ID {}".format(verb, user_id))
+        return self.conn.put(url='object/users/lock', json_payload=payload)
 
-        return self.conn.put(url='object/users/lock',
-                             json_payload=payload)
-
-    def get_object_user_lock(self, uid, namespace=None):
+    def get_lock(self, user_id, namespace=None):
         """
         Gets the user lock state for the specified user belonging to the
         specified namespace (if provided).
@@ -209,15 +212,14 @@ class ObjectUser(object):
             u'isLocked': False
         }
 
-        :param uid: Valid user identifier
-        :param namespace: Example: namespace1
+        :param user_id: User ID for which user lock status should be returned
+        :param namespace: Namespace to which user belongs (optional)
         """
-        msg = "Getting lock state for user '{0}'".format(uid)
-        url = 'object/users/lock/{0}'.format(uid)
-
+        msg = "Getting lock state for user ID '{}'".format(user_id)
+        url = 'object/users/lock/{}'.format(user_id)
         if namespace:
-            url += '/{0}'.format(namespace)
-            msg += " in namespace '{0}'".format(namespace)
+            msg += " in namespace '{}'".format(namespace)
+            url += '/{}'.format(namespace)
 
         log.info(msg)
-        return self.conn.get(url=url)
+        return self.conn.get(url)

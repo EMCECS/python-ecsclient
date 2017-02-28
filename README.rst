@@ -211,7 +211,7 @@ The following table shows the supported endpoints per API version.
 +--------------------------+---------+---------+
 | Secret Key Self-Service  |    ✓*   |    ✓*   |
 +--------------------------+---------+---------+
-| User (Object)            |    ✓*   |    ✓*   |
+| User (Object)            |    ✓    |    ✓    |
 +--------------------------+---------+---------+
 | User (Management)        |    ✓*   |    ✓*   |
 +--------------------------+---------+---------+
