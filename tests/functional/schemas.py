@@ -27,6 +27,18 @@ WHOAMI = {
     ]
 }
 
+LINK = {
+    "type": "object",
+    "properties": {
+        "rel": {"type": "string"},
+        "href": {"type": "string"}
+    },
+    "required": [
+        "rel",
+        "href"
+    ]
+}
+
 NAMESPACES = {
     "type": "object",
     "properties": {
@@ -38,17 +50,7 @@ NAMESPACES = {
                 "properties": {
                     "id": {"type": "string"},
                     "name": {"type": "string"},
-                    "link": {
-                        "type": "object",
-                        "properties": {
-                            "rel": {"type": "string"},
-                            "href": {"type": "string"}
-                        },
-                        "required": [
-                            "rel",
-                            "href"
-                        ]
-                    }
+                    "link": LINK
                 },
                 "required": [
                     "id",
@@ -81,17 +83,7 @@ NAMESPACE = {
         "disallowed_vpools_list": {"type": "array"},
         "default_bucket_block_size": {"type": "number"},
         "user_mapping": {"type": "array"},
-        "link": {
-            "type": "object",
-            "properties": {
-                "rel": {"type": "string"},
-                "href": {"type": "string"}
-            },
-            "required": [
-                "rel",
-                "href"
-            ]
-        }
+        "link": LINK
     },
     "required": [
         "name",
@@ -207,17 +199,7 @@ VDC = {
         "vdcId": {"type": "string"},
         "name": {"type": "string"},
         "vdcName": {"type": "string"},
-        "link": {
-            "type": "object",
-            "properties": {
-                "rel": {"type": "string"},
-                "href": {"type": "string"}
-            },
-            "required": [
-                "rel",
-                "href"
-            ]
-        },
+        "link": LINK,
         "inactive": {"type": "boolean"},
         "local": {"type": "boolean"},
         "global": {"type": ["boolean", "null"]},
@@ -338,5 +320,137 @@ REPLICATION_GROUPS = {
     },
     "required": [
         "data_service_vpool"
+    ]
+}
+
+DATA_STORES = {
+    "type": "object",
+    "properties": {
+        "data_store": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "name": {"type": "string"},
+                    "resource_type": {"type": "string"},
+                    "link": LINK
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "resource_type",
+                    "link"
+                ]
+            }
+        }
+    },
+    "required": [
+        "data_store"
+    ]
+}
+
+DATA_STORE = {
+    "type": "object",
+    "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "description": {"type": "string"},
+        "link": LINK,
+        "remote": {"type": ["boolean", "null"]},
+        "global": {"type": ["boolean", "null"]},
+        "vdc": {"type": ["string", "null"]},
+        "creation_time": {"type": "number"},
+        "device_info": {"type": "string"},
+        "varray": {"type": "string"},
+        "device_state": {"type": "string"},
+        "usable_gb": {"type": "number"},
+        "used_gb": {"type": "number"},
+        "free_gb": {"type": "number"}
+    },
+    "required": [
+        "id",
+        "name",
+        "description",
+        "link",
+        "remote",
+        "global",
+        "vdc",
+        "creation_time",
+        "device_info",
+        "varray",
+        "device_state",
+        "usable_gb",
+        "used_gb",
+        "free_gb"
+    ]
+}
+
+DATA_STORES_COMMODITY = {
+    "type": "object",
+    "properties": {
+        "commodity_data_store": {
+            "type": "array",
+            "minItems": 1,
+            "items": DATA_STORE
+        }
+    },
+    "required": [
+        "commodity_data_store"
+    ]
+}
+
+DATA_STORE_TASK = {
+    "type": "object",
+    "properties": {
+        "op_id": {"type": "string"},
+        "resource": {
+            "type": "object",
+            "properties": {
+                "link": LINK,
+                "id": {"type": "string"},
+                "name": {"type": "string"}
+            },
+            "required": [
+                "link",
+                "id",
+                "name"
+            ]
+        },
+        "name": {"type": "string"},
+        "remote": {"type": ["boolean", "null"]},
+        "global": {"type": ["boolean", "null"]},
+        "vdc": {"type": ["string", "null"]},
+        "link": LINK,
+        "restLink": {"type": ["object", "null"]},
+        "state": {"type": "string"},
+        "associated_resources": {"type": "array"}
+    },
+    "required": [
+        "op_id",
+        "resource",
+        "name",
+        "global",
+        "remote",
+        "vdc",
+        "link",
+        "restLink",
+        "state",
+        "associated_resources",
+    ]
+}
+
+DATA_STORE_TASKS = {
+    "type": "object",
+    "properties": {
+        "task": {
+            "type": "array",
+            "minItems": 1,
+            "items": DATA_STORE_TASK
+        }
+    },
+    "required": [
+        "task"
     ]
 }
