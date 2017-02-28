@@ -1,25 +1,16 @@
-# Standard lib imports
 import logging
-
-# Third party imports
-# None
-
-# Project level imports
-# None
-
 
 log = logging.getLogger(__name__)
 
 
 class DataStore(object):
-
     def __init__(self, connection):
         """
         Initialize a new instance
         """
         self.conn = connection
 
-    def get_data_stores(self):
+    def list(self):
         """
         Gets list of configured commodity or filesystem data stores.
 
@@ -53,10 +44,10 @@ class DataStore(object):
             ]
         }
         """
-        log.info("Getting all data stores")
+        log.info("Listing data stores")
         return self.conn.get(url='vdc/data-stores')
 
-    def get_data_store(self, data_store_id):
+    def get(self, data_store_id):
         """
         Gets the details for a commodity data store.
 
@@ -91,12 +82,10 @@ class DataStore(object):
 
         :param data_store_id: Identifier of the data store
         """
-        log.info("Getting commodity store '{0}'".format(data_store_id))
+        log.info("Getting commodity store ID '{}'".format(data_store_id))
+        return self.conn.get('vdc/data-stores/commodity/{}'.format(data_store_id))
 
-        return self.conn.get(
-            url='vdc/data-stores/commodity/{0}'.format(data_store_id))
-
-    def get_data_stores_by_storage_pool_id(self, storage_pool_id):
+    def get_by_storage_pool(self, storage_pool_id):
         """
         Gets the list of details of commodity data stores associated with a
         storage pool.
@@ -159,14 +148,11 @@ class DataStore(object):
 
         :param storage_pool_id: Identifier of the storage pool
         """
-        log.info("Getting commodity stores for varray '{0}'"
+        log.info("Getting commodity stores for storage pool ID '{}'"
                  .format(storage_pool_id))
+        return self.conn.get('vdc/data-stores/commodity/search/varray/{0}'.format(storage_pool_id))
 
-        return self.conn.get(
-            url='vdc/data-stores/commodity/search/varray/{0}'.format(
-                storage_pool_id))
-
-    def create_data_store(self, name, description, node_id, storage_pool_id):
+    def create(self, name, description, node_id, storage_pool_id):
         """
         NOTE: This is an asychronous operation that returns a task object.
 
@@ -186,8 +172,8 @@ class DataStore(object):
         Example JSON result from the API:
 
         {
-            u'tasks': {
-                u'task': {
+            u'task': [
+                {
                     u'resource': {
                         u'name': u'Sample_Volume',
                         u'id': u'urn: storageos:
@@ -208,24 +194,106 @@ class DataStore(object):
                                   /tasks/265cf333-76a1-4129-903e-fac63f9b4adc'
                     }
                 }
-            }
+            ]
         }
+
 
         :param name: User provided name (not verified or unique)
         :param description: User provided description (not verified or unique)
         :param node_id: IP address for the commodity node
         :param storage_pool_id: Desired storage pool ID for creating data store
+        :returns a task object
         """
-        payload = {
-            "name": name,
-            "description": description,
-            "nodeId": node_id,
-            "virtual_array": storage_pool_id
+        payload = {"nodes": [
+            {
+                "name": name,
+                "description": description,
+                "nodeId": node_id,
+                "virtual_array": storage_pool_id
+            }
+        ]}
+
+        log.info("Creating data store '{}': {}".format(name, payload))
+        return self.conn.post('vdc/data-stores/commodity', json_payload=payload)
+
+    def delete(self, data_store_id):
+        """
+        Deactivates the commodity node and data store
+
+        Note: Storage will be deleted if it was allocated with the data store.
+
+        Note: Data store deletion is an asynchronous operation, so a successful invocation
+        of this request does not necessarily mean that the deletion has completed.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        Example JSON result from the API:
+
+        {
+            u'task': [
+                {
+                    u'resource': {
+                        u'name': u'Sample_Volume',
+                        u'id': u'urn: storageos:
+                                Volume:5ba5b8d8-a0ca-4827-84f9-c1fef57733f5:',
+                        u'link': {
+                            u'rel': u'self',
+                            u'href': u'/block/volumes/urn: storageos: Volume:
+                                      5ba5b8d8-a0ca-4827-84f9-c1fef57733f5:'
+                        }
+                    },
+                    u'state': u'pending',
+                    u'start_time': u'1379398608574',
+                    u'op_id': u'265cf333-76a1-4129-903e-fac63f9b4adc',
+                    u'link': {
+                        u'rel': u'self',
+                        u'href': u'/block/volumes/urn: storageos: Volume:
+                                  5ba5b8d8-a0ca-4827-84f9-c1fef57733f5:
+                                  /tasks/265cf333-76a1-4129-903e-fac63f9b4adc'
+                    }
+                }
+            ]
         }
 
-        log.info("Creating data store '{0}': {1}".format(name, payload))
+        :param data_store_id: Identifier of data store to delete
+        :return: a task object
+        """
+        log.info("Deleting data store ID '{}'".format(data_store_id))
+        return self.conn.post('vdc/data-stores/{}/deactivate'.format(data_store_id))
 
-        return self.conn.post(
-            url='vdc/data-stores/commodity',
-            json_payload=payload
-        )
+    def get_task(self, data_store_id, op_id):
+        """
+        Get the task with the given ID for a specific data store.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+        SYSTEM_MONITOR
+
+        Example JSON result from the API:
+
+        {
+            u'op_id': u'CREATE',
+            u'resource': {
+                u'link': {u'href': u'/vdc/object-pools/10.1.83.70', u'rel': u'self'},
+                u'id': u'10.1.83.70',
+                u'name': u'10.1.83.70'
+            },
+            u'name': u'CREATE',
+            u'global': None,
+            u'associated_resources': [],
+            u'state': u'pending',
+            u'vdc': None,
+            u'link': {u'href': u'/vdc/data-stores/10.1.83.70/tasks/CREATE',
+                      u'rel': u'self'},
+            u'remote': None,
+            u'restLink': None
+        }
+
+        :param data_store_id: Identifier for the data store to query
+        :param op_id: Identifier for the task operation of the data store
+        """
+        log.info("Getting tasks for data store ID '{}'".format(data_store_id))
+        return self.conn.get('vdc/data-stores/{}/tasks/{}'.format(data_store_id, op_id))
