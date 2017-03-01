@@ -500,3 +500,38 @@ OBJECT_USERS = {
         "blobuser"
     ]
 }
+
+SECRET_KEYS = {
+    "type": "object",
+    "properties": {
+        "secret_key_1": {"type": "string"},
+        "secret_key_2": {"type": "string"},
+        "key_timestamp_1": {"type": "string"},
+        "key_timestamp_2": {"type": "string"},
+        "key_expiry_timestamp_1": {"type": "string"},
+        "key_expiry_timestamp_2": {"type": "string"},
+        "link": LINK
+    },
+    "required": [
+        "secret_key_1",
+        "secret_key_2",
+        "key_timestamp_1",
+        "key_timestamp_2"
+    ]
+}
+
+SECRET_KEY = {
+    "type": "object",
+    "properties": {
+        "secret_key": {"type": "string"},
+        "key_timestamp": {"type": "string"},
+        "key_expiry_timestamp": {"type": "string"},
+        "link": LINK
+    },
+    "required": [
+        "secret_key",
+        "key_timestamp",
+        "key_expiry_timestamp",
+        "link"
+    ]
+}

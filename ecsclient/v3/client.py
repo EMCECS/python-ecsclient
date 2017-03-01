@@ -8,8 +8,7 @@ from ecsclient.v3.monitoring import capacity, dashboard, events
 from ecsclient.v3.multitenancy import namespace
 from ecsclient.v3.geo_replication import replication_group, temporary_failed_zone
 from ecsclient.v2.provisioning import base_url, bucket, data_store, storage_pool, virtual_data_center, node
-from ecsclient.v3.user_management import authentication_provider, management_user, object_user, secret_key, \
-    secret_key_self_service
+from ecsclient.v3.user_management import authentication_provider, management_user, object_user, secret_key
 from ecsclient.v3.other import user_info
 
 # Initialize logger
@@ -71,7 +70,6 @@ class Client(baseclient.Client):
         self.authentication_provider = authentication_provider.AuthenticationProvider(self)
         # TODO: self.password_group = password_group.PasswordGroup(self)
         self.secret_key = secret_key.SecretKey(self)
-        self.secret_key_self_service = secret_key_self_service.SecretKeySelfService(self)
         self.management_user = management_user.ManagementUser(self)
         self.object_user = object_user.ObjectUser(self)
 
