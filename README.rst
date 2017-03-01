@@ -207,9 +207,9 @@ The following table shows the supported endpoints per API version.
 +--------------------------+---------+---------+
 | Password Group (Swift)   |    ✗    |    ✗    |
 +--------------------------+---------+---------+
-| Secret Key               |    ✓*   |    ✓*   |
+| Secret Key               |    ✓    |    ✓    |
 +--------------------------+---------+---------+
-| Secret Key Self-Service  |    ✓*   |    ✓*   |
+| Secret Key Self-Service  |    ✓    |    ✓    |
 +--------------------------+---------+---------+
 | User (Object)            |    ✓    |    ✓    |
 +--------------------------+---------+---------+

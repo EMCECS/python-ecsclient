@@ -1,27 +1,20 @@
-# Standard lib imports
 import logging
-
-# Third party imports
-# None
-
-# Project level imports
-# None
-
 
 log = logging.getLogger(__name__)
 
 
 class SecretKey(object):
-
     def __init__(self, connection):
         """
         Initialize a new instance
         """
         self.conn = connection
 
-    def get_user_secret_keys(self, uid, namespace=None):
+    def get(self, user_id=None, namespace=None):
         """
-        Gets all secret keys for the specified user.
+        Gets all secret keys for the specified user. If the user is not provided,
+        it will use authenticated user. If the user belongs to a namespace,
+        the namespace must be supplied
 
         Required role(s):
 
@@ -44,33 +37,38 @@ class SecretKey(object):
             }
         }
 
-        :param uid: Valid user identifier to get the keys from
-        :param namespace: The namespace
+        :param user_id: Valid user identifier to get the keys from. If not provided,
+        the authenticated user will be used instead.
+        :param namespace: Namespace for the user if the user belongs to a namespace (optional)
         """
-        msg = "getting secret keys for user '{0}'".format(uid)
-        url = 'object/user-secret-keys/{0}'.format(uid)
-
-        if namespace:
-            url += '/{0}'.format(namespace)
-            msg += " in namespace '{0}'".format(namespace)
+        if user_id:
+            msg = "Getting secret keys for user '{}'".format(user_id)
+            url = 'object/user-secret-keys/{}'.format(user_id)
+            if namespace:
+                msg += " in namespace '{}'".format(namespace)
+                url += '/{}'.format(namespace)
+        else:
+            msg = "Getting secret keys for the authenticated user"
+            url = 'object/secret-keys'
 
         log.info(msg)
-        return self.conn.get(url=url)
+        return self.conn.get(url)
 
-    def create_new_secret_key(self, uid, namespace=None,
-                              key_expiration=2592000, secret_key=None):
+    def create(self, user_id=None, namespace=None, expiry_time=2592000, secret_key=None):
         """
-        Creates a secret key for the specified user. If the user belongs to a
-        namespace, the namespace must be supplied. When creating a new secret
-        key, you may pass in an expiration time in minutes for the old key.
-        During the expiration interval, both keys will be accepted for
-        requests. This gives you a grace period where you can update
-        applications to use the new key.
+        Creates a secret key for the specified user. If the user is not provided,
+        it will create the secret key for the authenticated user. If the user
+        is provided and belongs to a namespace, the namespace must be supplied.
+        You may pass in an expiration time in minutes. During the expiration interval,
+        both keys will be accepted for requests. This gives you a grace period where
+        you can update applications to use the new key.
 
         Required role(s):
 
         SYSTEM_ADMIN
         NAMESPACE_ADMIN
+
+        No specific role is required if a user ID is not provided.
 
         Example JSON result from the API:
 
@@ -83,29 +81,39 @@ class SecretKey(object):
             "key_timestamp": "2014-12-24 02:08:40.181"
         }
 
-        :param uid: Valid user identifier to create a key for
-        :param namespace: The namespace
-        :param key_expiration: Defaults to 30 days (2592000 seconds)
-        :param secret_key: Manually specify the new secret key
+        :param user_id: Valid user identifier to create a key for. If not provided,
+        the authenticated user will be used instead.
+        :param namespace: Namespace for the user if the user belongs to a namespace (optional)
+        :param expiry_time: Expiry time in minutes for the secret key. Note that nodes may
+        cache secret keys for up to two minutes so old keys may not expire immediately.
+        Defaults to 30 days (2592000 seconds)
+        :param secret_key: Secret key associated with this user. If not provided, system
+        will generate one
         """
-        payload = {
-            "existing_key_expiry_time_mins": key_expiration,
-            "namespace": namespace
-        }
 
-        if secret_key:
-            payload['secretkey'] = secret_key
+        payload = {"existing_key_expiry_time_mins": expiry_time}
 
-        log.info("Creating secret for user '{0}': {1}".format(uid, payload))
+        if user_id:
+            url = 'object/user-secret-keys/{}'.format(user_id)
+            msg = "Creating secret for user '{}'".format(user_id)
+            if namespace:
+                payload['namespace'] = namespace
+            if secret_key:
+                payload['secretkey'] = secret_key
+        else:
+            url = 'object/secret-keys'
+            msg = "Creating secret for the authenticated user"
+            if secret_key:
+                log.warning("Ignoring provided secret key. Cannot set custom secret key for authenticated user")
 
-        return self.conn.post(url='object/user-secret-keys/{0}'.format(uid),
-                              json_payload=payload)
+        log.info(msg)
+        return self.conn.post(url, json_payload=payload)
 
-    def deactivate_user_secret_key(self, uid, namespace=None,
-                                   secret_key=None):
+    def delete(self, user_id=None, namespace=None, secret_key=None):
         """
-        Deletes all secret keys for the specific user. If the user belongs
-        namespace, the namespace must be supplied.
+        Deletes all secret keys for the specific user. If the user is not provided,
+        it will delete the secret keys for the authenticated user. If the user is
+        provided and belongs namespace, the namespace must be supplied.
 
         Required role(s):
 
@@ -118,17 +126,23 @@ class SecretKey(object):
 
         Expect: HTTP/1.1 200 OK
 
-        :param uid: Valid user identifier to get delete the keys from
-        :param namespace: The namespace
-        :param secret_key: The secret key to deactivate
+        :param user_id: Valid user identifier to get delete the keys from (optional)
+        :param namespace: Namespace for the user if the user belongs to a namespace (optional)
+        :param secret_key: The secret key to deleted (optional)
         """
-        payload = {
-            "secret_key": secret_key,
-            "namespace": namespace
-        }
 
-        log.info("Deleting secret for user '{0}': {1}".format(uid, payload))
+        if user_id:
+            url = 'object/user-secret-keys/{}/deactivate'.format(user_id)
+            msg = "Deleting secret for user '{}'".format(user_id)
+        else:
+            url = 'object/secret-keys/deactivate'
+            msg = "Deleting secret for the authenticated user"
 
-        return self.conn.post(
-            url='object/user-secret-keys/{0}/deactivate'.format(uid),
-            json_payload=payload)
+        payload = {}
+        if secret_key:
+            payload['secret_key'] = secret_key
+        if namespace:
+            payload['namespace'] = namespace
+
+        log.info(msg)
+        return self.conn.post(url, json_payload=payload)
