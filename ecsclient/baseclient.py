@@ -157,9 +157,7 @@ class Client(object):
 
             if req.status_code != 200:
                 log.error("Status code NOT OK")
-                raise ECSClientException(
-                    http_status_code=req.status_code,
-                    ecs_message=req.text)
+                raise ECSClientException.from_response(req)
             try:
                 return req.json()
             except ValueError:
