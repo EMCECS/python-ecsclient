@@ -45,8 +45,8 @@ class TestAuthentication(testtools.TestCase):
 
         exception = error.exception
         self.assertEqual(exception.message, 'Invalid username or password')
-        self.assertEqual(exception.ecs_message, 'body')
-        self.assertEqual(exception.http_status_code, 401)
+        self.assertEqual(exception.http_response_content, 'body')
+        self.assertEqual(exception.http_status, 401)
         self.assertIsNone(self.client._token_request._get_existing_token())
         self.assertEqual(self.requests_mock.last_request.method, 'GET')
         self.assertEqual(self.requests_mock.last_request.url, self.LOGIN_URL)

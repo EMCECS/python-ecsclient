@@ -72,17 +72,11 @@ class TokenRequest(object):
         if req.status_code == 401:
             msg = 'Invalid username or password'
             log.fatal(msg)
-            raise ECSClientException(
-                http_status_code=req.status_code,
-                ecs_message=req.text,
-                message=msg)
+            raise ECSClientException.from_response(req, message=msg)
         if req.status_code != 200:
             msg = 'Non-200 status returned ({0})'.format(req.status_code)
             log.fatal(msg)
-            raise ECSClientException(
-                http_status_code=req.status_code,
-                ecs_message=req.text,
-                message=msg)
+            raise ECSClientException.from_response(req, message=msg)
 
         self.token = req.headers['x-sds-auth-token']
 
@@ -150,12 +144,12 @@ class TokenRequest(object):
         except requests.ConnectionError as conn_err:
             msg = 'Connection error: {0}'.format(conn_err.args)
             log.error(msg)
-            raise ECSClientException(message=msg)
+            raise ECSClientException(msg)
         except requests.HTTPError as http_err:
             msg = 'HTTP error: {0}'.format(http_err.args)
             log.error(msg)
-            raise ECSClientException(message=msg)
+            raise ECSClientException(msg)
         except requests.RequestException as req_err:
             msg = 'Request error: {0}'.format(req_err.args)
             log.error(msg)
-            raise ECSClientException(message=msg)
+            raise ECSClientException(msg)

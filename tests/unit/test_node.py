@@ -1,14 +1,17 @@
-import unittest
+import testtools
+from requests_mock.contrib import fixture
 from mock import MagicMock
+from mock import mock
 from mock import patch
 from six.moves import http_client
 from ecsclient.client import Client
 from ecsclient.common.exceptions import ECSClientException
 
 
-class TestNode(unittest.TestCase):
+class TestNode(testtools.TestCase):
 
     def setUp(self):
+        super(TestNode, self).setUp()
         self.ecs_endpoint = 'https://127.0.0.1:4443'
         self.token_endpoint = 'https://127.0.0.1:4443/login'
 
@@ -40,17 +43,21 @@ class TestNode(unittest.TestCase):
         }
 
         self.response = MagicMock()
+        self.requests_mock = self.useFixture(fixture.Fixture())
 
-    def test_get_nodes_should_throw_ecsclientexception(self):
-        self.response.status_code = http_client.INTERNAL_SERVER_ERROR
-        self.requests = MagicMock(return_value=self.response)
-        self.requests.get.side_effect = [self.response]
+    @mock.patch('ecsclient.common.token_request.TokenRequest.get_new_token')
+    def test_get_nodes_should_throw_ecsclientexception(self, mock_get_new_token):
+        self.requests_mock.register_uri('GET', 'https://127.0.0.1:4443/vdc/nodes',
+                                        status_code=http_client.INTERNAL_SERVER_ERROR,
+                                        text='Server Error')
+        mock_get_new_token.return_value = 'FAKE-TOKEN-123'
 
-        with patch('ecsclient.common.token_request.TokenRequest.get_new_token',
-                   return_value='FAKE-TOKEN-123'):
-            with patch('ecsclient.common.token_request.requests.Session.get'):
-                with self.assertRaises(ECSClientException):
-                    self.client.node.get_nodes()
+        with super(testtools.TestCase, self).assertRaises(ECSClientException) as error:
+            self.client.node.get_nodes()
+
+        exception = error.exception
+        self.assertEqual(exception.http_response_content, 'Server Error')
+        self.assertEqual(exception.http_status, http_client.INTERNAL_SERVER_ERROR)
 
     def test_get_nodes(self):
         self.response.status_code = http_client.OK
