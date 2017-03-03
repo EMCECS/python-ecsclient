@@ -67,7 +67,3 @@ class TestObjectUser(functional.BaseTestCase):
         r = self.client.object_user.get_lock(self.object_user_1, namespace=self.namespace_1)
         self.assertEqual(r['isLocked'], False)
 
-    def test_example(self):
-        r = self.client.object_user.get('asdasdasd')
-        print(r)
-
