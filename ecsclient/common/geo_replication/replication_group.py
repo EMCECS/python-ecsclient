@@ -236,8 +236,67 @@ class ReplicationGroup(object):
         log.info("Deleting replication group with ID='{}'".format(replication_group_id))
         return self.conn.post('vdc/data-service/vpools/{}/deactivate'.format(replication_group_id))
 
-    def add_storage_pool(self):
-        raise NotImplementedError()
+    def add_storage_pool(self, replication_group_id, vdc_id, storage_pool_id):
+        """
+        Adds a storage pool (as VDC:storage pool tuple) to the specified replication group.
 
-    def remove_storage_pool(self):
-        raise NotImplementedError()
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        Example JSON result from the API:
+
+        {
+          "data_service_vpool_varrays": {
+            "mappings": {
+              "name": "vdc_id",
+              "value": "StoragePool_Id"
+            }
+          }
+        }
+
+        :param replication_group_id: Replication group identifier for which storage pool needs to be added
+        :param vdc_id: Virtual data center ID
+        :param storage_pool_id: Storage pool ID
+        """
+        payload = {
+            "mappings": [
+                {
+                    "name": vdc_id,
+                    "value": storage_pool_id
+                }
+            ]
+        }
+        log.info("Adding the storage pool '{}' to the replication group '{}'".format(
+            storage_pool_id, replication_group_id))
+        return self.conn.put('vdc/data-service/vpools/{}/addvarrays'.format(replication_group_id),
+                             json_payload=payload)
+
+    def remove_storage_pool(self, replication_group_id, vdc_id, storage_pool_id):
+        """
+        Deletes a storage pool (VDC:storage pool tuple) from a specified replication group.
+
+        Required role(s):
+
+        SYSTEM_ADMIN
+
+        There is no response body for this call
+
+        Expect: HTTP/1.1 200 OK
+
+        :param replication_group_id: Replication group identifier for which storage pool needs to be removed
+        :param vdc_id: Virtual data center ID
+        :param storage_pool_id: Storage pool ID
+        """
+        payload = {
+            "mappings": [
+                {
+                    "name": vdc_id,
+                    "value": storage_pool_id
+                }
+            ]
+        }
+        log.info("Removing the storage pool '{}' from the replication group '{}'".format(
+            storage_pool_id, replication_group_id))
+        return self.conn.put('vdc/data-service/vpools/{}/removevarrays'.format(replication_group_id),
+                             json_payload=payload)
