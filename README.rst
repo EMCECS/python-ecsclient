@@ -25,11 +25,11 @@ This library is the successor of `ECS Minion
 .. |Python| image:: https://img.shields.io/pypi/pyversions/python-ecsclient.svg
     :target: https://pypi.python.org/pypi/python-ecsclient/
     :alt: Python Versions
-.. |Coverage| image:: https://coveralls.io/repos/github/EMCECS/python-ecsclient/badge.svg?branch=add-coveralls
-    :target: https://coveralls.io/github/EMCECS/python-ecsclient?branch=add-coveralls
+.. |Coverage| image:: https://coveralls.io/repos/github/EMCECS/python-ecsclient/badge.svg?branch=master
+    :target: https://coveralls.io/github/EMCECS/python-ecsclient?branch=master
     :alt: Coverage
 .. |License| image:: http://img.shields.io/pypi/l/python-ecsclient.svg?style=flat
-    :target: https://github.com/EMCECS/python-ecsclient/blob/develop/LICENSE
+    :target: https://github.com/EMCECS/python-ecsclient/blob/master/LICENSE
     :alt: License
 .. _`documentation`: https://python-ecsclient.readthedocs.io/en/latest/
 .. _`v2`: https://www.emc.com/techpubs/api/ecs/v2-2-1-0/index.htm
