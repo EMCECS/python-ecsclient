@@ -88,7 +88,7 @@ class VirtualDataCenter(object):
         }
         """
         log.info('Listing VDCs')
-        return self.conn.get(url='object/vdcs/vdc/list')
+        return self.conn.get('object/vdcs/vdc/list')
 
     def get(self, vdc_id=None, name=None):
         """
@@ -207,10 +207,10 @@ class VirtualDataCenter(object):
         {u'key': u'55fmIFBniRuCBVx327Av'}
         """
         log.info('Getting local VDC secret key')
-        return self.conn.get(url='object/vdcs/vdc/local/secretkey')
+        return self.conn.get('object/vdcs/vdc/local/secretkey')
 
-    def update(self, vdc_name, new_name=None, inter_vdc_endpoints=None, inter_vdc_cmd_endpoints=None,
-               management_endpoints=None, secret_key=None):
+    def update(self, vdc_name, new_name, inter_vdc_endpoints, secret_key,
+               inter_vdc_cmd_endpoints=None, management_endpoints=None):
         """
         Update the attributes for the current VDC or a VDC which you want the
         current VDC to connect. Enables the name of the VDC, the end points
@@ -230,22 +230,22 @@ class VirtualDataCenter(object):
         :param vdc_name: VDC name for which mapping needs to be update
         :param new_name: Name of VDC to be updated
         :param inter_vdc_endpoints: Endpoints for the VDC
-        :param inter_vdc_cmd_endpoints: Control Plane endpoints for the VDC
-        :param management_endpoints: The management end points for the VDC
         :param secret_key: Secret key to encrypt communication between VDC
+        :param inter_vdc_cmd_endpoints: Control Plane endpoints for the VDC (optional)
+        :param management_endpoints: The management end points for the VDC (optional)
         """
         payload = {
-            "vdcName": new_name,
-            # "interVdcEndPoints": inter_vdc_endpoints,
-            # "interVdcCmdEndPoints": inter_vdc_cmd_endpoints,
-            # "managementEndPoints": management_endpoints,
-            # "secretKeys": secret_key
+            'vdcName': new_name,
+            'interVdcEndPoints': inter_vdc_endpoints,
+            'secretKeys': secret_key
         }
+        if inter_vdc_cmd_endpoints:
+            payload['interVdcCmdEndPoints'] = inter_vdc_cmd_endpoints
+        if management_endpoints:
+            payload['managementEndPoints'] = management_endpoints
 
         log.info("Updating the VDC with name '{}'".format(vdc_name))
-
-        return self.conn.put(
-            url='object/vdcs/vdc/{}'.format(vdc_name), json_payload=payload)
+        return self.conn.put('object/vdcs/vdc/{}'.format(vdc_name), json_payload=payload)
 
     def delete(self, vdc_id):
         """
@@ -268,9 +268,4 @@ class VirtualDataCenter(object):
         """
         log.info("Deleting VDC '{}'".format(vdc_id))
 
-        return self.conn.post(
-            url='object/vdcs/vdc/{}/deactivate'.format(vdc_id))
-
-    def create(self):
-        # FIXME: The API does not offer an endpoint to create a VDC
-        raise NotImplementedError()
+        return self.conn.post('object/vdcs/vdc/{}/deactivate'.format(vdc_id))
