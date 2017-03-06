@@ -1,3 +1,5 @@
+import time
+
 from tests import functional
 from tests.functional import schemas
 
@@ -5,9 +7,10 @@ from tests.functional import schemas
 class TestVDC(functional.BaseTestCase):
     def setUp(self):
         super(TestVDC, self).setUp()
-        r = self.client.vdc.list()
-        self.vdc_1_id = r['vdc'][0]['id']
-        self.vdc_1_name = r['vdc'][0]['name']
+        r = self.client.vdc.get_local()
+        self.vdc_1_id = r['id']
+        self.vdc_1_name = r['name']
+        self.vdc_1_endpoint = r['interVdcEndPoints']
 
     def test_vdc_list(self):
         response = self.client.vdc.list()
@@ -36,15 +39,20 @@ class TestVDC(functional.BaseTestCase):
         self.assertIsNotNone(response['key'])
 
     def test_vdc_update(self):
-        # response = self.client.vdc.update('vdc1', secret_key='1234567890')
-        # FIXME: API always returns 500 error when trying to update a VDC
-        self.skipTest('API error')
+        vdc_name = 'vdc-%d' % time.time()
+        secret_key = '%d' % time.time()
+        self.client.vdc.update(self.vdc_1_name,
+                               new_name=vdc_name,
+                               secret_key=secret_key,
+                               inter_vdc_endpoints=self.vdc_1_endpoint,
+                               inter_vdc_cmd_endpoints=self.vdc_1_endpoint,
+                               management_endpoints=self.vdc_1_endpoint
+                               )
+
+        r = self.client.vdc.get(vdc_id=self.vdc_1_id)
+        self.assertEqual(r['name'], vdc_name)
+        self.assertEqual(r['vdcName'], vdc_name)
+        self.assertEqual(r['secretKeys'], secret_key)
 
     def test_vdc_delete(self):
-        # response = self.client.vdc.delete('vdc-test-1')
-        # FIXME: Won't be able to delete a VDC until the API offers an endpoint to create them
-        self.skipTest('API missing create endpoint')
-
-    def test_vdc_create(self):
-        # FIXME: API does not offer an endpoint to create a VDC
-        self.skipTest('API missing create endpoint')
+        self.skipTest('Cannot create a scenario to delete a VDC')
