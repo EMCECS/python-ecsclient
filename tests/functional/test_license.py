@@ -8,8 +8,5 @@ class TestLicense(functional.BaseTestCase):
         self.assertValidSchema(response, schemas.LICENSE)
 
     def test_add_license(self):
-        license = {
-            "license_text": self.license_text
-        }
-        response = self.client.licensing.add_license(license)
+        response = self.client.licensing.add_license(self.license_text)
         print(response)
