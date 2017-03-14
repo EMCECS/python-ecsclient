@@ -12,7 +12,6 @@ log = logging.getLogger(__name__)
 
 
 class Licensing(object):
-
     def __init__(self, connection):
         """
         Initialize a new instance
@@ -71,7 +70,7 @@ class Licensing(object):
         log.info("Retrieving license")
         return self.conn.get('license')
 
-    def add_license(self, license):
+    def add_license(self, license_text):
         """
         Adds specified license.
 
@@ -83,7 +82,10 @@ class Licensing(object):
 
         Expect: HTTP/1.1 200 OK
 
-        :param license: License text to be added
+        :param license_text: License text to be added
         """
-        log.info("Adding new license: {0}".format(license))
-        return self.conn.post(url='license', json_payload=license)
+        payload = {
+            "license_text": license_text
+        }
+        log.info("Adding a new license")
+        return self.conn.post('license.json', json_payload=payload)

@@ -209,7 +209,7 @@ class VirtualDataCenter(object):
         log.info('Getting local VDC secret key')
         return self.conn.get('object/vdcs/vdc/local/secretkey')
 
-    def update(self, vdc_name, new_name, inter_vdc_endpoints, secret_key,
+    def update(self, vdc_name, inter_vdc_endpoints, secret_key, new_name=None,
                inter_vdc_cmd_endpoints=None, management_endpoints=None):
         """
         Update the attributes for the current VDC or a VDC which you want the
@@ -228,12 +228,15 @@ class VirtualDataCenter(object):
         Expect: HTTP/1.1 200 OK
 
         :param vdc_name: VDC name for which mapping needs to be update
-        :param new_name: Name of VDC to be updated
+        :param new_name: Name of VDC to be updated (optional)
         :param inter_vdc_endpoints: Endpoints for the VDC
         :param secret_key: Secret key to encrypt communication between VDC
         :param inter_vdc_cmd_endpoints: Control Plane endpoints for the VDC (optional)
         :param management_endpoints: The management end points for the VDC (optional)
         """
+        if not new_name:
+            new_name = vdc_name
+
         payload = {
             'vdcName': new_name,
             'interVdcEndPoints': inter_vdc_endpoints,

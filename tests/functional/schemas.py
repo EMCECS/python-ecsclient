@@ -535,3 +535,206 @@ SECRET_KEY = {
         "link"
     ]
 }
+
+BUCKET_SHORT = {
+    "type": "object",
+    "properties": {
+        "TagSet": {"type": "array"},
+        "id": {"type": "string"},
+        "global": {"type": ["boolean", "null"]},
+        "vdc": {"type": ["string", "null"]},
+        "inactive": {"type": "boolean"},
+        "metaData": {
+            "type": "object",
+            "properties": {
+                "search_enabled": {"type": "boolean"},
+                "max_keys": {"type": "number"},
+                "metadata": {"type": "array"}
+            },
+            "required": [
+                "search_enabled",
+                "max_keys",
+                "metadata"
+            ]
+        },
+        "remote": {"type": ["boolean", "null"]},
+        "name": {"type": "string"}
+    },
+    "required": [
+        "TagSet",
+        "global",
+        "vdc",
+        "inactive",
+        "metaData",
+        "remote",
+        "name"
+    ]
+}
+
+BUCKET = {
+    "type": "object",
+    "properties": {
+        "TagSet": {"type": "array"},
+        "id": {"type": "string"},
+        "global": {"type": ["boolean", "null"]},
+        "vdc": {"type": ["string", "null"]},
+        "search_metadata": {
+            "type": "object",
+            "properties": {
+                "search_enabled": {"type": "boolean"},
+                "max_keys": {"type": "number"},
+                "metadata": {"type": "array"}
+            },
+            "required": [
+                "search_enabled",
+                "max_keys",
+                "metadata"
+            ]
+        },
+        "remote": {"type": ["boolean", "null"]},
+        "name": {"type": "string"},
+        "block_size": {"type": "number"},
+        "retention": {"type": "number"},
+        "api_type": {"type": "string"},
+        "notification_size": {"type": "number"},
+        "namespace": {"type": "string"},
+        "default_retention": {"type": "number"},
+        "locked": {"type": "boolean"},
+        "is_encryption_enabled": {"type": ["boolean", "string"]},
+        "is_stale_allowed": {"type": "boolean"},
+        "vpool": {"type": "string"},
+        "fs_access_enabled": {"type": "boolean"},
+        "created": {"type": "string", "format": "date-time"},
+        "owner": {"type": "string"}
+    },
+    "required": [
+        "TagSet",
+        "global",
+        "vdc",
+        "search_metadata",
+        "remote",
+        "name",
+        "block_size",
+        "retention",
+        "api_type",
+        "notification_size",
+        "namespace",
+        "default_retention",
+        "locked",
+        "is_encryption_enabled",
+        "is_stale_allowed",
+        "vpool",
+        "fs_access_enabled",
+        "created",
+        "owner"
+    ]
+}
+
+BUCKET_LIST = {
+    "type": "object",
+    "properties": {
+        "object_bucket": {
+            "type": "array",
+            "minItems": 0,
+            "items": BUCKET
+        },
+        "Filter": {"type": "string"},
+        "MaxBuckets": {"type": "number"}
+    },
+    "required": [
+        "object_bucket",
+        "Filter",
+        "MaxBuckets"
+    ]
+}
+
+BUCKET_ACL = {
+    "type": "array",
+    "minItems": 1,
+    "items": {
+        "type": "object",
+        "properties": {
+            "display_name": {"type": "string"},
+            "description": {"type": "string"},
+            "id": {"type": "string"}
+        },
+        "required": [
+            "display_name",
+            "id"
+        ]
+    }
+}
+
+BUCKET_ACL_PERMISSIONS = {
+    "type": "object",
+    "properties": {
+        "permission": BUCKET_ACL
+    },
+    "required": [
+        "permission"
+    ]
+}
+
+BUCKET_ACL_GROUPS = {
+    "type": "object",
+    "properties": {
+        "group": BUCKET_ACL
+    },
+    "required": [
+        "group"
+    ]
+}
+
+BUCKET_USER_METADATA = {
+    "type": "object",
+    "properties": {
+        "metadata": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "value": {"type": "string"}
+                },
+                "required": [
+                    "name",
+                    "value"
+                ]
+            }
+        },
+        "head_type": {"type": "string"}
+    },
+    "required": [
+        "metadata",
+        "head_type"
+    ]
+}
+
+BUCKET_SYSTEM_METADATA = {
+    "type": "object",
+    "properties": {
+        "metadata": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "datatype": {"type": "string"},
+                    "type": {"type": "string"}
+                },
+                "required": [
+                    "name",
+                    "datatype",
+                    "type"
+                ]
+            }
+        },
+        "max_keys": {"type": "number"}
+    },
+    "required": [
+        "metadata",
+        "max_keys"
+    ]
+}
