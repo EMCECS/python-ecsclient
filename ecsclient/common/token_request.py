@@ -101,11 +101,12 @@ class TokenRequest(object):
             log.debug("Validating token")
             req = self._request(token, self.token_verification_endpoint)
 
-            if req.status_code == requests.codes.ok:
-                log.debug("Token is valid")
-                return token
+            if req.status_code == requests.codes[401] or req.status.code == requests.codes[403]:
+                log.error("Invalid token")
+                return self.get_new_token()
 
-        return self.get_new_token()
+        log.debug("Token is valid")
+        return token
 
     def _get_existing_token(self):
         """
