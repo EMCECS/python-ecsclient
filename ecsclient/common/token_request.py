@@ -84,8 +84,8 @@ class TokenRequest(object):
             log.debug("Caching token to '{0}'".format(self.token_path))
 
             token_dir = os.path.dirname(os.path.abspath(self.token_path))
-            if os.path.isdir(token_dir) is False:
-                raise ECSClientException('Token directory not found.')
+            if not os.path.isdir(token_dir):
+                raise ECSClientException('Token directory not found')
 
             with open(self.token_path, 'w') as token_file:
                 token_file.write(self.token)
@@ -99,18 +99,27 @@ class TokenRequest(object):
 
         :return: A token
         """
-
         token = self._get_existing_token()
 
-        if token:
-            log.debug("Validating token")
-            req = self._request(token, self.token_verification_endpoint)
+        if not token:
+            log.debug("No Token found getting new one")
+            return self.get_new_token()
 
-            if req.status_code == requests.codes.ok:
-                log.debug("Token is valid")
-                return token
+        # FIXME: Avoid validation at every call
+        log.debug("Validating token")
+        req = self._request(token, self.token_verification_endpoint)
 
-        return self.get_new_token()
+        if req.status_code == 200:
+            log.debug("Token validated successfully")
+            return token
+        elif req.status_code in (401, 403, 415):
+            msg = "Invalid token. Trying to get a new one (Code: {})".format(req.status_code)
+            log.warning(msg)
+            return self.get_new_token()
+        else:  # i.e. 500 or unknown raise an exception
+            msg = "Token validation error (Code: {})".format(req.status_code)
+            log.error(msg)
+            raise ECSClientException.from_response(req, message=msg)
 
     def _get_existing_token(self):
         """

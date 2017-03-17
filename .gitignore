@@ -8,6 +8,7 @@ Vagrantfile
 .tox/
 *.egg-info/
 .coverage
+htmlcov/
 build/
 dist/
 .overcommit.yml
