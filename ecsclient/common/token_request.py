@@ -105,8 +105,11 @@ class TokenRequest(object):
                 log.error("Invalid token")
                 return self.get_new_token()
 
+            log.debug("Token is valid")
+            return token
+
         log.debug("Token is valid")
-        return token
+        return self.get_new_token()
 
     def _get_existing_token(self):
         """
