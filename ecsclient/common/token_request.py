@@ -98,6 +98,9 @@ class TokenRequest(object):
         token = self._get_existing_token()
 
         if token:
+            '''
+            If token exist very it is still a valid one, otherwise raise an exception
+            '''
             log.debug("Validating token")
             req = self._request(token, self.token_verification_endpoint)
 
