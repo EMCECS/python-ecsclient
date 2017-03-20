@@ -82,6 +82,11 @@ class TokenRequest(object):
 
         if self.cache_token:
             log.debug("Caching token to '{0}'".format(self.token_path))
+
+            token_dir = os.path.dirname(os.path.abspath(self.token_path))
+            if os.path.isdir(token_dir) is False:
+                raise ECSClientException('Token directory not found.')
+
             with open(self.token_path, 'w') as token_file:
                 token_file.write(self.token)
 
