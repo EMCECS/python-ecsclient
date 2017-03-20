@@ -104,7 +104,15 @@ class TokenRequest(object):
             log.debug("Validating token")
             req = self._request(token, self.token_verification_endpoint)
 
-            if req.status_code != 200:
+            if req.status_code == 200:
+                msg = "Token validation error.  Code returned: {0}".format(req.status_code)
+                log.debug(msg)
+                return token
+            elif req.status_code in [401, 403, 415]:
+                msg = "Token validation error.  Code returned: {0}".format(req.status_code)
+                log.warning(msg)
+                return self.get_new_token()
+            else:  # i.e. 500 or unknown raise an exception
                 msg = "Token validation error.  Code returned: {0}".format(req.status_code)
                 log.error(msg)
                 raise ECSClientException(msg)
