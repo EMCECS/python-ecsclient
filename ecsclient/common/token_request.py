@@ -101,9 +101,10 @@ class TokenRequest(object):
             log.debug("Validating token")
             req = self._request(token, self.token_verification_endpoint)
 
-            if req.status_code == 401 or req.status_code == 403:
-                log.error("Invalid token")
-                return self.get_new_token()
+            if req.status_code != 200:
+                msg = "Token validation error.  Code returned: {0}".format(req.status_code)
+                log.error(msg)
+                raise ECSClientException(msg)
 
             log.debug("Token is valid")
             return token
