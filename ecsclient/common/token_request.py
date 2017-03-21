@@ -103,13 +103,29 @@ class TokenRequest(object):
         token = self._get_existing_token()
 
         if token:
+            '''
+            If token exist very it is still a valid one, otherwise raise an exception
+            '''
             log.debug("Validating token")
             req = self._request(token, self.token_verification_endpoint)
 
-            if req.status_code == requests.codes.ok:
-                log.debug("Token is valid")
+            if req.status_code == 200:
+                msg = "Token validation error.  Code returned: {0}".format(req.status_code)
+                log.debug(msg)
                 return token
+            elif req.status_code in [401, 403, 415]:
+                msg = "Token validation error.  Code returned: {0}".format(req.status_code)
+                log.warning(msg)
+                return self.get_new_token()
+            else:  # i.e. 500 or unknown raise an exception
+                msg = "Token validation error.  Code returned: {0}".format(req.status_code)
+                log.error(msg)
+                raise ECSClientException(msg)
 
+            log.debug("Token is valid")
+            return token
+
+        log.debug("No Token found getting new one")
         return self.get_new_token()
 
     def _get_existing_token(self):
