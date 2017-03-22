@@ -1,4 +1,5 @@
 import testtools
+from mock import mock
 from requests_mock.contrib import fixture
 from mock import MagicMock
 from mock import mock_open
@@ -56,3 +57,42 @@ class TestTokenRequest(testtools.TestCase):
 
         exception = error.exception
         self.assertEqual(exception.http_status, http_client.UNAUTHORIZED)
+
+    @mock.patch('ecsclient.common.token_request.os.path.isdir')
+    def test_get_new_token_cache_invalid_token_path(self, mock_isdir):
+        self.requests_mock.register_uri('GET', 'https://127.0.0.1:4443/login',
+                                        headers={'X-SDS-AUTH-TOKEN': 'NEW-TOKEN-123'})
+        mock_isdir.side_effect = lambda dir_: dir_ != '/foo/bar'
+        self.token_request.cache_token = True
+        self.token_request.token_path = '/foo/bar/token.txt'
+
+        with super(testtools.TestCase, self).assertRaises(ECSClientException) as error:
+            self.token_request.get_new_token()
+
+        exception = error.exception
+        self.assertEqual(exception.message, "Token directory not found")
+
+    @mock.patch('ecsclient.common.token_request.TokenRequest.get_new_token')
+    @mock.patch('ecsclient.common.token_request.TokenRequest._get_existing_token')
+    def test_token_validation_401(self, mock_get_existing_token, mock_get_new_token):
+        self.requests_mock.register_uri('GET', 'https://127.0.0.1:4443/user/whoami',
+                                        status_code=http_client.UNAUTHORIZED)
+        mock_get_new_token.return_value = 'NEW-TOKEN-123'
+        mock_get_existing_token.return_value = 'EXISTING-TOKEN-123'
+
+        token = self.token_request.get_token()
+
+        self.assertEqual(token, 'NEW-TOKEN-123')
+
+    @mock.patch('ecsclient.common.token_request.TokenRequest._get_existing_token')
+    def test_token_validation_500(self, mock_get_existing_token):
+        self.requests_mock.register_uri('GET', 'https://127.0.0.1:4443/user/whoami',
+                                        status_code=http_client.INTERNAL_SERVER_ERROR)
+        mock_get_existing_token.return_value = 'EXISTING-TOKEN-123'
+
+        with super(testtools.TestCase, self).assertRaises(ECSClientException) as error:
+            self.token_request.get_token()
+
+        exception = error.exception
+        self.assertEqual(exception.message, "Token validation error (Code: 500)")
+        self.assertEqual(exception.http_status, http_client.INTERNAL_SERVER_ERROR)
