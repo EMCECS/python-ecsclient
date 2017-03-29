@@ -84,11 +84,20 @@ class Client(object):
         """
         return self._token_request.get_new_token()
 
+    def get_current_token(self):
+        """
+        Get the current token in use. None if the client is logged out or not yet logged in
+        """
+        return self._token_request.token
+
     def remove_cached_token(self):
         """
         Remove the cached token file, this is useful if you switch users
         and want to use a different token
         """
+        self.token = None
+        self._token_request.token = None
+
         if os.path.isfile(self.token_path):
             log.debug("Removing cached token '{0}'".format(self.token_path))
             os.remove(self.token_path)

@@ -23,6 +23,11 @@ class Authentication(object):
         :param force: If you have multiple sessions running simultaneously this
         forces the termination of all tokens to the current user
         """
+
+        if not self.conn.get_current_token():
+            log.warning('Not logging out since the client has no token set up')
+            return
+
         params = {
             'force': force
         }
