@@ -66,6 +66,7 @@ class TestEcsClient(unittest.TestCase):
                    password='password',
                    ecs_endpoint='https://192.168.1.10')
         exception = error.exception.message
+        mock_isfile.assert_called_with('/tmp/ecsclient.tkn')
         self.assertEqual("'token_endpoint' not provided and missing 'token'|'token_path'", str(exception))
 
     def test_client_without_credentials(self):
@@ -112,6 +113,7 @@ class TestEcsClient(unittest.TestCase):
     def test_client_init_with_token_path(self, mock_isfile):
         mock_isfile.return_value = True
         c = Client(version='3',
-                   token_path='/tmp/token.tkn',
+                   token_path='/tmp/mytoken.tkn',
                    ecs_endpoint='https://192.168.1.10')
         self.assertTrue(hasattr(c, 'token_path'))
+        mock_isfile.assert_called_with('/tmp/mytoken.tkn')

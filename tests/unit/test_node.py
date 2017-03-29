@@ -45,29 +45,33 @@ class TestNode(testtools.TestCase):
         self.response = MagicMock()
         self.requests_mock = self.useFixture(fixture.Fixture())
 
-    @mock.patch('ecsclient.common.token_request.TokenRequest.get_new_token')
-    def test_get_nodes_should_throw_ecsclientexception(self, mock_get_new_token):
+    @mock.patch('ecsclient.common.token_request.TokenRequest.get_token')
+    def test_get_nodes_throw_exception(self, mock_get_token):
         self.requests_mock.register_uri('GET', 'https://127.0.0.1:4443/vdc/nodes',
                                         status_code=http_client.INTERNAL_SERVER_ERROR,
                                         text='Server Error')
-        mock_get_new_token.return_value = 'FAKE-TOKEN-123'
+        mock_get_token.return_value = 'FAKE-TOKEN-123'
 
         with super(testtools.TestCase, self).assertRaises(ECSClientException) as error:
             self.client.node.get_nodes()
 
         exception = error.exception
+        self.assertEqual(self.requests_mock.last_request.method, 'GET')
+        self.assertEqual(self.requests_mock.last_request.url, 'https://127.0.0.1:4443/vdc/nodes')
+        self.assertEqual(self.requests_mock.last_request.headers['x-sds-auth-token'], 'FAKE-TOKEN-123')
         self.assertEqual(exception.http_response_content, 'Server Error')
         self.assertEqual(exception.http_status, http_client.INTERNAL_SERVER_ERROR)
 
-    def test_get_nodes(self):
-        self.response.status_code = http_client.OK
-        self.response.body = self.returned_json
-        self.response.json = MagicMock(return_value=self.returned_json)
-        self.requests = MagicMock(return_value=self.response)
-        self.requests.get.side_effect = [self.response]
+    @mock.patch('ecsclient.common.token_request.TokenRequest.get_token')
+    def test_get_nodes(self, mock_get_token):
+        mock_get_token.return_value = 'FAKE-TOKEN-123'
+        self.requests_mock.register_uri('GET', 'https://127.0.0.1:4443/vdc/nodes',
+                                        status_code=http_client.OK,
+                                        json=self.returned_json)
 
-        with patch('ecsclient.common.token_request.TokenRequest.'
-                   '_get_existing_token', return_value='FAKE-TOKEN-123'):
-            with patch('ecsclient.baseclient.requests.Session.get', self.requests):
-                returned_json = self.client.node.get_nodes()
-                self.assertEqual(returned_json, self.returned_json)
+        response = self.client.node.get_nodes()
+
+        self.assertEqual(self.requests_mock.last_request.method, 'GET')
+        self.assertEqual(self.requests_mock.last_request.url, 'https://127.0.0.1:4443/vdc/nodes')
+        self.assertEqual(self.requests_mock.last_request.headers['x-sds-auth-token'], 'FAKE-TOKEN-123')
+        self.assertEqual(response, self.returned_json)
