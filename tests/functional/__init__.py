@@ -3,9 +3,9 @@ import re
 import unittest
 
 from six.moves import configparser
-from jsonschema import validate, FormatChecker
 
 from ecsclient.client import Client
+from ecsclient.common.util import is_valid_response
 
 
 class BaseTestCase(unittest.TestCase):
@@ -59,4 +59,4 @@ class BaseTestCase(unittest.TestCase):
     def assertValidSchema(self, object, schema):
         """Fail if the object does not comply with the given schema.
         """
-        validate(object, schema, format_checker=FormatChecker())
+        self.assertTrue(is_valid_response(object, schema), 'Response is not valid with the schema')

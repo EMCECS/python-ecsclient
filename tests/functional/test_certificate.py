@@ -1,5 +1,6 @@
+from ecsclient import schemas
 from tests import functional
-from tests.functional import helper, schemas
+from tests.functional import helper
 
 
 class TestCertificate(functional.BaseTestCase):

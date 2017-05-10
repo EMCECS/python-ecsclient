@@ -1,11 +1,8 @@
-# Standard lib imports
 import datetime
+import logging
+from jsonschema import validate, FormatChecker
 
-# Third party imports
-# None
-
-# Project level imports
-# None
+log = logging.getLogger(__name__)
 
 
 def get_formatted_time_string(year, month, day, hour, minute=None):
@@ -31,3 +28,19 @@ def get_formatted_time_string(year, month, day, hour, minute=None):
     else:
         d = datetime.datetime(int(year), int(month), int(day), int(hour))
         return d.strftime("%Y-%m-%dT%H")
+
+
+def is_valid_response(response, schema):
+    """
+    Returns True if the response validates with the schema, False otherwise
+
+    :param response: The response returned by the API
+    :param schema: The schema to validate with
+    :returns: True if the response validates with the schema, False otherwise
+    """
+    try:
+        validate(response, schema, format_checker=FormatChecker())
+        return True
+    except Exception as e:
+        log.warning("Response is not valid: %s" % (e.msg,))
+        return False
