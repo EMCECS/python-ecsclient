@@ -1,0 +1,15 @@
+PreCommit:
+
+  PythonFlake8:
+    enabled: true
+    on_warn: fail
+
+  TrailingWhitespace:
+    enabled: true
+
+PrePush:
+
+  PythonNose:
+    enabled: true
+    description: 'Run nose test suite'
+    required_executable: 'nosetests'

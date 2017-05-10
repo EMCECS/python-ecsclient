@@ -11,7 +11,6 @@ Vagrantfile
 htmlcov/
 build/
 dist/
-.overcommit.yml
 test.conf
 .venv/
 .direnv/
