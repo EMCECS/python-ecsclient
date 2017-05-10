@@ -1,7 +1,7 @@
 import time
 
+from ecsclient import schemas
 from tests import functional
-from tests.functional import schemas
 
 
 class TestDataStore(functional.BaseTestCase):

@@ -1,8 +1,8 @@
 import time
 
+from ecsclient import schemas
 from ecsclient.common.exceptions import ECSClientException
 from tests import functional
-from tests.functional import schemas
 
 
 class TestSecretKey(functional.BaseTestCase):
