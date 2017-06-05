@@ -40,7 +40,7 @@ class ObjectUser(object):
 
         :param namespace: Namespace for which users should be returned. Optional.
         """
-        msg = 'Listing all users'
+        msg = 'Listing all object users'
         url = 'object/users'
 
         if namespace:
