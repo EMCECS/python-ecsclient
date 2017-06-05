@@ -738,3 +738,33 @@ BUCKET_SYSTEM_METADATA = {
         "max_keys"
     ]
 }
+
+MANAGEMENT_USER = {
+    "type": "object",
+    "properties": {
+        "userId": {"type": "string"},
+        "isSystemAdmin": {"type": "boolean"},
+        "isSystemMonitor": {"type": "boolean"},
+        "is_external_group": {"type": "boolean"}
+    },
+    "required": [
+        "userId",
+        "isSystemAdmin",
+        "isSystemMonitor",
+        "is_external_group"
+    ]
+}
+
+MANAGEMENT_USERS = {
+    "type": "object",
+    "properties": {
+        "mgmt_user_info": {
+            "type": "array",
+            "minItems": 0,
+            "items": MANAGEMENT_USER
+        },
+    },
+    "required": [
+        "mgmt_user_info"
+    ]
+}
