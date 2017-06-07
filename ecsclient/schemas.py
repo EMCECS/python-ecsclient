@@ -772,7 +772,15 @@ MANAGEMENT_USERS = {
 GROUP_LIST = {
     "type": "object",
     "properties": {
-        "groups_list": {"type": "string"}
+        "groups_list": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": True
+        }
     },
     "required": [
         "groups_list"
