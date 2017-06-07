@@ -768,3 +768,13 @@ MANAGEMENT_USERS = {
         "mgmt_user_info"
     ]
 }
+
+GROUP_LIST = {
+    "type": "object",
+    "properties": {
+        "groups_list": {"type": "string"}
+    },
+    "required": [
+        "groups_list"
+    ]
+}
