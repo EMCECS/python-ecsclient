@@ -205,7 +205,7 @@ The following table shows the supported endpoints per API version.
 +--------------------------+---------+---------+
 | Authentication Provider  |    ~    |    ~    |
 +--------------------------+---------+---------+
-| Password Group (Swift)   |    ✗    |    ✗    |
+| Password Group (Swift)   |    ✓    |    ✓    |
 +--------------------------+---------+---------+
 | Secret Key               |    ✓    |    ✓    |
 +--------------------------+---------+---------+
