@@ -768,3 +768,21 @@ MANAGEMENT_USERS = {
         "mgmt_user_info"
     ]
 }
+
+GROUP_LIST = {
+    "type": "object",
+    "properties": {
+        "groups_list": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": True
+        }
+    },
+    "required": [
+        "groups_list"
+    ]
+}
