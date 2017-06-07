@@ -11,7 +11,7 @@ class PasswordGroup(object):
         """
         self.conn = connection
 
-    def get(self, user_id=None, namespace=None):
+    def get(self, user_id, namespace=None):
         """
         Gets all Swift user groups for a specified user identifier.
         If namespace is provided then returns only groups for the specified namespace.
@@ -43,7 +43,7 @@ class PasswordGroup(object):
         log.info(msg)
         return self.conn.get(url=url)
 
-    def create(self, user_id=None, namespace=None, password=None, groups_list=None):
+    def create(self, user_id, password, groups_list, namespace=None):
         """
         Creates password and group for a specific user.
 
@@ -56,11 +56,13 @@ class PasswordGroup(object):
 
         Expect: HTTP/1.1 200 OK
 
-        :param user_id: Valid user identifier to create a key for. If not provided,
-        the authenticated user will be used instead.
+        :param user_id: Valid user identifier to create a key for. If not provided, the authenticated
+        user will be used instead.
         :param namespace: Namespace for the user if the user belongs to a namespace.
-        :param groups_list: List of Swift groups with which to associate this user.
         :param password: Swift password associated with this user.
+        :param groups_list: List of Swift groups with which to associate this user. If user is a member
+        of the "admin" group, user will be able to perform all container operations.
+        If a member of any other group, authorization will depend on the access that is set on the container.
         """
 
         url = 'object/user-password/{}'.format(user_id)
@@ -73,7 +75,7 @@ class PasswordGroup(object):
         log.info(msg)
         return self.conn.put(url, json_payload=payload)
 
-    def update(self, user_id=None, namespace=None, password=None, groups_list=None):
+    def update(self, user_id, password, groups_list, namespace=None):
         """
         Updates password and group information for a specific user identifier.
 
@@ -89,8 +91,10 @@ class PasswordGroup(object):
         :param user_id: Valid user identifier to create a key for. If not provided,
         the authenticated user will be used instead.
         :param namespace: Namespace for the user if the user belongs to a namespace.
-        :param groups_list: List of Swift groups with which to associate this user.
         :param password: Swift password associated with this user.
+        :param groups_list: List of Swift groups with which to associate this user. If user is a member
+        of the "admin" group, user will be able to perform all container operations.
+        If a member of any other group, authorization will depend on the access that is set on the container.
         """
 
         url = 'object/user-password/{}'.format(user_id)
@@ -103,7 +107,7 @@ class PasswordGroup(object):
         log.info(msg)
         return self.conn.post(url, json_payload=payload)
 
-    def delete(self, user_id=None, namespace=None):
+    def delete(self, user_id, namespace=None):
         """
         Deletes password group for a specified user.
 

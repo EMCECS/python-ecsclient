@@ -165,7 +165,7 @@ class Client(object):
                     params=params)
 
             # Because some delete actions in the API return HTTP/1.1 204 No Content
-            if 199 < req.status_code < 300:
+            if not (200 <= req.status_code < 300):
                 log.error("Status code NOT OK")
                 raise ECSClientException.from_response(req)
             try:
