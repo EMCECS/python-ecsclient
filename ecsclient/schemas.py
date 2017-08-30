@@ -786,3 +786,13 @@ GROUP_LIST = {
         "groups_list"
     ]
 }
+
+VDC_KEYSTORE = {
+    "type": "object",
+    "properties": {
+        "chain": {"type": "string"}
+    },
+    "required": [
+        "chain"
+    ]
+}
