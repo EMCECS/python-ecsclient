@@ -195,7 +195,7 @@ The following table shows the supported endpoints per API version.
 +--------------------------+---------+---------+
 | Virtual Data Center      |    ✓    |    ✓    |
 +--------------------------+---------+---------+
-| VDC Keystore             |    ✗    |    ✗    |
+| VDC Keystore             |    ✓    |    ✓    |
 +--------------------------+---------+---------+
 | **Support**                                  |
 +--------------------------+---------+---------+
