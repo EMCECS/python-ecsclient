@@ -30,6 +30,8 @@ class VdcKeystore(object):
     def set(self, private_key, certificate_chain):
         """
         Set the private key and certificate chain being used by ECS.
+        WARNING: Note that the certificate will not be updated until ECS is
+        restarted. Restarting ECS is out of the scope of this library.
 
         Required role(s):
 
@@ -51,5 +53,6 @@ class VdcKeystore(object):
           }
         }
 
-        log.info("Setting the private key and certificate chain")
+        log.info("Setting the private key and certificate chain (ECS must be "
+                 "restarted for this change to take effect)")
         return self.conn.put('vdc/keystore', json_payload=payload)

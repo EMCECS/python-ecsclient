@@ -14,5 +14,6 @@ class TestVdcKeystore(functional.BaseTestCase):
         certificate = helper.get_sample_certificate()
         response = self.client.vdc_keystore.set(private_key, certificate)
         self.assertValidSchema(response, schemas.VDC_KEYSTORE)
-        # TODO: Find out why the returned certificate different
+        # Can't validate the certificate and private key at this point
+        # because it does not take effect until the ECS is manually restarted
         # self.assertSameCertificate(certificate, response['chain'])
