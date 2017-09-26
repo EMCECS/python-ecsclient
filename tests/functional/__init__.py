@@ -16,7 +16,7 @@ class BaseTestCase(unittest.TestCase):
 
     def _get_config(self):
         config_file = os.environ.get('ECS_TEST_CONFIG_FILE',
-                                     '/home/ubuntu/src/test.conf')
+                                     os.path.join(os.getcwd(), "tests/test.conf"))
         config = configparser.ConfigParser()
         config.read(config_file)
         self.config = config

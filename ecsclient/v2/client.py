@@ -5,7 +5,8 @@ from ecsclient.v2.cas import cas
 from ecsclient.v2.configuration import certificate, configuration_properties, licensing
 from ecsclient.v2.configuration import feature
 from ecsclient.v2.geo_replication import replication_group, temporary_failed_zone
-from ecsclient.v2.provisioning import base_url, bucket, data_store, storage_pool, virtual_data_center, node
+from ecsclient.v2.provisioning import base_url, bucket, data_store, storage_pool, virtual_data_center, node, \
+    vdc_keystore
 from ecsclient.v2.metering import billing
 from ecsclient.v2.monitoring import capacity, dashboard, events
 from ecsclient.v2.multitenancy import namespace
@@ -61,7 +62,7 @@ class Client(baseclient.Client):
         self.node = node.Node(self)
         self.storage_pool = storage_pool.StoragePool(self)
         self.vdc = virtual_data_center.VirtualDataCenter(self)
-        # TODO: vdc_keystore = vdc_keystore.VdcKeystore(self)
+        self.vdc_keystore = vdc_keystore.VdcKeystore(self)
 
         # Support
         # TODO: self.call_home = call_home.CallHome(self)
