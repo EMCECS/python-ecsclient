@@ -796,3 +796,38 @@ VDC_KEYSTORE = {
         "chain"
     ]
 }
+
+NODE = {
+    "type": "object",
+    "properties": {
+        "rackId": {"type": "string"},
+        "version": {"type": "string"},
+        "nodeid": {"type": "string"},
+        "isLocal": {"type": "boolean"},
+        "nodename": {"type": "string"},
+        "ip": {"type": "string"},
+    },
+    "required": [
+        "rackId",
+        "version",
+        "nodeid",
+        "isLocal",
+        "nodename",
+        "ip"
+    ]
+}
+
+NODE_LIST = {
+    "type": "object",
+    "properties": {
+        "node": {
+            "type": "array",
+            "items": NODE,
+            "minItems": 1,
+            "uniqueItems": True
+        }
+    },
+    "required": [
+        "node"
+    ]
+}

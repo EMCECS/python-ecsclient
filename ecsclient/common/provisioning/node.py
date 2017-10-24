@@ -19,9 +19,9 @@ class Node(object):
         """
         self.conn = connection
 
-    def get_nodes(self):
+    def list(self):
         """
-        Gets the data nodes that are currently configured in the cluster.
+        Gets a list of the data nodes that are currently configured in the cluster.
 
         Required role(s):
 
