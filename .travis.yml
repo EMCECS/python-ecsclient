@@ -19,7 +19,7 @@ deploy:
     tags: true
 - provider: pypi
   distributions: sdist
-  server: https://testpypi.python.org/pypi
+  server: https://test.pypi.org/legacy/
   user: adrianmo
   password:
     secure: "NYPdcAwr02pKWFP74ARGMzqprcZyVgdensMUBaXt59E/Ivtx6XoXmONsVg9go0JrMzFiVmtHah4W0anBB3BZ2ASaDYOg/M/BimBSmBi0D/G3Mb8hcZ7lYYSEMh+o+zHg/5fOjYQxrv9G/ekPbXJgD1gz4wbx8w9n1rZsUOsQgSRukXHNr5wDVO6NRpsuaidJAi7f6ZNsPq8RY6m+6JSZhHj50LicRcN5W93FLs5bjyES/QWXuwbVgXw8g360E8E0XT/5OElyXjHM3zoz8IOZHR8eKMmekM5B1U3CGXXv5nQfXCkw7RewgYLRYrA9C8hOxCb18+/Hn8oU76LTbA0fOpyOaNKXTfrchwmRc9E4EQxjJT39gJofqdWokJJDqzcTmHeDRApTmnGd/bV1bNtKXj9oSP8JdEKviz3qAFDTQdLCEp97CxgCRjRqNshbvF83TVwEVur/VKn8FNUZ4Re435JnZz4j6CNUGJIaWLE9RaNRbpjO8mUPq/iQ3cxLVhcT5n8QGyEt5SQX6Mcl+2dHBuCEbKpJBJAT2SVtDk5dwHdTOk9NH7dYEMLuygPtjPQFrTUFhE3RqZZJbyHFYYgnG8al+iwmwxTQOuH3P8Cz1I1n1H3y0Dc+573atnOXG3LoyUZ2PGFxC4eEGJkHa8DyMcuHjsEEEA3BWEg5MiSiVrw="
