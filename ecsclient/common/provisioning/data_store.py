@@ -200,7 +200,7 @@ class DataStore(object):
 
         :param name: User provided name (not verified or unique)
         :param description: User provided description (not verified or unique)
-        :param node_id: IP address for the commodity node
+        :param node_id: ID of the commodity node
         :param storage_pool_id: Desired storage pool ID for creating data store
         :returns a task object
         """
