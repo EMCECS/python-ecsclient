@@ -38,7 +38,8 @@ class BaseTestCase(unittest.TestCase):
             username=self.username,
             password=self.password,
             ecs_endpoint=self.ecs_endpoint,
-            token_endpoint=self.token_endpoint)
+            token_endpoint=self.token_endpoint,
+            request_timeout=60.0)
 
     def setUp(self):
         super(BaseTestCase, self).setUp()

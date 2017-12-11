@@ -1,11 +1,4 @@
-# Standard lib imports
 import logging
-
-# Third party imports
-# None
-
-# Project level imports
-# None
 
 
 log = logging.getLogger(__name__)
@@ -48,7 +41,7 @@ class Dashboard(object):
 
         Too large to output here
         """
-        log.info("Getting vpools in local VDC")
+        log.info("Getting local VDC replication groups details")
         return self.conn.get(url='dashboard/zones/localzone/replicationgroups')
 
     def get_local_zone_rglinks_failed(self):

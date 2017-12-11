@@ -857,3 +857,198 @@ CAPACITY = {
         "totalProvisioned_gb"
     ]
 }
+
+DASHBOARD_REPLICATION_GROUP_TRAFFIC = {
+    "type": "object",
+    "properties": {
+        "Bandwidth": {"type": "string"},
+        "t": {"type": "string"},
+    },
+    "required": [
+        "Bandwidth",
+        "t"
+    ]
+}
+
+DASHBOARD_REPLICATION_GROUP_TRAFFIC_SUMMARY = {
+    "type": "object",
+    "properties": {
+        "Max": {
+            "type": "array",
+            "minItems": 0,
+            "items": DASHBOARD_REPLICATION_GROUP_TRAFFIC
+        },
+        "Min": {
+            "type": "array",
+            "minItems": 0,
+            "items": DASHBOARD_REPLICATION_GROUP_TRAFFIC
+        },
+        "Avg": {"type": "string"},
+    },
+    "required": [
+        "Max",
+        "Min",
+        "Avg"
+    ]
+}
+
+DASHBOARD_REPLICATION_GROUP = {
+    "type": "object",
+    "properties": {
+        "chunksRepoPendingReplicationTotalSize": {"type": "string"},
+        "chunksJournalPendingReplicationTotalSize": {"type": "string"},
+        "chunksPendingXorTotalSize": {"type": "string"},
+        "name": {"type": "string"},
+        "id": {"type": "string"},
+        "numZones": {"type": "string"},
+        "apiChange": {"type": "string"},
+        "replicationIngressTrafficSummary": DASHBOARD_REPLICATION_GROUP_TRAFFIC_SUMMARY,
+        "replicationEgressTrafficSummary": DASHBOARD_REPLICATION_GROUP_TRAFFIC_SUMMARY,
+        "replicationIngressTraffic": {
+            "type": "array",
+            "minItems": 0,
+            "items": DASHBOARD_REPLICATION_GROUP_TRAFFIC
+        },
+        "replicationEgressTraffic": {
+            "type": "array",
+            "minItems": 0,
+            "items": DASHBOARD_REPLICATION_GROUP_TRAFFIC
+        },
+        "_links": {
+            "type": "object",
+            "properties": {
+                "self": {
+                    "type": "object",
+                    "properties": {
+                        "href": {"type": "string"},
+                    },
+                    "required": [
+                        "href",
+                    ]
+                },
+                "rglinks": {
+                    "type": "object",
+                    "properties": {
+                        "href": {"type": "string"},
+                    },
+                    "required": [
+                        "href",
+                    ]
+                },
+                "datatables": {
+                    "type": "object",
+                    "properties": {
+                        "href": {"type": "string"},
+                    },
+                    "required": [
+                        "href",
+                    ]
+                }
+            },
+            "required": [
+                "self",
+                "rglinks",
+                "datatables",
+            ]
+        },
+    },
+    "required": [
+        "chunksRepoPendingReplicationTotalSize",
+        "chunksJournalPendingReplicationTotalSize",
+        "chunksPendingXorTotalSize",
+        "name",
+        "id",
+        "numZones",
+        "apiChange",
+        "replicationIngressTrafficSummary",
+        "replicationEgressTrafficSummary",
+        "replicationIngressTraffic",
+        "replicationEgressTraffic",
+        "_links"
+    ]
+}
+
+DASHBOARD_REPLICATION_GROUPS = {
+    "type": "object",
+    "properties": {
+        "title": {"type": "string"},
+        "_links": {
+            "type": "object",
+            "properties": {
+                "self": {
+                    "type": "object",
+                    "properties": {
+                        "href": {"type": "string"},
+                    },
+                    "required": [
+                        "href",
+                    ]
+                }
+            },
+            "required": [
+                "self",
+            ]
+        },
+        "_embedded": {
+            "type": "object",
+            "properties": {
+                "_instances": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": DASHBOARD_REPLICATION_GROUP
+                }
+            },
+            "required": [
+                "_instances",
+            ]
+        },
+
+    },
+    "required": [
+        "title",
+        "_links",
+        "_embedded"
+    ]
+}
+
+DASHBOARD_NODES = {
+    "type": "object",
+    "properties": {
+        "title": {"type": "string"},
+        "_links": {
+            "type": "object",
+            "properties": {
+                "self": {
+                    "type": "object",
+                    "properties": {
+                        "href": {"type": "string"},
+                    },
+                    "required": [
+                        "href",
+                    ]
+                }
+            },
+            "required": [
+                "self",
+            ]
+        },
+        "_embedded": {
+            "type": "object",
+            "properties": {
+                "_instances": {
+                    "type": "array",
+                    "minItems": 1,
+                }
+            },
+            "required": [
+                "_instances",
+            ]
+        },
+
+    },
+    "required": [
+        "title",
+        "_links",
+        "_embedded"
+    ]
+}
