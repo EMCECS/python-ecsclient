@@ -11,7 +11,7 @@ class Billing(object):
         """
         self.conn = connection
 
-    def get_bucket_billing_info(self, bucket_name, namespace):
+    def get_bucket_billing_info(self, bucket_name, namespace, sizeunit='GB'):
         """
         Gets billing details for the specified namespace and bucket name.
 
@@ -37,14 +37,19 @@ class Billing(object):
         :param bucket_name: Bucket name for which billing information needs
         to be retrieved
         :param namespace: Namespace containing the bucket
+        :param sizeunit: Unit to be used for calculating the size on disk (KB,MB and GB. GB is default value)
         """
         log.info("Getting billing info for bucket '{0}'".format(bucket_name))
 
+        params = {
+            "sizeunit": sizeunit
+        }
+
         return self.conn.get(
             url='object/billing/buckets/{0}/{1}/info'.format(
-                namespace, bucket_name))
+                namespace, bucket_name), params=params)
 
-    def get_namespace_billing_info(self, namespace,
+    def get_namespace_billing_info(self, namespace, sizeunit='GB',
                                    include_bucket_detail=False, marker=None):
         """
         Gets billing details for the specified namespace and bucket details.
@@ -92,11 +97,13 @@ class Billing(object):
         include information about all the buckets owned by this namespace.
         :param marker: Optional. Used to continue a truncated response. Omit
         this parameter on the first request.
+        :param sizeunit: Unit to be used for calculating the size on disk (KB,MB and GB. GB is default value)
         """
         log.info("Getting billing info for namespace '{0}'".format(namespace))
 
         params = {
-            "include_bucket_detail": include_bucket_detail
+            "include_bucket_detail": include_bucket_detail,
+            "sizeunit": sizeunit
         }
 
         if marker:
@@ -106,7 +113,7 @@ class Billing(object):
             url='object/billing/namespace/{0}/info'.format(
                 namespace), params=params)
 
-    def get_namespace_billing_sample(self, namespace, start_time, end_time,
+    def get_namespace_billing_sample(self, namespace, start_time, end_time, sizeunit='GB',
                                      include_bucket_detail=False, marker=None):
         """
         Gets billing details for the specified namespace, interval and bucket
@@ -183,13 +190,15 @@ class Billing(object):
         this parameter on the first request.
         :param start_time: Starting time in ISO-8601 minute format
         :param end_time: Ending time in ISO-8601 minute format
+        :param sizeunit: Unit to be used for calculating the size on disk (KB,MB and GB. GB is default value)
         """
         log.info("Sampling billing info for namespace '{0}'".format(namespace))
 
         params = {
             "include_bucket_detail": include_bucket_detail,
             "start_time": start_time,
-            "end_time": end_time
+            "end_time": end_time,
+            "sizeunit": sizeunit
         }
 
         if marker:
@@ -200,7 +209,7 @@ class Billing(object):
                 namespace), params=params)
 
     def get_bucket_billing_sample(self, bucket_name, namespace,
-                                  start_time, end_time):
+                                  start_time, end_time, sizeunit='GB'):
         """
         Gets billing details for the specified namespace, interval and bucket
         details. By default, buckets are sampled every 5 minutes. If the
@@ -236,13 +245,15 @@ class Billing(object):
         :param bucket_name: Bucket name
         :param start_time: Starting time in ISO-8601 minute format
         :param end_time: Ending time in ISO-8601 minute format
+        :param sizeunit: Unit to be used for calculating the size on disk (KB,MB and GB. GB is default value)s
         """
         log.info("Sampling billing info for bucket '{0}' in namespace "
                  "'{1}'".format(bucket_name, namespace))
 
         params = {
             "start_time": start_time,
-            "end_time": end_time
+            "end_time": end_time,
+            "sizeunit": sizeunit
         }
 
         return self.conn.get(
