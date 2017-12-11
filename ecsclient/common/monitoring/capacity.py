@@ -11,7 +11,7 @@ class Capacity(object):
         """
         self.conn = connection
 
-    def get_cluster_capacity(self, v_array_id=None):
+    def get_cluster_capacity(self, storage_pool_id=None):
         """
         Gets the capacity of the cluster. The details includes the provisioned
         capacity in GB and available capacity in GB.
@@ -28,12 +28,12 @@ class Capacity(object):
             u'totalProvisioned_gb': 2578400
         }
 
-        :param v_array_id: Storage pool identifier for which to retrieve
+        :param storage_pool_id: Storage pool identifier for which to retrieve
         capacity (optional)
         """
-        if v_array_id:
-            log.info("Getting capacity of varray '{0}'".format(v_array_id))
-            return self.conn.get(url='object/capacity/{0}'.format(v_array_id))
+        if storage_pool_id:
+            log.info("Getting capacity of storage pool '{0}'".format(storage_pool_id))
+            return self.conn.get(url='object/capacity/{0}'.format(storage_pool_id))
         else:
             log.info("Getting capacity of storage cluster")
             return self.conn.get(url='object/capacity')

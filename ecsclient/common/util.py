@@ -42,5 +42,5 @@ def is_valid_response(response, schema):
         validate(response, schema, format_checker=FormatChecker())
         return True
     except Exception as e:
-        log.warning("Response is not valid: %s" % (e.msg,))
+        log.warning("Response is not valid: %s" % (e,))
         return False

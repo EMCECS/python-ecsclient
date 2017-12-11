@@ -831,3 +831,29 @@ NODE_LIST = {
         "node"
     ]
 }
+
+ALERTS = {
+    "type": "object",
+    "properties": {
+        "MaxAlerts": {"type": "number"},
+        "Filter": {"type": "string"},
+        "alert": {"type": "array"}
+    },
+    "required": [
+        "MaxAlerts",
+        "Filter",
+        "alert"
+    ]
+}
+
+CAPACITY = {
+    "type": "object",
+    "properties": {
+        "totalFree_gb": {"type": "number"},
+        "totalProvisioned_gb": {"type": "number"}
+    },
+    "required": [
+        "totalFree_gb",
+        "totalProvisioned_gb"
+    ]
+}

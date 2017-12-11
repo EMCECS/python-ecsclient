@@ -5,7 +5,7 @@ from ecsclient.v3.configuration import certificate, configuration_properties, \
     licensing, feature, syslog, snmp
 from ecsclient.v3.cas import cas
 from ecsclient.v3.metering import billing
-from ecsclient.v3.monitoring import capacity, dashboard, events
+from ecsclient.v3.monitoring import capacity, dashboard, events, alerts
 from ecsclient.v3.multitenancy import namespace
 from ecsclient.v3.geo_replication import replication_group, temporary_failed_zone
 from ecsclient.v3.provisioning import base_url, bucket, data_store, storage_pool, \
@@ -48,7 +48,7 @@ class Client(baseclient.Client):
         self.capacity = capacity.Capacity(self)
         self.dashboard = dashboard.Dashboard(self)
         self.events = events.Events(self)
-        # TODO: self.alerts = alerts.Alerts(self)
+        self.alerts = alerts.Alerts(self)
 
         # Multi-tenancy
         self.namespace = namespace.Namespace(self)
