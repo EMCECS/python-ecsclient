@@ -59,7 +59,6 @@ class TestSecretKey(functional.BaseTestCase):
                                                  secret_key=secret_key)
         self.assertValidSchema(response, schemas.SECRET_KEY)
         self.assertEqual(response['secret_key'], secret_key)
-        # TODO: Investigate why the expiry time is not set
 
     def test_secret_key_delete_authenticated_user(self):
         response = self.client.secret_key.get()
@@ -79,4 +78,21 @@ class TestSecretKey(functional.BaseTestCase):
 
         response = self.client.secret_key.get(user_id=self.object_user_1, namespace=self.namespace_1)
         self.assertEqual(response['secret_key_1'], "")
+        self.assertEqual(response['secret_key_2'], "")
+
+    def test_secret_key_replace(self):
+        secret_key = 'A3GooHbvQXSxHplji1aPEGZilIEWYfveJQtFIrAF'
+
+        self.client.secret_key.delete(user_id=self.object_user_1, namespace=self.namespace_1)
+
+        response = self.client.secret_key.get(user_id=self.object_user_1, namespace=self.namespace_1)
+        self.assertEqual(response['secret_key_1'], "")
+        self.assertEqual(response['secret_key_2'], "")
+
+        self.client.secret_key.create(user_id=self.object_user_1,
+                                      namespace=self.namespace_1,
+                                      secret_key=secret_key)
+
+        response = self.client.secret_key.get(user_id=self.object_user_1, namespace=self.namespace_1)
+        self.assertEqual(response['secret_key_1'], secret_key)
         self.assertEqual(response['secret_key_2'], "")
