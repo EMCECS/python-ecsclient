@@ -54,7 +54,7 @@ class SecretKey(object):
         log.info(msg)
         return self.conn.get(url)
 
-    def create(self, user_id=None, namespace=None, expiry_time=2592000, secret_key=None):
+    def create(self, user_id=None, namespace=None, expiry_time=None, secret_key=None):
         """
         Creates a secret key for the specified user. If the user is not provided,
         it will create the secret key for the authenticated user. If the user
@@ -84,14 +84,17 @@ class SecretKey(object):
         :param user_id: Valid user identifier to create a key for. If not provided,
         the authenticated user will be used instead.
         :param namespace: Namespace for the user if the user belongs to a namespace (optional)
-        :param expiry_time: Expiry time in minutes for the secret key. Note that nodes may
+        :param expiry_time: Expiry time in minutes for the previous secret key. Note that nodes may
         cache secret keys for up to two minutes so old keys may not expire immediately.
-        Defaults to 30 days (2592000 seconds)
+        Do not provide an expiry time if the user does not have an existing key (optional)
         :param secret_key: Secret key associated with this user. If not provided, system
         will generate one
         """
 
-        payload = {"existing_key_expiry_time_mins": expiry_time}
+        payload = dict()
+
+        if expiry_time:
+            payload["existing_key_expiry_time_mins"] = expiry_time
 
         if user_id:
             url = 'object/user-secret-keys/{}'.format(user_id)
