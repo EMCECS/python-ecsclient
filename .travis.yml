@@ -15,8 +15,8 @@ deploy:
   password:
     secure: "WPFk4enKQpiCiRWPyk5GO1lLsvggqZRc2Ya3UVOOYomhPwlS3bzFehUvs+NK5cdZM9zdpE1nZPEG6l0+T2NVwfq9ENm24TFv6c2cqzGU3SGe3zDDK+iEO+Ksk/x8kPv3ZIMRvJ4b+OZbJQWa0u8t80p/jonf4vv59mvtdxj6RlOEK2aROzf1f7WFa5DHsIzQzPMZaU3S7xoz2vq5T6kbI4no+a++TIipkfjZ9lZe0jw265DFFR+E3lCEGUsYnZoEPUBXssdFCUW8A1Fx1LjEgX+kOBbvcY1Y3tvuK+E/tsx86abc01l9mT7A79pR2O/J6VMDdC2vPT8Tda4irDz1SgoAtatTqklCrpzn/WT44tHUut2V2MoPE5HUECPL3ox61PbDTjeEWgrLDCVM6tYGbKsdYu2KNc/hsfjDo4eiI21E2LO7oKzANVOpWjXSE7m7HmASIxba9OwlhsK47JirKn6WGlDB6z38K/qvz5c7qBPY2u0N7N1TxqTAFNdzoLCpEv6jji2k7zJPD8LRBoPDiPyYycx8F+tr9i1eUSPnrLAqB3+WJqwIW89KJDZ1asc1W4I6LsYyWJrzET7y0+swhj9KIdsjl4lnpYwOy9aCtV/meWyQ9is9MoAKDOA6Dbrvatz5OW8wbkWFoDnQhB0/OLLYsfVb6xBO0MCHw9hJmjw="
   on:
-    all_branches: true
     tags: true
+    python: 3.6
 - provider: pypi
   distributions: sdist
   server: https://test.pypi.org/legacy/
@@ -26,3 +26,4 @@ deploy:
   on:
     branch: master
     tags: false
+    python: 3.6
