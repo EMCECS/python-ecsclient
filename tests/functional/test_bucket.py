@@ -136,6 +136,44 @@ class TestBucket(functional.BaseTestCase):
         response = self.client.bucket.get_acl_groups()
         self.assertValidSchema(response, schemas.BUCKET_ACL_GROUPS)
 
+    def test_bucket_acl(self):
+        user_acl = [{'permission': ['full_control'], 'user': self.object_user}]
+        group_acl = [{'permission': ['read'], 'group': 'public'}]
+        customgroup_acl = [{'permission': ['delete', 'read', 'write'], 'customgroup': 'cgroup1'}]
+
+        self.client.bucket.set_acl(self.bucket_1,
+                                   namespace=self.namespace_1,
+                                   owner=self.object_user,
+                                   default_group='public',
+                                   user_acl=user_acl,
+                                   group_acl=group_acl,
+                                   customgroup_acl=customgroup_acl)
+
+        acl = self.client.bucket.get_acl(self.bucket_1,
+                                         namespace=self.namespace_1)
+
+        self.assertEqual(acl['acl']['owner'], self.object_user)
+        self.assertEqual(acl['acl']['default_group'], 'public')
+        self.assertEqual(acl['acl']['group_acl'], group_acl)
+        self.assertEqual(acl['acl']['user_acl'], user_acl)
+        acl['acl']['customgroup_acl'][0]['permission'].sort()
+        self.assertEqual(acl['acl']['customgroup_acl'], customgroup_acl)
+        self.assertEqual(acl['bucket'], self.bucket_1)
+        self.assertEqual(acl['namespace'], self.namespace_1)
+
+        # Clear ACLs
+
+        self.client.bucket.set_acl(self.bucket_1,
+                                   namespace=self.namespace_1)
+        acl = self.client.bucket.get_acl(self.bucket_1,
+                                         namespace=self.namespace_1)
+
+        self.assertEqual(acl['acl']['group_acl'], [])
+        self.assertEqual(acl['acl']['user_acl'], [])
+        self.assertEqual(acl['acl']['customgroup_acl'], [])
+        self.assertEqual(acl['bucket'], self.bucket_1)
+        self.assertEqual(acl['namespace'], self.namespace_1)
+
     def test_bucket_user_metadata(self):
         self.client.bucket.set_metadata(self.bucket_1,
                                         "key1",
