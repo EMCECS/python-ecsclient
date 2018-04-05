@@ -556,7 +556,7 @@ class Bucket(object):
             u'permission': []
         }
 
-        :param bucket_name: Name of the bucket for which ACL is to be updated.
+        :param bucket_name: Name of the bucket.
         :param namespace: Namespace with which bucket is associated. If it is
         null, the current user's namespace is used.
         """
@@ -569,6 +569,51 @@ class Bucket(object):
         return self.conn.get(
             'object/bucket/{}/acl'.format(bucket_name),
             params=params)
+
+    def set_acl(self, bucket_name, namespace=None, owner=None, default_group=None,
+                user_acl=None, group_acl=None, customgroup_acl=None):
+        """
+        Sets the ACL for the given bucket. If the buckets's namespace is not
+        specified in the payload, the current user's namespace is used.
+
+        Required role(s):
+
+        This call has no restrictions
+
+        :param bucket_name: The name of bucket used to set ACL information
+        :param namespace: The namespace to which the bucket belongs. If not provided,
+        then current user's namespace is used
+        :param owner: The name of bucket owner
+        :param default_group: The default group of the bucket
+        :param user_acl: A collection of users and their corresponding permissions
+        (e.g. `[{'permission': ['full_control'], 'user': 'myuser1'}]`)
+        :param group_acl: A collection of groups and their corresponding permissions
+        (e.g. `[{'permission': ['read'], 'group': 'public'}]`)
+        :param customgroup_acl: A collection of custom groups and their corresponding permissions
+        (e.g. `[{'permission': ['delete', 'read', 'write'], 'customgroup': 'cgroup1'}]`)
+        """
+        payload = {
+            "bucket": bucket_name,
+            "acl": {}
+        }
+
+        if namespace:
+            payload['namespace'] = namespace
+        if owner:
+            payload['acl']['owner'] = owner
+        if default_group:
+            payload['acl']['default_group'] = default_group
+        if user_acl:
+            payload['acl']['user_acl'] = user_acl
+        if group_acl:
+            payload['acl']['group_acl'] = group_acl
+        if customgroup_acl:
+            payload['acl']['customgroup_acl'] = customgroup_acl
+
+        log.info("Setting ACL for bucket '{}'".format(bucket_name))
+        self.conn.put(
+            'object/bucket/{}/acl'.format(bucket_name),
+            json_payload=payload)
 
     def get_acl_permissions(self):
         """
@@ -665,9 +710,6 @@ class Bucket(object):
         """
         log.info('Getting all ACL groups')
         return self.conn.get('object/bucket/acl/groups')
-
-    def set_acl(self):
-        raise NotImplementedError()
 
     def get_metadata(self, bucket_name, head_type, namespace=None):
         """
