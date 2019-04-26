@@ -47,12 +47,12 @@ class ECSClientException(Exception):
             retryable = m.get('retryable', None)
             description = m.get('description', '')
             details = m.get('details', '')
-        except:
+        except BaseException:
             pass
 
         parsed_url = urllib.parse.urlparse(resp.request.url)
         message = message or details or description or error_codes.ERROR_CODES.get(code) or '%s %s' % (
-                  resp.status_code, resp.reason)
+            resp.status_code, resp.reason)
 
         return cls(message,
                    ecs_code=code,
@@ -66,40 +66,38 @@ class ECSClientException(Exception):
                    http_query=parsed_url.query,
                    http_status=resp.status_code,
                    http_reason=resp.reason,
-                   http_response_content=resp.text or resp.content,
+                   http_response_content=resp.text[:8192] or resp.content[:8192],
                    http_response_headers=resp.headers)
 
     def __str__(self):
-        a = self.message
+        a = "\n\nError Message: %s\n" % self.message
         if self.ecs_details not in a:
-            a += ' - %s' % self.ecs_details
+            a += 'ECS_details: %s\n' % self.ecs_details
         if self.ecs_description not in a:
-            a += ' - %s' % self.ecs_description
+            a += 'ECS_description: %s\n\n' % self.ecs_description
         b = ''
         if self.http_scheme:
-            b += '%s://' % self.http_scheme
+            b += 'HTTP/S Request/Response Details:\n---------------------------------\nScheme: %s\n' % self.http_scheme
         if self.http_host:
-            b += self.http_host
+            b += "Host: %s\n" % self.http_host
         if self.http_port:
-            b += ':%s' % self.http_port
+            b += 'Port:%s\n' % self.http_port
         if self.http_path:
-            b += self.http_path
+            b += 'Path: %s\n' % self.http_path
         if self.http_query:
-            b += '?%s' % self.http_query
+            b += 'Query: %s\n' % self.http_query
+
         if self.http_status:
             if b:
-                b = '%s %s' % (b, self.http_status)
+                b += 'Response_Status: %s\n' % str(self.http_status)
             else:
-                b = str(self.http_status)
+                b = 'HTTP/S Response_Status: %s\n' % str(self.http_status)
         if self.http_reason:
             if b:
-                b = '%s %s' % (b, self.http_reason)
+                b += 'Response_Reason: %s\n' % self.http_reason
             else:
-                b = '- %s' % self.http_reason
+                b = 'HTTP/S Response_Reason: %s\n' % self.http_reason
         if self.http_response_content:
-            if len(self.http_response_content) <= 60:
-                b += '   %s' % self.http_response_content
-            else:
-                b += '  [first 60 chars of response] %s' \
-                     % self.http_response_content[:60]
-        return b and '%s: %s' % (a, b) or a
+            b += 'Response_content: %s' % self.http_response_content
+
+        return b and a + b or a
