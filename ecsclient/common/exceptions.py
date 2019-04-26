@@ -66,7 +66,7 @@ class ECSClientException(Exception):
                    http_query=parsed_url.query,
                    http_status=resp.status_code,
                    http_reason=resp.reason,
-                   http_response_content=resp.text or resp.content,
+                   http_response_content=resp.text[:8192] or resp.content[:8192],
                    http_response_headers=resp.headers)
 
     def __str__(self):
