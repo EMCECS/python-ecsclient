@@ -19,7 +19,7 @@ class Dashboard(object):
         """
         self.conn = connection
 
-    def get_local_zone(self,*args, **kwargs):
+    def get_local_zone(self, *args, **kwargs):
         """
         Gets the local VDC details
 
