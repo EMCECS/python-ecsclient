@@ -19,7 +19,7 @@ class Dashboard(object):
         """
         self.conn = connection
 
-    def get_local_zone(self):
+    def get_local_zone(self,*args, **kwargs):
         """
         Gets the local VDC details
 
@@ -32,10 +32,17 @@ class Dashboard(object):
 
         Too large to output here
         """
-        log.info("Getting local VDC info")
-        return self.conn.get(url='dashboard/zones/localzone')
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category', 'cfTimeFrame', 'cfTarget']
 
-    def get_local_zone_replication_groups(self):
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
+        log.info("Getting local VDC info")
+        return self.conn.get(url='dashboard/zones/localzone', param=param)
+
+    def get_local_zone_replication_groups(self, *args, **kwargs):
         """
         Gets the local VDC replication groups details
 
@@ -48,10 +55,17 @@ class Dashboard(object):
 
         Too large to output here
         """
-        log.info("Getting vpools in local VDC")
-        return self.conn.get(url='dashboard/zones/localzone/replicationgroups')
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
 
-    def get_local_zone_rglinks_failed(self):
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
+        log.info("Getting vpools in local VDC")
+        return self.conn.get(url='dashboard/zones/localzone/replicationgroups', param=param)
+
+    def get_local_zone_rglinks_failed(self, *args, **kwargs):
         """
         Gets the local VDC replication group failed links details.
 
@@ -76,10 +90,17 @@ class Dashboard(object):
             u'title': u'rglinksFailedList'
         }
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting failed links for vpools in local VDC")
         return self.conn.get(url='dashboard/zones/localzone/rglinksFailed')
 
-    def get_local_zone_storage_pools(self):
+    def get_local_zone_storage_pools(self, *args, **kwargs):
         """
         Gets the local VDC storage pool details.
 
@@ -92,10 +113,17 @@ class Dashboard(object):
 
         Too large to output here
         """
-        log.info("Getting varrays in local VDC")
-        return self.conn.get(url='dashboard/zones/localzone/storagepools')
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category', 'cfTimeFrame', 'cfTarget']
 
-    def get_local_zone_nodes(self):
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
+        log.info("Getting varrays in local VDC")
+        return self.conn.get(url='dashboard/zones/localzone/storagepools', param=param)
+
+    def get_local_zone_nodes(self, *args, **kwargs):
         """
         Gets the local vdc node details.
 
@@ -108,10 +136,17 @@ class Dashboard(object):
 
         Too large to output here
         """
-        log.info("Getting nodes in local VDC")
-        return self.conn.get(url='dashboard/zones/localzone/nodes')
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category', 'cfTimeFrame', 'cfTarget']
 
-    def get_storage_pool(self, storage_pool_id):
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
+        log.info("Getting nodes in local VDC")
+        return self.conn.get(url='dashboard/zones/localzone/nodes', param=param)
+
+    def get_storage_pool(self, storage_pool_id, *args, **kwargs):
         """
         Gets the storage pool details.
 
@@ -126,12 +161,19 @@ class Dashboard(object):
 
         :param storage_pool_id: Storage pool identifier
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category', 'cfTimeFrame', 'cfTarget']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting info for varray '{0}'".format(storage_pool_id))
 
         return self.conn.get(
-            url='dashboard/storagepools/{0}'.format(storage_pool_id))
+            url='dashboard/storagepools/{0}'.format(storage_pool_id), param=param)
 
-    def get_node(self, node_id):
+    def get_node(self, node_id, *args, **kwargs):
         """
         Gets the node instance details
 
@@ -146,12 +188,19 @@ class Dashboard(object):
 
         :param node_id: Node identifier
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category', 'cfTimeFrame', 'cfTarget']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting info for node '{0}'".format(node_id))
 
         return self.conn.get(
             url='dashboard/nodes/{0}'.format(node_id))
 
-    def get_disk(self, disk_id):
+    def get_disk(self, disk_id, *args, **kwargs):
         """
         Gets the disk instance details.
 
@@ -166,12 +215,19 @@ class Dashboard(object):
 
         :param disk_id: Storage pool identifier
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting info for disk '{0}'".format(disk_id))
 
         return self.conn.get(
-            url='dashboard/disks/{0}'.format(disk_id))
+            url='dashboard/disks/{0}'.format(disk_id), param=param)
 
-    def get_process(self, process_id):
+    def get_process(self, process_id, *args, **kwargs):
         """
         Gets the process instance details.
 
@@ -186,12 +242,19 @@ class Dashboard(object):
 
         :param process_id: Identity of the process
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting info for PID '{0}'".format(process_id))
 
         return self.conn.get(
-            url='dashboard/processes/{0}'.format(process_id))
+            url='dashboard/processes/{0}'.format(process_id), param=param)
 
-    def get_node_processes(self, node_id):
+    def get_node_processes(self, node_id, *args, **kwargs):
         """
         Gets the node instance process details.
 
@@ -206,12 +269,19 @@ class Dashboard(object):
 
         :param node_id: Identity of the process
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting processes for node '{0}'".format(node_id))
 
         return self.conn.get(
-            url='dashboard/nodes/{0}/processes'.format(node_id))
+            url='dashboard/nodes/{0}/processes'.format(node_id), param=param)
 
-    def get_node_disks(self, node_id):
+    def get_node_disks(self, node_id, *args, **kwargs):
         """
         Gets the node instance disk details.
 
@@ -226,12 +296,19 @@ class Dashboard(object):
 
         :param node_id: Identity of the node
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting disks for node '{0}'".format(node_id))
 
         return self.conn.get(
-            url='dashboard/nodes/{0}/disks'.format(node_id))
+            url='dashboard/nodes/{0}/disks'.format(node_id), param=param)
 
-    def get_storage_pool_nodes(self, storage_pool_id):
+    def get_storage_pool_nodes(self, storage_pool_id, *args, **kwargs):
         """
         Gets the storage pool node details.
 
@@ -246,12 +323,19 @@ class Dashboard(object):
 
         :param storage_pool_id: Identity of the storage pool
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category', 'cfTimeFrame', 'cfTarget']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting nodes for varray '{0}'".format(storage_pool_id))
 
         return self.conn.get(
-            url='dashboard/storagepools/{0}/nodes'.format(storage_pool_id))
+            url='dashboard/storagepools/{0}/nodes'.format(storage_pool_id), param=param)
 
-    def get_local_zone_replication_group_bootstrap_links(self):
+    def get_local_zone_replication_group_bootstrap_links(self, *args, **kwargs):
         """
         Gets the local VDC replication group bootstrap links details.
 
@@ -276,12 +360,19 @@ class Dashboard(object):
             u'title': u'rglinksBootstrapList'
         }
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting vpool bootstrap links in local VDC")
 
         return self.conn.get(
-            url='dashboard/zones/localzone/rglinksBootstrap')
+            url='dashboard/zones/localzone/rglinksBootstrap', param=param)
 
-    def get_replication_group(self, replication_group_id):
+    def get_replication_group(self, replication_group_id, *args, **kwargs):
         """
         Gets the replication group instance details.
 
@@ -296,12 +387,19 @@ class Dashboard(object):
 
         :param replication_group_id: Replication group identifier
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting info for vpool '{0}'".format(replication_group_id))
 
         return self.conn.get(
-            url='dashboard/replicationgroups/{0}'.format(replication_group_id))
+            url='dashboard/replicationgroups/{0}'.format(replication_group_id), param=param)
 
-    def get_replication_group_link(self, rglink_id):
+    def get_replication_group_link(self, rglink_id, *args, **kwargs):
         """
         Gets the replication group link instance details
 
@@ -316,10 +414,17 @@ class Dashboard(object):
 
         :param rglink_id: Replication group link identifier
         """
-        log.info("Getting info for vpool link '{0}'".format(rglink_id))
-        return self.conn.get(url='dashboard/rglinks/{0}'.format(rglink_id))
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
 
-    def get_replication_group_links(self, replication_group_id):
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
+        log.info("Getting info for vpool link '{0}'".format(rglink_id))
+        return self.conn.get(url='dashboard/rglinks/{0}'.format(rglink_id), param=param)
+
+    def get_replication_group_links(self, replication_group_id, *args, **kwargs):
         """
         Gets the replication group instance associated link details.
 
@@ -334,9 +439,17 @@ class Dashboard(object):
 
         :param replication_group_id: Replication group identifier
         """
+        keys = ['dataType', 'startTime', 'endTime', 'interval', 'category']
+
+        param = {}
+        for key in keys:
+            value = kwargs.get(key)
+            if value:
+                param[key] = value
         log.info("Getting links for vpool '{0}'".format(replication_group_id))
 
         return self.conn.get(
             url='dashboard/replicationgroups/{0}/rglinks'.format(
-                replication_group_id)
+                replication_group_id),
+            param=param
         )
