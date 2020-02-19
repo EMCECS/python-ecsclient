@@ -40,7 +40,7 @@ class Dashboard(object):
             if value:
                 param[key] = value
         log.info("Getting local VDC info")
-        return self.conn.get(url='dashboard/zones/localzone', param=param)
+        return self.conn.get(url='dashboard/zones/localzone', params=param)
 
     def get_local_zone_replication_groups(self, *args, **kwargs):
         """
@@ -63,7 +63,7 @@ class Dashboard(object):
             if value:
                 param[key] = value
         log.info("Getting vpools in local VDC")
-        return self.conn.get(url='dashboard/zones/localzone/replicationgroups', param=param)
+        return self.conn.get(url='dashboard/zones/localzone/replicationgroups', params=param)
 
     def get_local_zone_rglinks_failed(self, *args, **kwargs):
         """
@@ -121,7 +121,7 @@ class Dashboard(object):
             if value:
                 param[key] = value
         log.info("Getting varrays in local VDC")
-        return self.conn.get(url='dashboard/zones/localzone/storagepools', param=param)
+        return self.conn.get(url='dashboard/zones/localzone/storagepools', params=param)
 
     def get_local_zone_nodes(self, *args, **kwargs):
         """
@@ -144,7 +144,7 @@ class Dashboard(object):
             if value:
                 param[key] = value
         log.info("Getting nodes in local VDC")
-        return self.conn.get(url='dashboard/zones/localzone/nodes', param=param)
+        return self.conn.get(url='dashboard/zones/localzone/nodes', params=param)
 
     def get_storage_pool(self, storage_pool_id, *args, **kwargs):
         """
@@ -171,7 +171,7 @@ class Dashboard(object):
         log.info("Getting info for varray '{0}'".format(storage_pool_id))
 
         return self.conn.get(
-            url='dashboard/storagepools/{0}'.format(storage_pool_id), param=param)
+            url='dashboard/storagepools/{0}'.format(storage_pool_id), params=param)
 
     def get_node(self, node_id, *args, **kwargs):
         """
@@ -225,7 +225,7 @@ class Dashboard(object):
         log.info("Getting info for disk '{0}'".format(disk_id))
 
         return self.conn.get(
-            url='dashboard/disks/{0}'.format(disk_id), param=param)
+            url='dashboard/disks/{0}'.format(disk_id), params=param)
 
     def get_process(self, process_id, *args, **kwargs):
         """
@@ -252,7 +252,7 @@ class Dashboard(object):
         log.info("Getting info for PID '{0}'".format(process_id))
 
         return self.conn.get(
-            url='dashboard/processes/{0}'.format(process_id), param=param)
+            url='dashboard/processes/{0}'.format(process_id), params=param)
 
     def get_node_processes(self, node_id, *args, **kwargs):
         """
@@ -279,7 +279,7 @@ class Dashboard(object):
         log.info("Getting processes for node '{0}'".format(node_id))
 
         return self.conn.get(
-            url='dashboard/nodes/{0}/processes'.format(node_id), param=param)
+            url='dashboard/nodes/{0}/processes'.format(node_id), params=param)
 
     def get_node_disks(self, node_id, *args, **kwargs):
         """
@@ -306,7 +306,7 @@ class Dashboard(object):
         log.info("Getting disks for node '{0}'".format(node_id))
 
         return self.conn.get(
-            url='dashboard/nodes/{0}/disks'.format(node_id), param=param)
+            url='dashboard/nodes/{0}/disks'.format(node_id), params=param)
 
     def get_storage_pool_nodes(self, storage_pool_id, *args, **kwargs):
         """
@@ -333,7 +333,7 @@ class Dashboard(object):
         log.info("Getting nodes for varray '{0}'".format(storage_pool_id))
 
         return self.conn.get(
-            url='dashboard/storagepools/{0}/nodes'.format(storage_pool_id), param=param)
+            url='dashboard/storagepools/{0}/nodes'.format(storage_pool_id), params=param)
 
     def get_local_zone_replication_group_bootstrap_links(self, *args, **kwargs):
         """
@@ -370,7 +370,7 @@ class Dashboard(object):
         log.info("Getting vpool bootstrap links in local VDC")
 
         return self.conn.get(
-            url='dashboard/zones/localzone/rglinksBootstrap', param=param)
+            url='dashboard/zones/localzone/rglinksBootstrap', params=param)
 
     def get_replication_group(self, replication_group_id, *args, **kwargs):
         """
@@ -397,7 +397,7 @@ class Dashboard(object):
         log.info("Getting info for vpool '{0}'".format(replication_group_id))
 
         return self.conn.get(
-            url='dashboard/replicationgroups/{0}'.format(replication_group_id), param=param)
+            url='dashboard/replicationgroups/{0}'.format(replication_group_id), params=param)
 
     def get_replication_group_link(self, rglink_id, *args, **kwargs):
         """
@@ -422,7 +422,7 @@ class Dashboard(object):
             if value:
                 param[key] = value
         log.info("Getting info for vpool link '{0}'".format(rglink_id))
-        return self.conn.get(url='dashboard/rglinks/{0}'.format(rglink_id), param=param)
+        return self.conn.get(url='dashboard/rglinks/{0}'.format(rglink_id), params=param)
 
     def get_replication_group_links(self, replication_group_id, *args, **kwargs):
         """
@@ -451,5 +451,5 @@ class Dashboard(object):
         return self.conn.get(
             url='dashboard/replicationgroups/{0}/rglinks'.format(
                 replication_group_id),
-            param=param
+            params=param
         )
