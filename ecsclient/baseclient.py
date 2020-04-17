@@ -23,7 +23,7 @@ class Client(object):
     def __init__(self, username=None, password=None, token=None,
                  ecs_endpoint=None, token_endpoint=None, verify_ssl=False,
                  token_path='/tmp/ecsclient.tkn',
-                 request_timeout=15.0, cache_token=True):
+                 request_timeout=15.0, cache_token=True, override_header=None):
         """
         Creates the ECSClient class that the client will directly work with
 
@@ -39,6 +39,7 @@ class Client(object):
         :param cache_token: Whether to cache the token, by default this is true
         you should only switch this to false when you want to directly fetch
         a token for a user
+        :param override_header: X-EMC-Override header value into API calls
         """
         if not ecs_endpoint:
             raise ECSClientException("Missing 'ecs_endpoint'")
@@ -53,6 +54,7 @@ class Client(object):
             if not (token or os.path.isfile(token_path)):
                 raise ECSClientException("'token_endpoint' not provided and missing 'token'|'token_path'")
 
+        self.override_header = override_header 
         self.username = username
         self.password = password
         self.token = token
@@ -104,9 +106,12 @@ class Client(object):
 
     def _fetch_headers(self):
         token = self.token if self.token else self._token_request.get_token()
-        return {'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'x-sds-auth-token': token}
+        headers = {'Accept': 'application/json',
+                   'Content-Type': 'application/json',
+                   'x-sds-auth-token': token}
+        if self.override_header != None:
+            headers['X-EMC-Override'] = self.override_header
+        return headers
 
     def _construct_url(self, path):
         url = '{0}/{1}'.format(self.ecs_endpoint, path)

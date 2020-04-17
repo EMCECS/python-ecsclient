@@ -70,7 +70,9 @@ arguments:
 +-----------------------+------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 | ``cache_token``       | No         | True                   | Whether to cache the token, by default this is true you should only switch this to false when you want to directly fetch a token for a user   |
 +-----------------------+------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-
+| ``override_header``   | No         | None                   | Add X-EMC-Override header with the header value in API request only if it is not None
+  |
++-----------------------+------------+------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
 This is how you can instantiate the ``Client`` class and use the library.
 
 .. code-block:: python
@@ -119,6 +121,20 @@ to obtain a new token on the next call. To do so, you can remove the cached toke
 .. code-block:: python
 
     client.remove_cached_token()
+
+Add X-EMC-Override: "true" header
+~~~~~~~~~~~~~~
+You can pass override_header to the client which means the user wants to add custom 
+X-EMC-Override header into API request
+
+.. code-block:: python
+
+    client = Client('3',
+                    username='someone',
+                    password='password',
+                    token_endpoint='https://192.168.1.146:4443/login',
+                    ecs_endpoint='https://192.168.1.146:4443',
+                    override_header='true')
 
 
 Supported endpoints
