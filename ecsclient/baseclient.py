@@ -54,6 +54,7 @@ class Client(object):
             if not (token or os.path.isfile(token_path)):
                 raise ECSClientException("'token_endpoint' not provided and missing 'token'|'token_path'")
 
+        self.override_header = override_header 
         self.username = username
         self.password = password
         self.token = token
@@ -72,7 +73,6 @@ class Client(object):
             token_path=self.token_path,
             request_timeout=self.request_timeout,
             cache_token=self.cache_token)
-        self.override_header =override_header 
 
         # Authentication
         self.authentication = Authentication(self)
@@ -106,15 +106,12 @@ class Client(object):
 
     def _fetch_headers(self):
         token = self.token if self.token else self._token_request.get_token()
-	if self.override_header == None:
-            return {'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'x-sds-auth-token': token}
-        else:
-            return {'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'x-sds-auth-token': token,
-                    'X-EMC-Override': self.override_header}
+        headers = {'Accept': 'application/json',
+                   'Content-Type': 'application/json',
+                   'x-sds-auth-token': token}
+	if self.override_header != None:
+            headers['X-EMC-Override'] = self.override_header
+        return headers
 
     def _construct_url(self, path):
         url = '{0}/{1}'.format(self.ecs_endpoint, path)
