@@ -109,7 +109,7 @@ class Client(object):
         headers = {'Accept': 'application/json',
                    'Content-Type': 'application/json',
                    'x-sds-auth-token': token}
-	if self.override_header != None:
+        if self.override_header != None:
             headers['X-EMC-Override'] = self.override_header
         return headers
 
