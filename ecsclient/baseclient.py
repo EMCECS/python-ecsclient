@@ -54,7 +54,7 @@ class Client(object):
             if not (token or os.path.isfile(token_path)):
                 raise ECSClientException("'token_endpoint' not provided and missing 'token'|'token_path'")
 
-        self.override_header = override_header 
+        self.override_header = override_header
         self.username = username
         self.password = password
         self.token = token
@@ -109,7 +109,7 @@ class Client(object):
         headers = {'Accept': 'application/json',
                    'Content-Type': 'application/json',
                    'x-sds-auth-token': token}
-        if self.override_header != None:
+        if self.override_header is not None:
             headers['X-EMC-Override'] = self.override_header
         return headers
 
