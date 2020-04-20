@@ -14,18 +14,18 @@ deploy:
   user: adrianmo
   password:
     secure: "WPFk4enKQpiCiRWPyk5GO1lLsvggqZRc2Ya3UVOOYomhPwlS3bzFehUvs+NK5cdZM9zdpE1nZPEG6l0+T2NVwfq9ENm24TFv6c2cqzGU3SGe3zDDK+iEO+Ksk/x8kPv3ZIMRvJ4b+OZbJQWa0u8t80p/jonf4vv59mvtdxj6RlOEK2aROzf1f7WFa5DHsIzQzPMZaU3S7xoz2vq5T6kbI4no+a++TIipkfjZ9lZe0jw265DFFR+E3lCEGUsYnZoEPUBXssdFCUW8A1Fx1LjEgX+kOBbvcY1Y3tvuK+E/tsx86abc01l9mT7A79pR2O/J6VMDdC2vPT8Tda4irDz1SgoAtatTqklCrpzn/WT44tHUut2V2MoPE5HUECPL3ox61PbDTjeEWgrLDCVM6tYGbKsdYu2KNc/hsfjDo4eiI21E2LO7oKzANVOpWjXSE7m7HmASIxba9OwlhsK47JirKn6WGlDB6z38K/qvz5c7qBPY2u0N7N1TxqTAFNdzoLCpEv6jji2k7zJPD8LRBoPDiPyYycx8F+tr9i1eUSPnrLAqB3+WJqwIW89KJDZ1asc1W4I6LsYyWJrzET7y0+swhj9KIdsjl4lnpYwOy9aCtV/meWyQ9is9MoAKDOA6Dbrvatz5OW8wbkWFoDnQhB0/OLLYsfVb6xBO0MCHw9hJmjw="
-  skip_cleanup: true
   on:
     tags: true
     python: 3.6
+  skip_cleanup: true
 - provider: pypi
   distributions: sdist
   server: https://test.pypi.org/legacy/
   user: adrianmo
   password:
     secure: "NYPdcAwr02pKWFP74ARGMzqprcZyVgdensMUBaXt59E/Ivtx6XoXmONsVg9go0JrMzFiVmtHah4W0anBB3BZ2ASaDYOg/M/BimBSmBi0D/G3Mb8hcZ7lYYSEMh+o+zHg/5fOjYQxrv9G/ekPbXJgD1gz4wbx8w9n1rZsUOsQgSRukXHNr5wDVO6NRpsuaidJAi7f6ZNsPq8RY6m+6JSZhHj50LicRcN5W93FLs5bjyES/QWXuwbVgXw8g360E8E0XT/5OElyXjHM3zoz8IOZHR8eKMmekM5B1U3CGXXv5nQfXCkw7RewgYLRYrA9C8hOxCb18+/Hn8oU76LTbA0fOpyOaNKXTfrchwmRc9E4EQxjJT39gJofqdWokJJDqzcTmHeDRApTmnGd/bV1bNtKXj9oSP8JdEKviz3qAFDTQdLCEp97CxgCRjRqNshbvF83TVwEVur/VKn8FNUZ4Re435JnZz4j6CNUGJIaWLE9RaNRbpjO8mUPq/iQ3cxLVhcT5n8QGyEt5SQX6Mcl+2dHBuCEbKpJBJAT2SVtDk5dwHdTOk9NH7dYEMLuygPtjPQFrTUFhE3RqZZJbyHFYYgnG8al+iwmwxTQOuH3P8Cz1I1n1H3y0Dc+573atnOXG3LoyUZ2PGFxC4eEGJkHa8DyMcuHjsEEEA3BWEg5MiSiVrw="
-  skip_cleanup: true
   on:
     branch: master
     tags: false
     python: 3.6
+  skip_cleanup: true
