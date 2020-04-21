@@ -18,14 +18,3 @@ deploy:
     tags: true
     python: 3.6
   skip_cleanup: true
-- provider: pypi
-  distributions: sdist
-  server: https://test.pypi.org/legacy/
-  user: __token__
-  password:
-    secure: "NPTikzAY5Hlk+qOyICmRFxnnFFhEA6vCxSVZiB3jDZtwMi3NznlF46OtIaYR/rc5KBttj+mKMdr+yG71K1F4wfLYtDV5wEmsX8pAhroVGmIlt/2ToXEJSk9JIfVVNmAtxsEdEPC9YbtdTlk2TwsXhmWl8tXtutqO6so5G3WbKJ8s06V5pCYPyVz/+1vD3Zu1SMCRGwyxjwn7j6NaYGrqG9SBCEyu0H/j3BkLr8rnYk/epiFIXLB1V69zZgw9D42xt+OpDiXwLA88w+YFbrW4OV204gqkAdme3sscVfqofPjQ24jLATQU81okoezI1SHzsonCLVyhS3QXypBEK6r2sYVboM0iHVVArUuhnlQhkeiw0QCqGEAmpf+mPontRDJ2BgCRL5Gh0VfNdnnBnOMWPffFf9YV9cZPjS9VOi4DA1bqUAPp0dKL2HkBZcPFC8e9SIUAzNha5aRo79cpfBv7xocDTRb3GZoAtkleaBPxlQRAeWqib+Hn/+948efdlJCuNeiy0k6afffBcOez7YH4BCGW2D4hBnHSua8my+GHYeogpDHn7YSdoyTIEuHJBXSwyQaFWCg9cRfuiNC5y392omD6Q4Vq/9I+mK2S8fG02vZrvcHfjESFmAwTJ4DIE4soiYWgxsVb/EEG8+DYLQSkmSW8NKsRxi1uIxK7vexL5vA="
-  on:
-    branch: master
-    tags: false
-    python: 3.6
-  skip_cleanup: true
