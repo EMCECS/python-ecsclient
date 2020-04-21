@@ -24,7 +24,6 @@ setup(
     name='python-ecsclient',
     url='https://github.com/EMCECS/python-ecsclient',
     keywords=['ecsclient'],
-    long_description=readme,
     version=read('VERSION')[0],
     description='A library for interacting with the ECS Management API',
     author='ECS',
