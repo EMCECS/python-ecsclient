@@ -25,11 +25,13 @@ class ManagementUser(object):
             u'mgmt_user_info': [
                 {
                     u'isSystemMonitor': False,
+                    u'isSecurityAdmin': False,
                     u'userId': u'someone@internal',
                     u'isSystemAdmin': True
                 },
                 {
                     u'isSystemMonitor': False,
+                    u'isSecurityAdmin': False,
                     u'userId': u'root',
                     u'isSystemAdmin': True
                 }
@@ -54,6 +56,7 @@ class ManagementUser(object):
             u'isSystemMonitor': False,
             u'userId': u'admin',
             u'isSystemAdmin': True
+            u'isSecurityAdmin': True
         }
 
         :param user_id: User identifier for which local user information needs to
@@ -82,7 +85,7 @@ class ManagementUser(object):
         return self.conn.post(url='vdc/users/{}/deactivate'.format(user_id))
 
     def create(self, user_id, password, is_system_admin=False,
-               is_system_monitor=False):
+               is_system_monitor=False, is_security_admin=False):
         """
         Creates local users for the VDC. These users can be assigned to
         VDC-wide management roles and are not associated with a namespace.
@@ -99,19 +102,22 @@ class ManagementUser(object):
         the System Admin role. Default: False
         :param is_system_monitor: If set to True, assigns the management user
         to the System Monitor role. Default: False
+        :param is_security_admin: If set to True, assigns the management user
+        to the Security Admin role. Default: False
         """
         payload = {
             "userId": user_id,
             "password": password,
             "isSystemAdmin": is_system_admin,
-            "isSystemMonitor": is_system_monitor
+            "isSystemMonitor": is_system_monitor,
+            "isSecurityAdmin": is_security_admin
         }
 
         log.info("Creating local management user '{}'".format(user_id))
         return self.conn.post(url='vdc/users', json_payload=payload)
 
     def update(self, user_id, password, is_system_admin=False,
-               is_system_monitor=False):
+               is_system_monitor=False, is_security_admin=False):
         """
         Updates user details for the specified local management user.
 
@@ -130,11 +136,14 @@ class ManagementUser(object):
         the System Admin role. Default: False
         :param is_system_monitor: If set to True, assigns the management user
         to the System Monitor role. Default: False
+        :param is_security_admin: If set to True, assigns the management user
+        to the Security Admin role. Default: False
         """
         payload = {
             "password": password,
             "isSystemAdmin": is_system_admin,
-            "isSystemMonitor": is_system_monitor
+            "isSystemMonitor": is_system_monitor,
+            "isSecurityAdmin": is_security_admin
         }
 
         log.info("Updating local management user '{}'".format(user_id))

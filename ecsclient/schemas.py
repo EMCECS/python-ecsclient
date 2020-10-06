@@ -744,6 +744,7 @@ MANAGEMENT_USER = {
     "properties": {
         "userId": {"type": "string"},
         "isSystemAdmin": {"type": "boolean"},
+        "isSecurityAdmin": {"type": "boolean"},
         "isSystemMonitor": {"type": "boolean"},
         "is_external_group": {"type": "boolean"}
     },
