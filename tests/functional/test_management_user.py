@@ -38,11 +38,13 @@ class TestManagementUser(functional.BaseTestCase):
         response = self.client.management_user.create(self.management_user_2,
                                                       password='fake-password-123',
                                                       is_system_admin=True,
-                                                      is_system_monitor=True)
+                                                      is_system_monitor=True,
+                                                      is_security_admin=True)
         self.assertValidSchema(response, schemas.MANAGEMENT_USER)
         self.assertEqual(response['userId'], self.management_user_2)
         self.assertTrue(response['isSystemAdmin'])
         self.assertTrue(response['isSystemMonitor'])
+        self.assertTrue(response['isSecurityAdmin'])
 
     def test_management_user_delete(self):
         self.client.management_user.delete(self.management_user_1)
@@ -53,12 +55,15 @@ class TestManagementUser(functional.BaseTestCase):
         response = self.client.management_user.get(self.management_user_1)
         self.assertFalse(response['isSystemAdmin'])
         self.assertFalse(response['isSystemMonitor'])
+        self.assertFalse(response['isSecurityAdmin'])
 
         self.client.management_user.update(self.management_user_1,
                                            password='fake-password-123',
                                            is_system_admin=True,
-                                           is_system_monitor=True)
+                                           is_system_monitor=True,
+                                           is_security_admin=True)
 
         response = self.client.management_user.get(self.management_user_1)
         self.assertTrue(response['isSystemAdmin'])
         self.assertTrue(response['isSystemMonitor'])
+        self.assertTrue(response['isSecurityAdmin'])
