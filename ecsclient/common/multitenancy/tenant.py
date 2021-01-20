@@ -3,7 +3,7 @@ import logging
 log = logging.getLogger(__name__)
 
 """
-Tenant APIs only supported in ECS Flex 
+Tenant APIs only supported in ECS Flex
 """
 
 
