@@ -29,6 +29,7 @@ class BaseTestCase(unittest.TestCase):
             license_file = config.get('func_test', 'license_file')
             with open(license_file) as f:
                 self.license_text = f.read()
+            self.override_header = config.get("func_test", 'override_header')
         else:
             self.skip_tests = True
 
@@ -38,7 +39,8 @@ class BaseTestCase(unittest.TestCase):
             username=self.username,
             password=self.password,
             ecs_endpoint=self.ecs_endpoint,
-            token_endpoint=self.token_endpoint)
+            token_endpoint=self.token_endpoint,
+            override_header=self.override_header)
 
     def setUp(self):
         super(BaseTestCase, self).setUp()
