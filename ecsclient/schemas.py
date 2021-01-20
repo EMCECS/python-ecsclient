@@ -65,6 +65,33 @@ NAMESPACES = {
     ]
 }
 
+TENANTS = {
+    "type": "object",
+    "properties": {
+        "tenant": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                },
+                "required": [
+                    "id",
+                ]
+            },
+        }
+    },
+    "required": ["tenant"]
+}
+TENANT = {
+    "type": "object",
+    "properties": {
+        "id": {"type": "string"},
+    },
+    "required": ["id"]
+}
+
 NAMESPACE = {
     "type": "object",
     "properties": {

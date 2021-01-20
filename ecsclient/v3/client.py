@@ -7,6 +7,7 @@ from ecsclient.v3.cas import cas
 from ecsclient.v3.metering import billing
 from ecsclient.v3.monitoring import capacity, dashboard, events, alerts
 from ecsclient.v3.multitenancy import namespace
+from ecsclient.v3.multitenancy import tenant
 from ecsclient.v3.geo_replication import replication_group, temporary_failed_zone
 from ecsclient.v3.provisioning import base_url, bucket, data_store, storage_pool, \
     virtual_data_center, node, vdc_keystore
@@ -52,7 +53,7 @@ class Client(baseclient.Client):
 
         # Multi-tenancy
         self.namespace = namespace.Namespace(self)
-
+        self.tenant = tenant.Tenant(self)
         # Geo-replication
         self.replication_group = replication_group.ReplicationGroup(self)
         self.temporary_failed_zone = temporary_failed_zone.TemporaryFailedZone(self)

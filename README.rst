@@ -189,6 +189,8 @@ The following table shows the supported endpoints per API version.
 +--------------------------+---------+---------+
 | Namespace                |    ✓*   |    ✓*   |
 +--------------------------+---------+---------+
+| Tenant(Flex)             |    ✗    |    ✓*   |
++--------------------------+---------+---------+
 | **Geo-Replication**                          |
 +--------------------------+---------+---------+
 | Replication Group        |    ✓    |    ✓    |
