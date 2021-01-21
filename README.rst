@@ -7,7 +7,7 @@ python-ecsclient
 This library is the Python Software Development Kit (SDK) for `Dell EMC ECS
 <https://www.emc.com/en-us/storage/ecs/index.htm>`_.
 It allows developers to interact with the ECS Management API. You can find
-the ECS API specification `here <https://www.emc.com/techpubs/api/ecs/v3-0-0-0/index.htm>`_.
+the ECS API specification `here <http://doc.isilon.com/ECS/3.6/API/>`_.
 
 This library is the successor of `ECS Minion
 <https://github.com/chadlung/ecsminion>`_.
