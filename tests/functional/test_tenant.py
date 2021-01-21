@@ -32,7 +32,6 @@ class TestTenant(functional.BaseTestCase):
 
     def setUp(self):
         super(TestTenant, self).setUp()
-        self.create_account()
         if self.skip_tests:
             self.skipTest('SKIPPING FUNCTIONAL TESTS DUE TO NO CONFIG')
         self.client.tenant.create(self.tenant)

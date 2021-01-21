@@ -1,25 +1,26 @@
 import logging
 
 from ecsclient import baseclient
-from ecsclient.v3.configuration import certificate, configuration_properties, \
+from ecsclient.v4.configuration import certificate, configuration_properties, \
     licensing, feature, syslog, snmp
-from ecsclient.v3.cas import cas
-from ecsclient.v3.metering import billing
-from ecsclient.v3.monitoring import capacity, dashboard, events, alerts
-from ecsclient.v3.multitenancy import namespace
-from ecsclient.v3.geo_replication import replication_group, temporary_failed_zone
-from ecsclient.v3.provisioning import base_url, bucket, data_store, storage_pool, \
+from ecsclient.v4.cas import cas
+from ecsclient.v4.metering import billing
+from ecsclient.v4.monitoring import capacity, dashboard, events, alerts
+from ecsclient.v4.multitenancy import namespace
+from ecsclient.v4.multitenancy import tenant
+from ecsclient.v4.geo_replication import replication_group, temporary_failed_zone
+from ecsclient.v4.provisioning import base_url, bucket, data_store, storage_pool, \
     virtual_data_center, node, vdc_keystore
-from ecsclient.v3.user_management import authentication_provider, management_user, \
+from ecsclient.v4.user_management import authentication_provider, management_user, \
     object_user, secret_key, password_group
-from ecsclient.v3.other import user_info
+from ecsclient.v4.other import user_info
 
 # Initialize logger
 log = logging.getLogger(__name__)
 
 
 class Client(baseclient.Client):
-    version = 'v3'
+    version = 'v4'
 
     def __init__(self, *args, **kwargs):
         super(Client, self).__init__(*args, **kwargs)
