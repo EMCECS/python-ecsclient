@@ -52,7 +52,6 @@ class Client(baseclient.Client):
 
         # Multi-tenancy
         self.namespace = namespace.Namespace(self)
-        self.tenant = tenant.Tenant(self)
         # Geo-replication
         self.replication_group = replication_group.ReplicationGroup(self)
         self.temporary_failed_zone = temporary_failed_zone.TemporaryFailedZone(self)
