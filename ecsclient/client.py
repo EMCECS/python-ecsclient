@@ -2,11 +2,13 @@ import logging
 
 import ecsclient.v2.client as v2_client
 import ecsclient.v3.client as v3_client
+import ecsclient.v4.client as v4_client
 
 _logger = logging.getLogger(__name__)
 
 _CLIENT_VERSIONS = {'2': v2_client.Client,
-                    '3': v3_client.Client}
+                    '3': v3_client.Client,
+                    '4': v4_client.Client}
 
 
 def Client(version=None, *args, **kwargs):

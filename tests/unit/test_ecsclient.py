@@ -3,7 +3,7 @@ import unittest
 import mock
 
 from ecsclient import baseclient
-from ecsclient import v2, v3
+from ecsclient import v2, v3, v4
 from ecsclient.client import Client
 from ecsclient.common.exceptions import ECSClientException
 
@@ -76,6 +76,14 @@ class TestEcsClient(unittest.TestCase):
                    token_endpoint='https://192.168.10/login')
         exception = error.exception.message
         self.assertEqual("'token_endpoint' provided but missing ('username','password')", str(exception))
+
+    def test_client_v4_class(self):
+        c = Client(version='4',
+                   username='user',
+                   password='password',
+                   ecs_endpoint='https://192.168.1.10',
+                   token_endpoint='https://192.168.10/login')
+        self.assertIsInstance(c, v4.client.Client, 'Instance is not a v4 client class')
 
     def test_client_v3_class(self):
         c = Client(version='3',
