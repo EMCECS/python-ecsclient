@@ -12,7 +12,7 @@ class Bucket(object):
         self.conn = connection
 
     def create(self, bucket_name, replication_group='', filesystem_enabled=False,
-               head_type=None, namespace=None, stale_allowed=False,
+               head_type=None, namespace=None, stale_allowed=None,
                metadata=None, encryption_enabled=False):
         """
         Creates a bucket which could be used by users to create objects.
