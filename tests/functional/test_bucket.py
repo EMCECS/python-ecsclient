@@ -9,18 +9,26 @@ class TestBucket(functional.BaseTestCase):
     def __init__(self, *args, **kwargs):
         super(TestBucket, self).__init__(*args, **kwargs)
         self.bucket_1 = "functional-tests-bucket-%s" % int(time.time())
+        # test bucket creation based on different namespace ADO settings
         self.bucket_2 = self.bucket_1 + '_second'
+        self.bucket_3 = self.bucket_1 + '_third'
+        self.bucket_4 = self.bucket_1 + '_fourth'
+        self.bucket_5 = self.bucket_1 + '_fifth'
+        # namespaces with different ADO settings, namespace_1 is ADO default, namespace_2 is ADO enabled
         self.namespace_1 = "functional-tests-namespace-%s" % int(time.time())
+        self.namespace_2 = self.namespace_1 + '_second'
         self.replication_group_1 = "functional-tests-replicationgroup-%s" % int(time.time())
         self.replication_group_1_id = "placeholder"
         self.storage_pool_1 = "functional-tests-storagepool-%s" % int(time.time())
         self.object_user = None
         self.object_user_created = False
+        self.object_user_second = None
+        self.object_user_created_second = False
         self.replication_group_created = False
 
     def setUp(self):
         super(TestBucket, self).setUp()
-        # Create a namespace
+        # Create a namespace with default ADO setting
         self.client.namespace.create(self.namespace_1)
         # Create an object user with the current logged in user name
         r = self.client.user_info.whoami()
@@ -54,8 +62,8 @@ class TestBucket(functional.BaseTestCase):
 
     def tearDown(self):
         super(TestBucket, self).tearDown()
-        for bucket in [self.bucket_1,
-                       self.bucket_2]:
+        
+        for bucket in [self.bucket_1, self.bucket_2, self.bucket_3]:
             try:
                 self.client.bucket.delete(bucket, namespace=self.namespace_1)
             except ECSClientException:
@@ -71,9 +79,12 @@ class TestBucket(functional.BaseTestCase):
     def test_bucket_list(self):
         response = self.client.bucket.list(self.namespace_1)
         self.assertValidSchema(response, schemas.BUCKET_LIST)
-
+    
     def test_bucket_create(self):
-        response = self.client.bucket.create(self.bucket_2,
+        # Create a namespace with ADO setting True
+        self.client.namespace.create(name=self.namespace_2, is_stale_allowed=True)
+        # create bucket with stale_allowed=True on namespace(default ADO setting)
+        response_create_2 = self.client.bucket.create(self.bucket_2,
                                              namespace=self.namespace_1,
                                              replication_group=self.replication_group_1_id,
                                              filesystem_enabled=False,
@@ -81,8 +92,59 @@ class TestBucket(functional.BaseTestCase):
                                              stale_allowed=True,
                                              encryption_enabled=False
                                              )
-        self.assertValidSchema(response, schemas.BUCKET_SHORT)
-        self.assertEqual(response['name'], self.bucket_2)
+        self.assertValidSchema(response_create_2, schemas.BUCKET_SHORT)
+        self.assertEqual(response_create_2['name'], self.bucket_2)
+        response_get_2 = self.client.bucket.get(self.bucket_2, namespace=self.namespace_1)
+        self.assertEqual(True, response_get_2['is_stale_allowed'])
+        
+        # create bucket with default stale_allowed on namespace(default ADO setting)
+        response_create_3 = self.client.bucket.create(self.bucket_3,
+                                             namespace=self.namespace_1,
+                                             replication_group=self.replication_group_1_id,
+                                             filesystem_enabled=False,
+                                             head_type='s3',
+                                             encryption_enabled=False
+                                             )
+        self.assertValidSchema(response_create_3, schemas.BUCKET_SHORT)
+        self.assertEqual(response_create_3['name'], self.bucket_3)
+        response_get_3 = self.client.bucket.get(self.bucket_3, namespace=self.namespace_1)
+        self.assertEqual(False, response_get_3['is_stale_allowed'])
+
+        # create bucket with stale_allowed=True on namespace(ADO turned on)
+        response_create_4 = self.client.bucket.create(self.bucket_4,
+                                             namespace=self.namespace_2,
+                                             replication_group=self.replication_group_1_id,
+                                             filesystem_enabled=False,
+                                             head_type='s3',
+                                             stale_allowed=True,
+                                             encryption_enabled=False
+                                             )
+        self.assertValidSchema(response_create_4, schemas.BUCKET_SHORT)
+        self.assertEqual(response_create_4['name'], self.bucket_4)
+        response_get_4 = self.client.bucket.get(self.bucket_4, namespace=self.namespace_2)
+        self.assertEqual(True, response_get_4['is_stale_allowed'])
+
+        # # create bucket with default stale_allowed on namespace(ADO turned on)
+        response_create_5 = self.client.bucket.create(self.bucket_5,
+                                             namespace=self.namespace_2,
+                                             replication_group=self.replication_group_1_id,
+                                             filesystem_enabled=False,
+                                             head_type='s3',
+                                             encryption_enabled=False
+                                             )
+        self.assertValidSchema(response_create_5, schemas.BUCKET_SHORT)
+        self.assertEqual(response_create_5['name'], self.bucket_5)
+        response_get_5 = self.client.bucket.get(self.bucket_5, namespace=self.namespace_2)
+        self.assertEqual(True, response_get_5['is_stale_allowed'])
+        
+        # clean ado-enabled namespace
+        for bucket in [self.bucket_4, self.bucket_5]:
+            try:
+                self.client.bucket.delete(bucket, namespace=self.namespace_2)
+            except ECSClientException:
+                pass
+        self.client.namespace.delete(self.namespace_2)
+        
 
     def test_bucket_get(self):
         response = self.client.bucket.get(self.bucket_1, namespace=self.namespace_1)
