@@ -12,7 +12,7 @@ class Bucket(object):
         self.conn = connection
 
     def create(self, bucket_name, replication_group='', filesystem_enabled=False,
-               head_type=None, namespace=None, stale_allowed=False,
+               head_type=None, namespace=None, stale_allowed=None,
                metadata=None, encryption_enabled=False):
         """
         Creates a bucket which could be used by users to create objects.
@@ -69,7 +69,6 @@ class Bucket(object):
             "name": bucket_name,
             "vpool": replication_group,
             "filesystem_enabled": filesystem_enabled,
-            "is_stale_allowed": stale_allowed,
             "is_encryption_enabled": encryption_enabled,
         }
 
@@ -77,6 +76,8 @@ class Bucket(object):
 
         if namespace:
             payload['namespace'] = namespace
+        if stale_allowed:
+            payload['is_stale_allowed'] = stale_allowed
         if head_type:
             payload['head_type'] = head_type
         if metadata:
