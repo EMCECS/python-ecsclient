@@ -100,6 +100,19 @@ don't need to supply a username/password.
                     token='ALAcbGZtbjh6eVB3eUF1TzFEZWNmc0M2VVl2QjBVPQM',
                     ecs_endpoint='https://192.168.1.146:4443')
 
+Create a namespace
+~~~~~~~~~~~~~~
+Creating a namespace is as simple as creatinga  client object. and calling create namespac method.
+
+.. code-block:: python
+
+    client = Client('3',
+                    token='ALAcbGZtbjh6eVB3eUF1TzFEZWNmc0M2VVl2QjBVPQM',
+                    ecs_endpoint='https://192.168.1.146:4443')
+    
+    client.namespace.create(
+        name="green"
+    )
 
 Token caching
 ~~~~~~~~~~~~~
