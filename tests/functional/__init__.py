@@ -1,7 +1,9 @@
 import os
 import re
+import subprocess
 import unittest
 
+import time
 from six.moves import configparser
 
 from ecsclient.client import Client
@@ -31,7 +33,8 @@ class BaseTestCase(unittest.TestCase):
                 self.license_text = f.read()
             self.override_header = config.get("func_test", 'override_header')
         else:
-            self.skip_tests = True
+            self._mock_server = subprocess.Popen("tests/functional/mock_server.py")
+            time.sleep(2 / 10.0)
 
     def _get_client(self):
         return Client(
