@@ -63,11 +63,25 @@ class TokenRequest(object):
         """
         log.info("Getting new token")
         self.session.auth = (self.username, self.password)
+        headers = {'Accept': 'application/json'}
 
         req = self.session.get(self.token_endpoint,
                                verify=self.verify_ssl,
-                               headers={'Accept': 'application/json'},
+                               headers=headers,
                                timeout=self.request_timeout)
+        if req.status_code == 405:
+            data_auth = dict(
+                username=self.username,
+                password=self.password
+            )
+
+            req = self.session.post(
+                self.token_endpoint,
+                json=data_auth,
+                headers=headers,
+                verify=self.verify_ssl,
+                timeout=self.request_timeout
+            )
 
         if req.status_code == 401:
             msg = 'Invalid username or password'
@@ -78,7 +92,7 @@ class TokenRequest(object):
             log.fatal(msg)
             raise ECSClientException.from_response(req, message=msg)
 
-        self.token = req.headers['x-sds-auth-token']
+        self.token = req.headers.get('x-sds-auth-token', "") or req.json().get('access_token')
 
         if self.cache_token:
             log.debug("Caching token to '{0}'".format(self.token_path))
